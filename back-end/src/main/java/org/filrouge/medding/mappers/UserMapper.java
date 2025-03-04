@@ -4,10 +4,9 @@ package org.filrouge.medding.mappers;
 import org.filrouge.medding.dto.requests.OrganizerRequestDTO;
 import org.filrouge.medding.dto.requests.UserRequestDTO;
 import org.filrouge.medding.dto.requests.VendorRequestDTO;
-import org.filrouge.medding.dto.responses.OrganizerResponseDTO;
-import org.filrouge.medding.dto.responses.UserResponseDTO;
-import org.filrouge.medding.dto.responses.VendorResponseDTO;
+import org.filrouge.medding.dto.responses.*;
 import org.filrouge.medding.entities.Organizer;
+import org.filrouge.medding.entities.Service;
 import org.filrouge.medding.entities.User;
 import org.filrouge.medding.entities.Vendor;
 import org.mapstruct.Mapper;
@@ -24,4 +23,7 @@ public interface UserMapper {
     User userRequestDTOToUser(UserRequestDTO userRequestDTO);
     Organizer organizerRequestDTOToOrganizer(OrganizerRequestDTO organizerRequestDTO);
     Vendor vendorRequestDTOToVendor(VendorRequestDTO vendorRequestDTO);
+
+    VendorProfileDTO vendorToVendorProfileDTO(Vendor vendor);
+    ServiceDTO serviceToServiceDTO(Service service);
 }
