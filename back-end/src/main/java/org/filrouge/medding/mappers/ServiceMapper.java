@@ -4,9 +4,14 @@ import org.filrouge.medding.dto.requests.ServiceRequestDTO;
 import org.filrouge.medding.dto.responses.ServiceResponseDTO;
 import org.filrouge.medding.entities.Service;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
 public interface ServiceMapper {
-    ServiceResponseDTO toDTO(Service service);
-    Service toEntity(ServiceRequestDTO serviceRequestDTO);
+    ServiceMapper INSTANCE = Mappers.getMapper(ServiceMapper.class);
+
+    @Mapping(target = "vendorId", source = "vendor.id")
+    ServiceResponseDTO serviceToServiceResponseDTO(Service service);
+    Service serviceRequestDTOToService(ServiceRequestDTO serviceRequestDTO);
 }

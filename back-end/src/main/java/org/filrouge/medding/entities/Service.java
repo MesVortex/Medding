@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.filrouge.medding.entities.enums.WeddingServiceCategory;
 
 @Entity
 @Data
@@ -18,7 +19,13 @@ public class Service {
     private String description;
     private Double price;
     private Boolean availability;
+    private WeddingServiceCategory category;
 
     @ManyToOne
+    @JoinColumn(name = "wedding_id")
     private Wedding wedding;
+
+    @ManyToOne
+    @JoinColumn(name = "vendor_id")
+    private Vendor vendor;
 }

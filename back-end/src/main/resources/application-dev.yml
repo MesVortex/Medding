@@ -22,6 +22,11 @@ spring:
         format_sql: true
     hikari:
       initialization-fail-timeout: 60000
+
+jwt:
+  secret: NWYzYzQ3YjAzZDRmMmI0YjI1M2QwMjNiNWYzYzQ3YjAzZDRmMmI0YjI1M2QwMjNiNWYzYzQ3YjA=
+  expiration: 86400000
+
 logging:
   level:
     org.springframework.orm.jpa: DEBUG

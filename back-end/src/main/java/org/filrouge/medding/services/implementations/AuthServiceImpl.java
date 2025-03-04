@@ -9,17 +9,17 @@ import org.filrouge.medding.dto.responses.UserResponseDTO;
 import org.filrouge.medding.entities.Organizer;
 import org.filrouge.medding.entities.User;
 import org.filrouge.medding.entities.Vendor;
-import org.filrouge.medding.entities.enums.UserRole;
 import org.filrouge.medding.exceptions.UserAlreadyExistsException;
 import org.filrouge.medding.exceptions.UserNotFoundException;
 import org.filrouge.medding.mappers.UserMapper;
 import org.filrouge.medding.repositories.UserRepository;
+import org.filrouge.medding.services.CustomUserDetailsService;
 import org.filrouge.medding.services.interfaces.AuthService;
 import org.filrouge.medding.utils.JwtUtil;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +28,7 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
     private final UserMapper userMapper;
+    private final CustomUserDetailsService customUserDetailsService;
 
     @Override
     public UserResponseDTO registerUser(UserRequestDTO userRequestDTO) throws UserAlreadyExistsException {
@@ -66,7 +67,8 @@ public class AuthServiceImpl implements AuthService {
             throw new UserNotFoundException("Invalid credentials");
         }
 
-        String token = jwtUtil.generateToken(user.getUsername());
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
+        String token = jwtUtil.generateToken(userDetails);
 
         jwtUtil.setAuthentication(user);
 

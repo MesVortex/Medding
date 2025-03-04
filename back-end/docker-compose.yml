@@ -9,6 +9,8 @@ services:
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=postgres
       - SPRING_MVC_CORS_ALLOWED-ORIGINS=http://localhost:4200,http://host.docker.internal:4200
+      - JWT_SECRET=NWYzYzQ3YjAzZDRmMmI0YjI1M2QwMjNiNWYzYzQ3YjAzZDRmMmI0YjI1M2QwMjNiNWYzYzQ3YjA=
+      - JWT_EXPIRATION=86400000
     depends_on:
       - postgres
     networks:

@@ -13,4 +13,6 @@ public class ServiceResponseDTO {
     private String description;
     private Double price;
     private Boolean availability;
+    private String category;
+    private Long vendorId;
 }

@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
@@ -15,4 +17,7 @@ import lombok.NoArgsConstructor;
 public class Vendor extends User {
     private String location;
     private String number;
+
+    @OneToMany(mappedBy = "vendor", cascade = CascadeType.ALL)
+    private List<Service> services;
 }
