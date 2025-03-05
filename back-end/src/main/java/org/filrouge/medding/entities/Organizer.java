@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
@@ -14,4 +16,7 @@ import lombok.NoArgsConstructor;
 @DiscriminatorValue("ORGANIZER")
 public class Organizer extends User {
     private String number;
+
+    @OneToMany(mappedBy = "organizer", cascade = CascadeType.ALL)
+    private List<Wedding> weddings;
 }

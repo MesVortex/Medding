@@ -13,5 +13,4 @@ public class WeddingRequestDTO {
     private Double budget;
     private Date date;
     private String location;
-    private Long organizerId;
 }
