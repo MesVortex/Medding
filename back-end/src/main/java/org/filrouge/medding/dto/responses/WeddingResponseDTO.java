@@ -11,6 +11,8 @@ import java.util.Date;
 @AllArgsConstructor
 public class WeddingResponseDTO {
     private Long id;
+    private String bride;
+    private String groom;
     private Double budget;
     private Date date;
     private String location;

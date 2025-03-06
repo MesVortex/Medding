@@ -10,6 +10,8 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WeddingRequestDTO {
+    private String bride;
+    private String groom;
     private Double budget;
     private Date date;
     private String location;

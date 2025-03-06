@@ -72,6 +72,8 @@ public class WeddingServiceImpl implements WeddingService {
             throw new UnauthorizedException("You can only update your own weddings");
         }
 
+        wedding.setBride(weddingRequestDTO.getBride());
+        wedding.setGroom(weddingRequestDTO.getGroom());
         wedding.setBudget(weddingRequestDTO.getBudget());
         wedding.setDate(weddingRequestDTO.getDate());
         wedding.setLocation(weddingRequestDTO.getLocation());

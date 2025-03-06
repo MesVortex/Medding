@@ -17,6 +17,8 @@ public class Wedding {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String bride;
+    private String groom;
     private Double budget;
     private Date date;
     private String location;

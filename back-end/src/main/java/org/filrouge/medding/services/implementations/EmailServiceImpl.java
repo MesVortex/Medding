@@ -10,6 +10,8 @@ import org.filrouge.medding.services.interfaces.EmailService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 
+import java.time.format.DateTimeFormatter;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -36,77 +38,44 @@ public class EmailServiceImpl implements EmailService {
     }
 
     private String createInvitationEmailTemplate(String invitationLink) {
-        return """
-            <html>
-                <body>
-                    <h2>Wedding Invitation</h2>
-                    <p>You are cordially invited to our wedding celebration!</p>
-                    <p>Please click the link below to respond to the invitation:</p>
-                    <a href="%s">Respond to Invitation</a>
-                </body>
-            </html>
-            """.formatted(invitationLink);
+//        return """
+//            <!DOCTYPE html>
+//            <html>
+//            <head>
+//                <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600&family=Great+Vibes&display=swap" rel="stylesheet">
+//                %s
+//            </head>
+//            <body>
+//                <div class="top"></div>
+//                <div class="form">
+//                    <div class="info">
+//                        <h1>RSVP</h1>
+//                        <h2>for the wedding of</h2>
+//                        <h1>%s & %s</h1>
+//                        <p class="line">________________________________________</p>
+//                        <h2>The Details</h2>
+//                        <p>%s</p>
+//                        <br>
+//                        <h2>Ceremony & Reception</h2>
+//                        <p>%s</p>
+//                        <p class="line">________________________________________</p>
+//                        <div class="button-container">
+//                            <a href="%s&response=CONFIRMED" class="button">Accept</a>
+//                            <a href="%s&response=DECLINED" class="button">Regret</a>
+//                        </div>
+//                    </div>
+//                </div>
+//            </body>
+//            </html>
+//            """.formatted(
+//                EMAIL_STYLES,
+//                wedding.getBride(),
+//                wedding.getGroom(),
+//                wedding.getDate().format(DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy")),
+//                wedding.getLocation(),
+//                invitationLink,
+//                invitationLink
+//        );
+        return null;
     }
-
-
-    private static final String EMAIL_STYLES = """
-            <style>
-                body {
-                    margin: 0;
-                    padding: 0;
-                    background-color: #BDC3C7;
-                    font-family: 'Raleway', sans-serif;
-                }
-                .top {
-                    background-color: #264356;
-                    height: 200px;
-                    margin: 0;
-                    padding: 0;
-                    box-shadow: 2px 2px 4px rgba(0, 0, 0, .25);
-                }
-                .form {
-                    height: 590px;
-                    width: 400px;
-                    background-color: #fff;
-                    margin: -110px auto;
-                    border-radius: 10px;
-                    color: #666;
-                    padding: 0;
-                    box-shadow: 2px 2px 4px rgba(0, 0, 0, .25);
-                }
-                .info { padding: 10px; }
-                h1, h2, p {
-                    text-align: center;
-                    padding: 0;
-                    margin: 5px 5px;
-                }
-                h2 {
-                    font-family: 'Great Vibes', cursive;
-                    font-weight: 100;
-                }
-                p.line {
-                    margin: 0 auto 20px auto;
-                    color: #999;
-                }
-                .button-container {
-                    margin-top: 20px;
-                    text-align: center;
-                }
-                .button {
-                    display: inline-block;
-                    color: #666;
-                    background-color: #ffbdc7;
-                    border: none;
-                    font-family: 'Raleway', sans-serif;
-                    font-size: 18px;
-                    font-weight: 600;
-                    padding: 15px 32px;
-                    text-decoration: none;
-                    margin: 0 10px;
-                }
-                .button:hover {
-                    background-color: #cc919a;
-                }
-            </style>
-            """;
 }
