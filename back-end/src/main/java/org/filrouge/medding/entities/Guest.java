@@ -20,6 +20,8 @@ public class Guest {
     @Enumerated(EnumType.STRING)
     private StatusRSVP rsvpStatus;
 
+    private String invitationToken;
+
     @ManyToOne
     private Wedding wedding;
 }

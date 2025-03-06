@@ -3,6 +3,7 @@ package org.filrouge.medding.controllers;
 import lombok.RequiredArgsConstructor;
 import org.filrouge.medding.dto.requests.GuestRequestDTO;
 import org.filrouge.medding.dto.responses.GuestResponseDTO;
+import org.filrouge.medding.entities.enums.StatusRSVP;
 import org.filrouge.medding.services.interfaces.GuestService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,5 +50,18 @@ public class GuestController {
     public ResponseEntity<Void> deleteGuest(@PathVariable Long id) {
         guestService.deleteGuest(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/rsvp/{token}")
+    public ResponseEntity<GuestResponseDTO> updateRsvpStatus(
+            @PathVariable String token,
+            @RequestParam StatusRSVP status) {
+        return ResponseEntity.ok(guestService.updateRsvpStatus(token, status));
+    }
+
+    @PostMapping("/{id}/send-invitation")
+    @PreAuthorize("hasAuthority('ROLE_ORGANIZER')")
+    public ResponseEntity<GuestResponseDTO> sendInvitation(@PathVariable Long id) {
+        return ResponseEntity.ok(guestService.sendInvitation(id));
     }
 }

@@ -22,6 +22,17 @@ spring:
         format_sql: true
     hikari:
       initialization-fail-timeout: 60000
+  mail:
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+          auth: true
+    host: smtp.gmail.com
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    port: 587
 
 jwt:
   secret: NWYzYzQ3YjAzZDRmMmI0YjI1M2QwMjNiNWYzYzQ3YjAzZDRmMmI0YjI1M2QwMjNiNWYzYzQ3YjA=
