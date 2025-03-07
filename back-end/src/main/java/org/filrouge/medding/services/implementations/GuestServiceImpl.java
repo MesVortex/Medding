@@ -115,7 +115,7 @@ public class GuestServiceImpl implements GuestService {
         guest.setRsvpStatus(StatusRSVP.PENDING);
 
         String invitationLink = createInvitationLink(token);
-        emailService.sendInvitationEmail(guest.getEmail(), invitationLink);
+        emailService.sendInvitationEmail(guest.getEmail(), invitationLink, guest.getWedding());
 
         Guest savedGuest = guestRepository.save(guest);
         return guestMapper.toDTO(savedGuest);
@@ -136,6 +136,6 @@ public class GuestServiceImpl implements GuestService {
     }
 
     private String createInvitationLink(String token) {
-        return "http://localhost:4200/rsvp/" + token;
+        return String.format("http://localhost:4200/api/guests/rsvp/%s", token);
     }
 }

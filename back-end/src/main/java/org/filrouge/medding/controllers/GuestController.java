@@ -52,16 +52,16 @@ public class GuestController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/rsvp/{token}")
-    public ResponseEntity<GuestResponseDTO> updateRsvpStatus(
-            @PathVariable String token,
-            @RequestParam StatusRSVP status) {
-        return ResponseEntity.ok(guestService.updateRsvpStatus(token, status));
-    }
-
     @PostMapping("/{id}/send-invitation")
     @PreAuthorize("hasAuthority('ROLE_ORGANIZER')")
     public ResponseEntity<GuestResponseDTO> sendInvitation(@PathVariable Long id) {
         return ResponseEntity.ok(guestService.sendInvitation(id));
+    }
+
+    @GetMapping("/rsvp/{token}")
+    public ResponseEntity<GuestResponseDTO> handleRsvp(
+            @PathVariable String token,
+            @RequestParam StatusRSVP response) {
+        return ResponseEntity.ok(guestService.updateRsvpStatus(token, response));
     }
 }
