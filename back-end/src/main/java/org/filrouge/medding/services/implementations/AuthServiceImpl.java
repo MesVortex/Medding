@@ -9,6 +9,7 @@ import org.filrouge.medding.dto.responses.UserResponseDTO;
 import org.filrouge.medding.entities.Organizer;
 import org.filrouge.medding.entities.User;
 import org.filrouge.medding.entities.Vendor;
+import org.filrouge.medding.entities.Admin;
 import org.filrouge.medding.exceptions.UserAlreadyExistsException;
 import org.filrouge.medding.exceptions.UserNotFoundException;
 import org.filrouge.medding.mappers.UserMapper;
@@ -37,12 +38,11 @@ public class AuthServiceImpl implements AuthService {
         }
 
         User user;
-        if (userRequestDTO instanceof OrganizerRequestDTO) {
-            user = UserMapper.INSTANCE.organizerRequestDTOToOrganizer((OrganizerRequestDTO) userRequestDTO);
-        } else if (userRequestDTO instanceof VendorRequestDTO) {
-            user = UserMapper.INSTANCE.vendorRequestDTOToVendor((VendorRequestDTO) userRequestDTO);
-        } else {
-            user = UserMapper.INSTANCE.userRequestDTOToUser(userRequestDTO);
+        switch (userRequestDTO.getRole()) {
+            case ADMIN -> user = userMapper.adminRequestDTOToAdmin(userRequestDTO);
+            case ORGANIZER -> user = userMapper.organizerRequestDTOToOrganizer((OrganizerRequestDTO) userRequestDTO);
+            case VENDOR -> user = userMapper.vendorRequestDTOToVendor((VendorRequestDTO) userRequestDTO);
+            default -> user = userMapper.userRequestDTOToUser(userRequestDTO);
         }
 
         user.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
@@ -53,6 +53,8 @@ public class AuthServiceImpl implements AuthService {
             return UserMapper.INSTANCE.organizerToOrganizerResponseDTO((Organizer) user);
         } else if (user instanceof Vendor) {
             return UserMapper.INSTANCE.vendorToVendorResponseDTO((Vendor) user);
+        }if (user instanceof Admin) {
+            return userMapper.adminToUserResponseDTO((Admin) user);
         } else {
             return UserMapper.INSTANCE.userToUserResponseDTO(user);
         }

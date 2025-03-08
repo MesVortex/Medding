@@ -6,10 +6,7 @@ import org.filrouge.medding.dto.requests.ProfileUpdateDTO;
 import org.filrouge.medding.dto.requests.UserRequestDTO;
 import org.filrouge.medding.dto.requests.VendorRequestDTO;
 import org.filrouge.medding.dto.responses.*;
-import org.filrouge.medding.entities.Organizer;
-import org.filrouge.medding.entities.Service;
-import org.filrouge.medding.entities.User;
-import org.filrouge.medding.entities.Vendor;
+import org.filrouge.medding.entities.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
@@ -28,6 +25,9 @@ public interface UserMapper {
 
     VendorProfileDTO vendorToVendorProfileDTO(Vendor vendor);
     ServiceDTO serviceToServiceDTO(Service service);
+
+    Admin adminRequestDTOToAdmin(UserRequestDTO userRequestDTO);
+    UserResponseDTO adminToUserResponseDTO(Admin admin);
 
     void updateUserFromDTO(ProfileUpdateDTO dto, @MappingTarget User user);
     void updateVendorFromDTO(ProfileUpdateDTO dto, @MappingTarget Vendor vendor);

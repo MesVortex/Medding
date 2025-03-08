@@ -1,10 +1,8 @@
 package org.filrouge.medding.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import java.time.LocalDateTime;
 
 import java.util.List;
 
@@ -17,6 +15,8 @@ import java.util.List;
 public class Vendor extends User {
     private String location;
     private String number;
+    private boolean verified;
+    private LocalDateTime verifiedAt;
 
     @OneToMany(mappedBy = "vendor", cascade = CascadeType.ALL)
     private List<Service> services;
