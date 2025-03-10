@@ -31,6 +31,10 @@ public class User implements UserDetails {
     private String email;
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", insertable = false, updatable = false)
+    private UserRole role;
+
     public String getRole() {
         return this.getClass().getAnnotation(DiscriminatorValue.class).value();
     }

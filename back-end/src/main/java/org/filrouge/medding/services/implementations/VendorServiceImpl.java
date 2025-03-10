@@ -23,27 +23,10 @@ public class VendorServiceImpl implements VendorService {
     private final SecurityUtils securityUtils;
 
     @Override
-    public VendorProfileDTO verifyVendor(Long id) {
-        Vendor vendor = vendorRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Vendor not found"));
-
-        vendor.setVerified(true);
-        vendor.setVerifiedAt(LocalDateTime.now());
-
-        Vendor savedVendor = vendorRepository.save(vendor);
-        return userMapper.vendorToVendorProfileDTO(savedVendor);
-    }
-
-    @Override
-    public VendorProfileDTO unverifyVendor(Long id) {
-        Vendor vendor = vendorRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Vendor not found"));
-
-        vendor.setVerified(false);
-        vendor.setVerifiedAt(null);
-
-        Vendor savedVendor = vendorRepository.save(vendor);
-        return userMapper.vendorToVendorProfileDTO(savedVendor);
+    public List<VendorProfileDTO> getAllVendors() {
+        return vendorRepository.findAll().stream()
+                .map(userMapper::vendorToVendorProfileDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -51,5 +34,31 @@ public class VendorServiceImpl implements VendorService {
         return vendorRepository.findByVerifiedFalse().stream()
                 .map(userMapper::vendorToVendorProfileDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public VendorProfileDTO verifyVendor(Long id) {
+        Vendor vendor = vendorRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Vendor not found"));
+        vendor.setVerified(true);
+        vendor.setVerifiedAt(LocalDateTime.now());
+        return userMapper.vendorToVendorProfileDTO(vendorRepository.save(vendor));
+    }
+
+    @Override
+    public VendorProfileDTO unverifyVendor(Long id) {
+        Vendor vendor = vendorRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Vendor not found"));
+        vendor.setVerified(false);
+        vendor.setVerifiedAt(null);
+        return userMapper.vendorToVendorProfileDTO(vendorRepository.save(vendor));
+    }
+
+    @Override
+    public void deleteVendor(Long id) {
+        if (!vendorRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Vendor not found");
+        }
+        vendorRepository.deleteById(id);
     }
 }
