@@ -1,5 +1,6 @@
 package org.filrouge.medding.controllers;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.filrouge.medding.dto.requests.ServiceRequestDTO;
 import org.filrouge.medding.dto.responses.ServiceResponseDTO;
@@ -20,7 +21,7 @@ public class ServiceController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('ROLE_VENDOR')")
-    public ResponseEntity<ServiceResponseDTO> createService(@RequestBody ServiceRequestDTO serviceRequestDTO) {
+    public ResponseEntity<ServiceResponseDTO> createService(@Valid @RequestBody ServiceRequestDTO serviceRequestDTO) {
         ServiceResponseDTO createdService = serviceService.createService(serviceRequestDTO);
         return new ResponseEntity<>(createdService, HttpStatus.CREATED);
     }
@@ -41,7 +42,7 @@ public class ServiceController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ServiceResponseDTO> updateService(@PathVariable Long id, @RequestBody ServiceRequestDTO serviceRequestDTO) {
+    public ResponseEntity<ServiceResponseDTO> updateService(@PathVariable Long id, @Valid @RequestBody ServiceRequestDTO serviceRequestDTO) {
         return ResponseEntity.ok(serviceService.updateService(id, serviceRequestDTO));
     }
 

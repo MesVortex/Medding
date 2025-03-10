@@ -1,5 +1,6 @@
 package org.filrouge.medding.controllers;
 
+import jakarta.validation.Valid;
 import org.filrouge.medding.dto.requests.LoginRequestDTO;
 import org.filrouge.medding.dto.requests.OrganizerRequestDTO;
 import org.filrouge.medding.dto.requests.UserRequestDTO;
@@ -25,7 +26,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody Map<String, Object> requestMap) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody Map<String, Object> requestMap) {
         try {
             UserRequestDTO specificDTO;
             UserRole role = UserRole.valueOf((String) requestMap.get("role"));
@@ -69,7 +70,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginRequest) {
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequestDTO loginRequest) {
         try {
             LoginResponseDTO response = authService.loginUser(loginRequest.getEmail(), loginRequest.getPassword());
             return ResponseEntity.ok(response);

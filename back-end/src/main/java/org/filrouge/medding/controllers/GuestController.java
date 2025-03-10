@@ -1,5 +1,6 @@
 package org.filrouge.medding.controllers;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.filrouge.medding.dto.requests.GuestRequestDTO;
 import org.filrouge.medding.dto.responses.GuestResponseDTO;
@@ -21,7 +22,7 @@ public class GuestController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('ROLE_ORGANIZER')")
-    public ResponseEntity<GuestResponseDTO> createGuest(@RequestBody GuestRequestDTO guestRequestDTO) {
+    public ResponseEntity<GuestResponseDTO> createGuest(@Valid @RequestBody GuestRequestDTO guestRequestDTO) {
         return new ResponseEntity<>(guestService.createGuest(guestRequestDTO), HttpStatus.CREATED);
     }
 
@@ -41,7 +42,7 @@ public class GuestController {
     @PreAuthorize("hasAuthority('ROLE_ORGANIZER')")
     public ResponseEntity<GuestResponseDTO> updateGuest(
             @PathVariable Long id,
-            @RequestBody GuestRequestDTO guestRequestDTO) {
+            @Valid @RequestBody GuestRequestDTO guestRequestDTO) {
         return ResponseEntity.ok(guestService.updateGuest(id, guestRequestDTO));
     }
 

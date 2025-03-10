@@ -1,5 +1,6 @@
 package org.filrouge.medding.controllers;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.filrouge.medding.dto.requests.WeddingRequestDTO;
 import org.filrouge.medding.dto.responses.WeddingResponseDTO;
@@ -21,7 +22,7 @@ public class WeddingController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('ROLE_ORGANIZER')")
-    public ResponseEntity<WeddingResponseDTO> createWedding(@RequestBody WeddingRequestDTO weddingRequestDTO) {
+    public ResponseEntity<WeddingResponseDTO> createWedding(@Valid @RequestBody WeddingRequestDTO weddingRequestDTO) {
         return new ResponseEntity<>(weddingService.createWedding(weddingRequestDTO), HttpStatus.CREATED);
     }
 
@@ -44,7 +45,7 @@ public class WeddingController {
     @PreAuthorize("hasAuthority('ROLE_ORGANIZER')")
     public ResponseEntity<WeddingResponseDTO> updateWedding(
             @PathVariable Long id,
-            @RequestBody WeddingRequestDTO weddingRequestDTO) {
+            @Valid @RequestBody WeddingRequestDTO weddingRequestDTO) {
         return ResponseEntity.ok(weddingService.updateWedding(id, weddingRequestDTO));
     }
 
