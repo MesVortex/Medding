@@ -3,6 +3,8 @@ export interface User {
   username: string;
   email: string;
   role: string;
+  phoneNumber: string;
+  location?: string;
 }
 
 export interface RegisterRequest {

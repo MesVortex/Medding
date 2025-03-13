@@ -47,11 +47,40 @@ export class AuthEffects {
     )
   );
 
+  initializeAuth$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.loadUser),
+      mergeMap(() => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          return of(AuthActions.loadUserFailure({ error: 'No token found' }));
+        }
+        return this.authService.getCurrentUser().pipe(
+          map(user => AuthActions.loadUserSuccess({ user })),
+          catchError(error => of(AuthActions.loadUserFailure({ error: error.message })))
+        );
+      })
+    )
+  );
+
   authSuccess$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(AuthActions.loginSuccess, AuthActions.registerSuccess),
+        ofType(AuthActions.loginSuccess, AuthActions.registerSuccess, AuthActions.loadUserSuccess),
         tap(() => this.router.navigate(['/dashboard']))
+      ),
+    { dispatch: false }
+  );
+
+  // Add unauthorized error handling
+  unauthorizedError$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AuthActions.loadUserFailure),
+        tap(() => {
+          localStorage.removeItem('token');
+          this.router.navigate(['/login']);
+        })
       ),
     { dispatch: false }
   );
