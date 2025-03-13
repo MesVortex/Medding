@@ -20,7 +20,7 @@ export class AuthGuard implements CanActivate {
     return this.store.select((state) => state.auth).pipe(
       take(1),
       map((authState) => {
-        console.log('Auth State in Guard:', authState);
+        // console.log('Auth State in Guard:', authState);
 
         // Handle authenticated users
         if (authState.isAuthenticated) {

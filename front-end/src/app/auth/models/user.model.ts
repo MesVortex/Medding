@@ -3,7 +3,7 @@ export interface User {
   username: string;
   email: string;
   role: string;
-  phoneNumber: string;
+  number: string;
   location?: string;
 }
 
@@ -12,6 +12,6 @@ export interface RegisterRequest {
   email: string;
   password: string;
   role: 'ORGANIZER' | 'VENDOR';
-  phoneNumber: string;
+  number: string;
   location?: string;
 }

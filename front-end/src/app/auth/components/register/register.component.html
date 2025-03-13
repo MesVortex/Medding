@@ -58,8 +58,8 @@
 
         <!-- Phone number field -->
         <div>
-          <label for="phoneNumber" class="sr-only">Phone Number</label>
-          <input formControlName="phoneNumber" id="phoneNumber" type="tel" required
+          <label for="number" class="sr-only">Phone Number</label>
+          <input formControlName="number" id="number" type="tel" required
                  class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                  placeholder="Phone Number">
         </div>
@@ -77,7 +77,7 @@
 
       <!-- Form validation messages -->
       <div class="text-sm text-red-600">
-        @if (registerForm.get('phoneNumber')?.errors?.['pattern'] && registerForm.get('phoneNumber')?.touched) {
+        @if (registerForm.get('number')?.errors?.['pattern'] && registerForm.get('number')?.touched) {
           <p>Please enter a valid 10-digit phone number</p>
         }
       </div>

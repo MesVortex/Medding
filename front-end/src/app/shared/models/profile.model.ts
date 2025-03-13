@@ -3,6 +3,9 @@ export interface Profile {
   username: string;
   email: string;
   role: string;
-  phoneNumber: string;
+  number: string;
   location?: string;
+  currentPassword?: string;
+  newPassword?: string;
+  confirmPassword?: string;
 }

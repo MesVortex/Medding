@@ -31,14 +31,12 @@ export const routes: Routes = [
   {
     path: 'profile',
     loadComponent: () => import('./shared/components/profile/profile.component').then(m => m.ProfileComponent),
-    canActivate: [AuthGuard],
-    data: { requiredRole: 'ADMIN' || 'VENDOR' || 'ORGANIZER' }
+    canActivate: [AuthGuard]
   },
   {
-    path: 'test',
-    loadComponent: () => import('./shared/components/test/test.component').then(m => m.TestComponent),
-    canActivate: [AuthGuard],
-    data: { requiredRole: 'ADMIN' || 'VENDOR' || 'ORGANIZER' }
+    path: 'profile/edit',
+    loadComponent: () => import('./shared/components/edit-profile/edit-profile.component').then(m => m.EditProfileComponent),
+    canActivate: [AuthGuard]
   },
   // {
   //   path: 'unauthorized',

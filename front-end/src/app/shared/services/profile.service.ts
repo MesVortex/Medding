@@ -19,4 +19,23 @@ export class ProfileService {
   getVendorProfile(id: number): Observable<Profile> {
     return this.http.get<Profile>(`${this.apiUrl}/vendors/${id}`);
   }
+
+  updateProfile(id: number, profileData: any): Observable<Profile> {
+    const endpoint = profileData.role === 'VENDOR' ?
+      `${this.apiUrl}/vendors/${id}` :
+      `${this.apiUrl}/users/${id}`;
+
+    // If password fields are present, send to password update endpoint
+    if (profileData.currentPassword) {
+      const passwordData = {
+        currentPassword: profileData.currentPassword,
+        newPassword: profileData.newPassword
+      };
+      return this.http.put<Profile>(`${endpoint}/password`, passwordData);
+    }
+
+    // Remove password fields if present
+    const { currentPassword, newPassword, confirmPassword, ...data } = profileData;
+    return this.http.put<Profile>(endpoint, data);
+  }
 }
