@@ -5,6 +5,7 @@ import org.filrouge.medding.dto.requests.LoginRequestDTO;
 import org.filrouge.medding.dto.requests.OrganizerRequestDTO;
 import org.filrouge.medding.dto.requests.UserRequestDTO;
 import org.filrouge.medding.dto.requests.VendorRequestDTO;
+import org.filrouge.medding.dto.responses.ErrorResponse;
 import org.filrouge.medding.dto.responses.LoginResponseDTO;
 import org.filrouge.medding.entities.enums.UserRole;
 import org.filrouge.medding.exceptions.UserAlreadyExistsException;
@@ -75,10 +76,14 @@ public class AuthController {
             LoginResponseDTO response = authService.loginUser(loginRequest.getEmail(), loginRequest.getPassword());
             return ResponseEntity.ok(response);
         } catch (UserNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+            // Return a more structured error response
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(new ErrorResponse("Authentication failed", e.getMessage()));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("An unexpected error occurred: " + e.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ErrorResponse("Server error", "An unexpected error occurred"));
         }
     }
 }

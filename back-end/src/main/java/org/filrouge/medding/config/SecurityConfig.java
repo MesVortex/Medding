@@ -41,12 +41,37 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
+                        // Auth endpoints - public access
                         .requestMatchers("/api/auth/**").permitAll()
+
+                        // Admin endpoints
                         .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
+
+                        // Service endpoints
                         .requestMatchers(HttpMethod.POST, "/api/services/**").hasAuthority("ROLE_VENDOR")
                         .requestMatchers(HttpMethod.PUT, "/api/services/**").hasAuthority("ROLE_VENDOR")
                         .requestMatchers(HttpMethod.DELETE, "/api/services/**").hasAuthority("ROLE_VENDOR")
                         .requestMatchers(HttpMethod.GET, "/api/services/**").permitAll()
+
+                        // Wedding endpoints
+                        .requestMatchers(HttpMethod.POST, "/api/weddings/**").hasAuthority("ROLE_ORGANIZER")
+                        .requestMatchers(HttpMethod.PUT, "/api/weddings/**").hasAuthority("ROLE_ORGANIZER")
+                        .requestMatchers(HttpMethod.DELETE, "/api/weddings/**").hasAuthority("ROLE_ORGANIZER")
+                        .requestMatchers(HttpMethod.GET, "/api/weddings/**").authenticated()
+
+                        // Guest endpoints
+                        .requestMatchers(HttpMethod.POST, "/api/guests/**").hasAuthority("ROLE_ORGANIZER")
+                        .requestMatchers(HttpMethod.PUT, "/api/guests/**").hasAuthority("ROLE_ORGANIZER")
+                        .requestMatchers(HttpMethod.DELETE, "/api/guests/**").hasAuthority("ROLE_ORGANIZER")
+                        .requestMatchers("/api/guests/rsvp/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/guests/**").hasAuthority("ROLE_ORGANIZER")
+
+                        // Profile endpoints
+                        .requestMatchers("/api/profiles/vendors/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/profiles/**").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/api/profiles/**").authenticated()
+
+                        // Any other endpoint requires authentication
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
