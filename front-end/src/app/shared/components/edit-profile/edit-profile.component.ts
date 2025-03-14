@@ -19,6 +19,7 @@ export class EditProfileComponent implements OnInit {
   currentUser: any;
   isVendor: boolean = false;
   showPasswordFields: boolean = false;
+  errorMessage: string = '';
 
   private initializeForm() {
     const baseFields = {

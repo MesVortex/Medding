@@ -12,18 +12,29 @@
                 <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
                 <input type="text" id="username" formControlName="username"
                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                <div *ngIf="profileForm.get('username')?.touched && profileForm.get('username')?.errors" class="text-red-600 text-sm mt-1">
+                  <span *ngIf="profileForm.get('username')?.errors?.['required']">Username is required</span>
+                  <span *ngIf="profileForm.get('username')?.errors?.['minlength']">Username must be at least 3 characters</span>
+                </div>
               </div>
 
               <div>
                 <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
                 <input type="email" id="email" formControlName="email"
                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                <div *ngIf="profileForm.get('email')?.touched && profileForm.get('email')?.errors" class="text-red-600 text-sm mt-1">
+                  <span *ngIf="profileForm.get('email')?.errors?.['required']">Email is required</span>
+                  <span *ngIf="profileForm.get('email')?.errors?.['email']">Please enter a valid email address</span>
+                </div>
               </div>
 
               <div>
                 <label for="number" class="block text-sm font-medium text-gray-700">Phone Number</label>
                 <input type="tel" id="number" formControlName="number"
                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                <div *ngIf="profileForm.get('number')?.touched && profileForm.get('number')?.errors" class="text-red-600 text-sm mt-1">
+                  <span *ngIf="profileForm.get('number')?.errors?.['pattern']">Please enter a valid phone number</span>
+                </div>
               </div>
 
               <!-- Vendor-specific Fields -->
@@ -32,6 +43,9 @@
                   <label for="location" class="block text-sm font-medium text-gray-700">Location</label>
                   <input type="text" id="location" formControlName="location"
                          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                  <div *ngIf="profileForm.get('location')?.touched && profileForm.get('location')?.errors" class="text-red-600 text-sm mt-1">
+                    <span *ngIf="profileForm.get('location')?.errors?.['required']">Location is required</span>
+                  </div>
                 </div>
               </ng-container>
 
@@ -53,21 +67,27 @@
                     <label for="newPassword" class="block text-sm font-medium text-gray-700">New Password</label>
                     <input type="password" id="newPassword" formControlName="newPassword"
                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                    <div *ngIf="profileForm.get('newPassword')?.touched && profileForm.get('newPassword')?.errors" class="text-red-600 text-sm mt-1">
+                      <span *ngIf="profileForm.get('newPassword')?.errors?.['minlength']">Password must be at least 6 characters</span>
+                    </div>
                   </div>
 
                   <div>
                     <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirm New Password</label>
                     <input type="password" id="confirmPassword" formControlName="confirmPassword"
                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                  </div>
-
-                  <div *ngIf="!passwordsMatch() && profileForm.get('confirmPassword')?.value"
-                       class="text-red-600 text-sm">
-                    Passwords do not match
+                    <div *ngIf="!passwordsMatch() && profileForm.get('confirmPassword')?.touched"
+                         class="text-red-600 text-sm mt-1">
+                      Passwords do not match
+                    </div>
                   </div>
                 </div>
               </div>
 
+              <!-- API Error Message -->
+              <div *ngIf="errorMessage" class="text-red-600 text-sm mt-4">
+                {{ errorMessage }}
+              </div>
               <!-- Form Actions -->
               <div class="pt-5">
                 <div class="flex justify-end">

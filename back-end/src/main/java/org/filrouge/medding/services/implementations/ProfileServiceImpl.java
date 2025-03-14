@@ -7,13 +7,12 @@ import org.filrouge.medding.dto.responses.VendorProfileDTO;
 import org.filrouge.medding.dto.responses.UserResponseDTO;
 import org.filrouge.medding.entities.User;
 import org.filrouge.medding.entities.Vendor;
-import org.filrouge.medding.exceptions.ResourceNotFoundException;
-import org.filrouge.medding.exceptions.UnauthorizedException;
-import org.filrouge.medding.exceptions.UserAlreadyExistsException;
+import org.filrouge.medding.exceptions.*;
 import org.filrouge.medding.mappers.UserMapper;
 import org.filrouge.medding.repositories.UserRepository;
 import org.filrouge.medding.services.interfaces.ProfileService;
 import org.filrouge.medding.utils.SecurityUtils;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,6 +20,7 @@ import org.springframework.stereotype.Service;
 public class ProfileServiceImpl implements ProfileService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
     private final SecurityUtils securityUtils;
 
@@ -88,5 +88,18 @@ public class ProfileServiceImpl implements ProfileService {
         userMapper.updateVendorFromDTO(profileUpdateDTO, vendor);
         Vendor updatedVendor = userRepository.save(vendor);
         return userMapper.vendorToVendorProfileDTO(updatedVendor);
+    }
+
+    @Override
+    public void updatePassword(Long userId, String currentPassword, String newPassword) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+            throw new InvalidPasswordException("Current password is incorrect");
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
     }
 }

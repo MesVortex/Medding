@@ -10,4 +10,5 @@ public interface ProfileService {
     UserResponseDTO getUserProfile(Long id);
     UserResponseDTO updateUserProfile(Long id, ProfileUpdateDTO profileUpdateDTO) throws UserAlreadyExistsException;
     VendorProfileDTO updateVendorProfile(Long id, ProfileUpdateDTO profileUpdateDTO) throws UserAlreadyExistsException;
+    void updatePassword(Long userId, String currentPassword, String newPassword);
 }

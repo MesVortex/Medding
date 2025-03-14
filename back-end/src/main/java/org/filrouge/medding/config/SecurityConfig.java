@@ -70,6 +70,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/profiles/vendors/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/profiles/**").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/api/profiles/**").authenticated()
+                        .requestMatchers("/api/profiles/{id}/password").authenticated()
 
                         // Any other endpoint requires authentication
                         .anyRequest().authenticated()

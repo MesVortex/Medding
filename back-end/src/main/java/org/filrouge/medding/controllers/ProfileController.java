@@ -2,6 +2,7 @@ package org.filrouge.medding.controllers;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.filrouge.medding.dto.requests.PasswordUpdateDTO;
 import org.filrouge.medding.dto.requests.ProfileUpdateDTO;
 import org.filrouge.medding.dto.responses.ErrorResponse;
 import org.filrouge.medding.dto.responses.VendorProfileDTO;
@@ -76,5 +77,18 @@ public class ProfileController {
             @PathVariable Long id,
             @Valid @RequestBody ProfileUpdateDTO profileUpdateDTO) throws UserAlreadyExistsException {
         return ResponseEntity.ok(profileService.updateVendorProfile(id, profileUpdateDTO));
+    }
+
+    @PutMapping("/{id}/password")
+    public ResponseEntity<?> updatePassword(
+            @PathVariable Long id,
+            @Valid @RequestBody PasswordUpdateDTO passwordUpdateDTO
+    ) {
+        try {
+            profileService.updatePassword(id, passwordUpdateDTO.getCurrentPassword(), passwordUpdateDTO.getNewPassword());
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }

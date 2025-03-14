@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {catchError, Observable} from 'rxjs';
 import { Profile } from '../models/profile.model';
 import { environment } from '../../../environments/environment';
 
@@ -31,7 +31,16 @@ export class ProfileService {
         currentPassword: profileData.currentPassword,
         newPassword: profileData.newPassword
       };
-      return this.http.put<Profile>(`${endpoint}/password`, passwordData);
+      return this.http.put<Profile>(`${this.apiUrl}/${id}/password`, passwordData)
+        .pipe(
+          catchError((error) => {
+            // Ensure we properly handle and propagate the error message
+            if (error.error?.message) {
+              throw error.error;
+            }
+            throw error;
+          })
+        );
     }
 
     // Remove password fields if present
