@@ -1,0 +1,97 @@
+<div class="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
+  <div class="relative py-3 sm:max-w-xl sm:mx-auto">
+    <div class="relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20">
+      <div class="max-w-md mx-auto">
+        <div class="divide-y divide-gray-200">
+          <div class="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+            <h2 class="text-2xl font-bold text-gray-900 mb-8">Create New Wedding</h2>
+
+            <form [formGroup]="weddingForm" (ngSubmit)="onSubmit()" class="space-y-6">
+              <!-- Bride -->
+              <div>
+                <label for="bride" class="block text-sm font-medium text-gray-700">Bride's Name</label>
+                <input type="text" id="bride" formControlName="bride"
+                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                @if (weddingForm.get('bride')?.touched && weddingForm.get('bride')?.errors) {
+                  <p class="mt-2 text-sm text-red-600">Bride's name is required and must be at least 2 characters</p>
+                }
+              </div>
+
+              <!-- Groom -->
+              <div>
+                <label for="groom" class="block text-sm font-medium text-gray-700">Groom's Name</label>
+                <input type="text" id="groom" formControlName="groom"
+                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                @if (weddingForm.get('groom')?.touched && weddingForm.get('groom')?.errors) {
+                  <p class="mt-2 text-sm text-red-600">Groom's name is required and must be at least 2 characters</p>
+                }
+              </div>
+
+              <!-- Budget -->
+              <div>
+                <label for="budget" class="block text-sm font-medium text-gray-700">Budget</label>
+                <input type="number" id="budget" formControlName="budget"
+                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                @if (weddingForm.get('budget')?.touched && weddingForm.get('budget')?.errors) {
+                  <p class="mt-2 text-sm text-red-600">Budget is required and must be positive</p>
+                }
+              </div>
+
+              <!-- Date -->
+              <div>
+                <label for="date" class="block text-sm font-medium text-gray-700">Wedding Date</label>
+                <input type="date" id="date" formControlName="date"
+                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                @if (weddingForm.get('date')?.touched && weddingForm.get('date')?.errors) {
+                  <p class="mt-2 text-sm text-red-600">Wedding date is required</p>
+                }
+              </div>
+
+              <!-- Location -->
+              <div>
+                <label for="location" class="block text-sm font-medium text-gray-700">Location</label>
+                <input type="text" id="location" formControlName="location"
+                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                @if (weddingForm.get('location')?.touched && weddingForm.get('location')?.errors) {
+                  <p class="mt-2 text-sm text-red-600">Location is required and must be at least 2 characters</p>
+                }
+              </div>
+
+              <!-- Error Message -->
+              @if (errorMessage) {
+                <div class="rounded-md bg-red-50 p-4">
+                  <div class="text-sm text-red-700">{{ errorMessage }}</div>
+                </div>
+              }
+
+              <!-- Submit Button -->
+              <div class="pt-5">
+                <div class="flex justify-end">
+                  <button type="button" routerLink="/weddings"
+                          class="mr-3 px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                    Cancel
+                  </button>
+                  <button type="submit"
+                          [disabled]="!weddingForm.valid || loading"
+                          class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50">
+                    @if (loading) {
+                      <span class="inline-flex items-center">
+                        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Creating...
+                      </span>
+                    } @else {
+                      Create Wedding
+                    }
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

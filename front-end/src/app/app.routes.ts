@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from './auth/guards/auth.guard';
+import {CreateWeddingComponent} from "./wedding/components/create-wedding/create-wedding.component";
 
 export const routes: Routes = [
   {
@@ -16,18 +17,6 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
     data: { requiredRole: 'ADMIN' }
   },
-  // {
-  //   path: 'vendor/dashboard',
-  //   loadComponent: () => import('./vendor/dashboard/dashboard.component').then(m => m.VendorDashboardComponent),
-  //   canActivate: [AuthGuard],
-  //   data: { requiredRole: 'VENDOR' }
-  // },
-  // {
-  //   path: 'admin/dashboard',
-  //   loadComponent: () => import('./admin/dashboard/dashboard.component').then(m => m.AdminDashboardComponent),
-  //   canActivate: [AuthGuard],
-  //   data: { requiredRole: 'ADMIN' }
-  // },
   {
     path: 'profile',
     loadComponent: () => import('./shared/components/profile/profile.component').then(m => m.ProfileComponent),
@@ -37,6 +26,12 @@ export const routes: Routes = [
     path: 'profile/edit',
     loadComponent: () => import('./shared/components/edit-profile/edit-profile.component').then(m => m.EditProfileComponent),
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'weddings/create',
+    loadComponent: () => import('./wedding/components/create-wedding/create-wedding.component').then(m => m.CreateWeddingComponent),
+    canActivate: [AuthGuard],
+    data: { roles: ['ORGANIZER'] }
   },
   // {
   //   path: 'unauthorized',
