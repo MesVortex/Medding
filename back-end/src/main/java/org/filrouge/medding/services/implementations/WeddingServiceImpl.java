@@ -56,18 +56,33 @@ public class WeddingServiceImpl implements WeddingService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public WeddingResponseDTO getWeddingById(Long id) {
-        Wedding wedding = weddingRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Wedding not found with id: " + id));
-        return weddingMapper.toDTO(wedding);
-    }
+//    @Override
+//    public WeddingResponseDTO getWeddingById(Long id) {
+//        Wedding wedding = weddingRepository.findById(id)
+//                .orElseThrow(() -> new ResourceNotFoundException("Wedding not found with id: " + id));
+//        return weddingMapper.toDTO(wedding);
+//    }
 
     @Override
     public List<WeddingResponseDTO> getWeddingsByOrganizerId(Long organizerId) {
         return weddingRepository.findByOrganizerId(organizerId).stream()
                 .map(weddingMapper::toDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public WeddingResponseDTO getWeddingWithServices(Long id) {
+        Long currentUserId = securityUtils.getCurrentUserId();
+
+        Wedding wedding = weddingRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Wedding not found with id: " + id));
+
+        // Check if the current user is the organizer of the wedding
+        if (!wedding.getOrganizer().getId().equals(currentUserId)) {
+            throw new UnauthorizedException("You can only view details of your own weddings");
+        }
+
+        return weddingMapper.toDTO(wedding);
     }
 
     @Override

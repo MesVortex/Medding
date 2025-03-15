@@ -32,15 +32,21 @@ public class WeddingController {
         return ResponseEntity.ok(weddingService.getAuthenticatedOrganizerWeddings());
     }
 
+    @GetMapping("/{id}/details")
+    @PreAuthorize("hasAuthority('ROLE_ORGANIZER')")
+    public ResponseEntity<WeddingResponseDTO> getWeddingWithServices(@PathVariable Long id) {
+        return ResponseEntity.ok(weddingService.getWeddingWithServices(id));
+    }
+
     @GetMapping
     public ResponseEntity<List<WeddingResponseDTO>> getAllWeddings() {
         return ResponseEntity.ok(weddingService.getAllWeddings());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<WeddingResponseDTO> getWeddingById(@PathVariable Long id) {
-        return ResponseEntity.ok(weddingService.getWeddingById(id));
-    }
+//    @GetMapping("/{id}")
+//    public ResponseEntity<WeddingResponseDTO> getWeddingById(@PathVariable Long id) {
+//        return ResponseEntity.ok(weddingService.getWeddingById(id));
+//    }
 
     @GetMapping("/organizer/{organizerId}")
     public ResponseEntity<List<WeddingResponseDTO>> getWeddingsByOrganizerId(@PathVariable Long organizerId) {

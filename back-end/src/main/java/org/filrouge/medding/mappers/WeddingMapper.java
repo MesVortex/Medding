@@ -9,6 +9,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface WeddingMapper {
     @Mapping(target = "organizerName", expression = "java(wedding.getOrganizer() != null ? wedding.getOrganizer().getUsername() : null)")
+    @Mapping(target = "services", source = "services")
     WeddingResponseDTO toDTO(Wedding wedding);
 
     Wedding toEntity(WeddingRequestDTO weddingRequestDTO);

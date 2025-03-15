@@ -16,11 +16,11 @@ export class WeddingService {
     return this.http.post<WeddingResponse>(this.apiUrl, wedding);
   }
 
-  getWeddings(): Observable<WeddingResponse[]> {
-    return this.http.get<WeddingResponse[]>(this.apiUrl);
-  }
-
   getOrganizerWeddings(): Observable<WeddingResponse[]> {
     return this.http.get<WeddingResponse[]>(`${this.apiUrl}/organizer`);
+  }
+
+  getWeddingWithServices(id: number): Observable<WeddingResponse> {
+    return this.http.get<WeddingResponse>(`${this.apiUrl}/${id}/details`);
   }
 }

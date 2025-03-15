@@ -10,4 +10,5 @@ public class ServiceDTO {
     private String description;
     private Double price;
     private WeddingServiceCategory category;
+    private String vendorName;
 }

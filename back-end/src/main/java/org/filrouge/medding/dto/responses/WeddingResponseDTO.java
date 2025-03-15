@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -17,4 +18,5 @@ public class WeddingResponseDTO {
     private Date date;
     private String location;
     private String organizerName;
+    private List<ServiceDTO> services;
 }

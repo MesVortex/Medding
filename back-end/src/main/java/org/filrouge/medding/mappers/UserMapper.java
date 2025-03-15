@@ -8,6 +8,7 @@ import org.filrouge.medding.dto.requests.VendorRequestDTO;
 import org.filrouge.medding.dto.responses.*;
 import org.filrouge.medding.entities.*;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
@@ -24,6 +25,7 @@ public interface UserMapper {
     Vendor vendorRequestDTOToVendor(VendorRequestDTO vendorRequestDTO);
 
     VendorProfileDTO vendorToVendorProfileDTO(Vendor vendor);
+    @Mapping(target = "vendorName", expression = "java(service.getVendor() != null ? service.getVendor().getUsername() : null)")
     ServiceDTO serviceToServiceDTO(Service service);
 
     Admin adminRequestDTOToAdmin(UserRequestDTO userRequestDTO);
