@@ -19,4 +19,8 @@ export class WeddingService {
   getWeddings(): Observable<WeddingResponse[]> {
     return this.http.get<WeddingResponse[]>(this.apiUrl);
   }
+
+  getOrganizerWeddings(): Observable<WeddingResponse[]> {
+    return this.http.get<WeddingResponse[]>(`${this.apiUrl}/organizer`);
+  }
 }

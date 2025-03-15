@@ -11,4 +11,5 @@ public interface WeddingService {
     List<WeddingResponseDTO> getWeddingsByOrganizerId(Long organizerId);
     WeddingResponseDTO updateWedding(Long id, WeddingRequestDTO weddingRequestDTO);
     void deleteWedding(Long id);
+    List<WeddingResponseDTO> getAuthenticatedOrganizerWeddings();
 }

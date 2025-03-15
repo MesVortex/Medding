@@ -26,6 +26,12 @@ public class WeddingController {
         return new ResponseEntity<>(weddingService.createWedding(weddingRequestDTO), HttpStatus.CREATED);
     }
 
+    @GetMapping("/organizer")
+    @PreAuthorize("hasAuthority('ROLE_ORGANIZER')")
+    public ResponseEntity<List<WeddingResponseDTO>> getAuthenticatedOrganizerWeddings() {
+        return ResponseEntity.ok(weddingService.getAuthenticatedOrganizerWeddings());
+    }
+
     @GetMapping
     public ResponseEntity<List<WeddingResponseDTO>> getAllWeddings() {
         return ResponseEntity.ok(weddingService.getAllWeddings());

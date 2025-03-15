@@ -48,6 +48,15 @@ public class WeddingServiceImpl implements WeddingService {
     }
 
     @Override
+    public List<WeddingResponseDTO> getAuthenticatedOrganizerWeddings() {
+        Long currentUserId = securityUtils.getCurrentUserId();
+
+        return weddingRepository.findByOrganizerId(currentUserId).stream()
+                .map(weddingMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public WeddingResponseDTO getWeddingById(Long id) {
         Wedding wedding = weddingRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Wedding not found with id: " + id));

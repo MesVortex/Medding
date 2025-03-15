@@ -33,6 +33,12 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
     data: { roles: ['ORGANIZER'] }
   },
+  {
+    path: 'weddings',
+    loadComponent: () => import('./wedding/components/wedding-list/wedding-list.component').then(m => m.WeddingListComponent),
+    canActivate: [AuthGuard],
+    data: { roles: ['ORGANIZER'] }
+  },
   // {
   //   path: 'unauthorized',
   //   loadComponent: () => import('./shared/components/unauthorized/unauthorized.component').then(m => m.UnauthorizedComponent)
