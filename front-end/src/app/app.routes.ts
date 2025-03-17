@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { AuthGuard } from './auth/guards/auth.guard';
 import {CreateWeddingComponent} from "./wedding/components/create-wedding/create-wedding.component";
 import {WeddingDetailsComponent} from "./wedding/components/wedding-details/wedding-details.component";
+import {UpdateWeddingComponent} from "./wedding/components/update-wedding/update-wedding.component";
 
 export const routes: Routes = [
   {
@@ -43,6 +44,12 @@ export const routes: Routes = [
   {
     path: 'weddings/:id',
     component: WeddingDetailsComponent,
+    canActivate: [AuthGuard],
+    data: { roles: ['ORGANIZER'] }
+  },
+  {
+    path: 'weddings/:id/edit',
+    component: UpdateWeddingComponent,
     canActivate: [AuthGuard],
     data: { roles: ['ORGANIZER'] }
   },

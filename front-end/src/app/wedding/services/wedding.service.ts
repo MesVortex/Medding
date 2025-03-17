@@ -23,4 +23,8 @@ export class WeddingService {
   getWeddingWithServices(id: number): Observable<WeddingResponse> {
     return this.http.get<WeddingResponse>(`${this.apiUrl}/${id}/details`);
   }
+
+  updateWedding(id: number, wedding: WeddingRequest): Observable<WeddingResponse> {
+    return this.http.put<WeddingResponse>(`${this.apiUrl}/${id}`, wedding);
+  }
 }
