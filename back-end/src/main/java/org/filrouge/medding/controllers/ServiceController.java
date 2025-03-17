@@ -41,6 +41,12 @@ public class ServiceController {
         return ResponseEntity.ok(serviceService.getServicesByVendorId(vendorId));
     }
 
+    @GetMapping("/vendor/me")
+    @PreAuthorize("hasAuthority('ROLE_VENDOR')")
+    public ResponseEntity<List<ServiceResponseDTO>> getCurrentVendorServices() {
+        return ResponseEntity.ok(serviceService.getCurrentVendorServices());
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<ServiceResponseDTO> updateService(@PathVariable Long id, @Valid @RequestBody ServiceRequestDTO serviceRequestDTO) {
         return ResponseEntity.ok(serviceService.updateService(id, serviceRequestDTO));

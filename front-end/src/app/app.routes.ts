@@ -33,25 +33,31 @@ export const routes: Routes = [
     path: 'weddings/create',
     loadComponent: () => import('./wedding/components/create-wedding/create-wedding.component').then(m => m.CreateWeddingComponent),
     canActivate: [AuthGuard],
-    data: { roles: ['ORGANIZER'] }
+    data: { requiredRole: 'ORGANIZER' }
   },
   {
     path: 'weddings',
     loadComponent: () => import('./wedding/components/wedding-list/wedding-list.component').then(m => m.WeddingListComponent),
     canActivate: [AuthGuard],
-    data: { roles: ['ORGANIZER'] }
+    data: { requiredRole: 'ORGANIZER' }
   },
   {
     path: 'weddings/:id',
     component: WeddingDetailsComponent,
     canActivate: [AuthGuard],
-    data: { roles: ['ORGANIZER'] }
+    data: { requiredRole: 'ORGANIZER' }
   },
   {
     path: 'weddings/:id/edit',
     component: UpdateWeddingComponent,
     canActivate: [AuthGuard],
-    data: { roles: ['ORGANIZER'] }
+    data: { requiredRole: 'ORGANIZER' }
+  },
+  {
+    path: 'services',
+    loadComponent: () => import('./weddingService/components/wedding-service/wedding-service.component').then(m => m.WeddingServiceComponent),
+    canActivate: [AuthGuard],
+    data: { requiredRole: 'VENDOR' }
   },
   // {
   //   path: 'unauthorized',

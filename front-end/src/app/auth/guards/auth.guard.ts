@@ -24,6 +24,8 @@ export class AuthGuard implements CanActivate {
 
         // Handle authenticated users
         if (authState.isAuthenticated) {
+          console.log('Authenticated User:', authState.user?.role);
+          console.log('Required Role:', requiredRole);
 
           // Prevent authenticated users from accessing login/register
           if (route.routeConfig?.path === 'login' || route.routeConfig?.path === 'register') {

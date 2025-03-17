@@ -57,6 +57,21 @@ public class ServiceServiceImpl implements ServiceService {
     }
 
     @Override
+    public List<ServiceResponseDTO> getCurrentVendorServices() {
+        // Get current user ID from the JWT token
+        Long currentUserId = securityUtils.getCurrentUserId();
+
+        // Verify the user is a vendor
+        Vendor vendor = vendorRepository.findById(currentUserId)
+                .orElseThrow(() -> new ResourceNotFoundException("Vendor not found with id: " + currentUserId));
+
+        // Get all services for the current vendor
+        return serviceRepository.findByVendorId(currentUserId).stream()
+                .map(serviceMapper::serviceToServiceResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<ServiceResponseDTO> getServicesByVendorId(Long vendorId) {
         return serviceRepository.findByVendorId(vendorId).stream()
                 .map(serviceMapper::serviceToServiceResponseDTO)

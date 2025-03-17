@@ -12,4 +12,5 @@ public interface ServiceService {
     List<ServiceResponseDTO> getServicesByVendorId(Long vendorId);
     ServiceResponseDTO updateService(Long id, ServiceRequestDTO serviceRequestDTO);
     void deleteService(Long id);
+    List<ServiceResponseDTO> getCurrentVendorServices();
 }
