@@ -6,6 +6,7 @@ import org.filrouge.medding.dto.responses.ServiceResponseDTO;
 import org.filrouge.medding.entities.Service;
 import org.filrouge.medding.entities.Vendor;
 import org.filrouge.medding.exceptions.ResourceNotFoundException;
+import org.filrouge.medding.exceptions.UnauthorizedException;
 import org.filrouge.medding.mappers.ServiceMapper;
 import org.filrouge.medding.repositories.ServiceRepository;
 import org.filrouge.medding.repositories.VendorRepository;
@@ -80,15 +81,25 @@ public class ServiceServiceImpl implements ServiceService {
 
     @Override
     public ServiceResponseDTO updateService(Long id, ServiceRequestDTO serviceRequestDTO) {
+        Long currentUserId = securityUtils.getCurrentUserId();
+
         Service service = serviceRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Service not found"));
+
+        // Check if the current vendor owns this service
+        if (!service.getVendor().getId().equals(currentUserId)) {
+            throw new UnauthorizedException("You can only update your own services");
+        }
 
         service.setTitle(serviceRequestDTO.getTitle());
         service.setDescription(serviceRequestDTO.getDescription());
         service.setPrice(serviceRequestDTO.getPrice());
         service.setAvailability(serviceRequestDTO.getAvailability());
+        // Add this line to update the category
+        service.setCategory(serviceRequestDTO.getCategory());
 
-        return serviceMapper.serviceToServiceResponseDTO(serviceRepository.save(service));
+        Service updatedService = serviceRepository.save(service);
+        return serviceMapper.serviceToServiceResponseDTO(updatedService);
     }
 
     @Override
