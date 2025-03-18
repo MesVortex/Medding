@@ -59,6 +59,12 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
     data: { requiredRole: 'VENDOR' }
   },
+  {
+    path: 'services/browse',
+    loadComponent: () => import('./weddingService/components/service-browse/service-browse.component').then(m => m.ServiceBrowseComponent),
+    canActivate: [AuthGuard],
+    data: { requiredRole: 'ORGANIZER' }
+  },
   // {
   //   path: 'unauthorized',
   //   loadComponent: () => import('./shared/components/unauthorized/unauthorized.component').then(m => m.UnauthorizedComponent)

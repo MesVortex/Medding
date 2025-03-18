@@ -12,6 +12,10 @@ export class WeddingServiceService {
 
   constructor(private http: HttpClient) {}
 
+  getAllServices(): Observable<ServiceResponse[]> {
+    return this.http.get<ServiceResponse[]>(this.apiUrl);
+  }
+
   getVendorServices(): Observable<ServiceResponse[]> {
     return this.http.get<ServiceResponse[]>(`${this.apiUrl}/vendor/me`);
   }

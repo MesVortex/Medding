@@ -12,6 +12,7 @@ public interface ServiceMapper {
     ServiceMapper INSTANCE = Mappers.getMapper(ServiceMapper.class);
 
     @Mapping(target = "vendorId", source = "vendor.id")
+    @Mapping(target = "vendorName", source = "vendor.username")
     ServiceResponseDTO serviceToServiceResponseDTO(Service service);
     Service serviceRequestDTOToService(ServiceRequestDTO serviceRequestDTO);
 }

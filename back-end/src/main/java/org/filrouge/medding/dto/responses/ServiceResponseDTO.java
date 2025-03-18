@@ -15,4 +15,5 @@ public class ServiceResponseDTO {
     private Boolean availability;
     private String category;
     private Long vendorId;
+    private String vendorName;
 }
