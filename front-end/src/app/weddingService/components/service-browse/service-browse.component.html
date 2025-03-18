@@ -6,6 +6,47 @@
     </div>
   </div>
 
+  <!-- Add Filter Controls -->
+  <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+    <!-- Search Input -->
+    <div>
+      <label for="search" class="block text-sm font-medium text-gray-700">Search by title</label>
+      <div class="mt-1">
+        <input type="text"
+               id="search"
+               [(ngModel)]="searchTerm"
+               (ngModelChange)="onSearchChange()"
+               class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+               placeholder="Search services...">
+      </div>
+    </div>
+
+    <!-- Category Filter -->
+    <div>
+      <label for="category" class="block text-sm font-medium text-gray-700">Filter by category</label>
+      <select id="category"
+              [(ngModel)]="selectedCategory"
+              (ngModelChange)="onCategoryChange()"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+        <option value="">All Categories</option>
+        @for (category of categories; track category) {
+          <option [value]="category">{{ getCategoryDisplayName(category) }}</option>
+        }
+      </select>
+    </div>
+  </div>
+
+  <!-- Clear Filters Button -->
+  @if (searchTerm || selectedCategory) {
+    <div class="mt-4">
+      <button type="button"
+              (click)="clearFilters()"
+              class="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-sm font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+        Clear Filters
+      </button>
+    </div>
+  }
+
   @if (loading) {
     <div class="text-center mt-8">
       <div class="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
@@ -30,14 +71,14 @@
         </div>
       </div>
     </div>
-  } @else if (services.length === 0) {
+  } @else if (filteredServices.length === 0) {
     <div class="text-center mt-8">
       <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
       </svg>
-      <h3 class="mt-2 text-sm font-medium text-gray-900">No services available</h3>
-      <p class="mt-1 text-sm text-gray-500">No services have been listed yet.</p>
+      <h3 class="mt-2 text-sm font-medium text-gray-900">No services found</h3>
+      <p class="mt-1 text-sm text-gray-500">Try adjusting your search or filter criteria.</p>
     </div>
   } @else {
     <div class="mt-8 flex flex-col">
@@ -57,7 +98,7 @@
               </tr>
               </thead>
               <tbody class="divide-y divide-gray-200 bg-white">
-                @for (service of services; track service.id) {
+                @for (service of filteredServices; track service.id) {
                   <tr>
                     <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
                       <div class="font-medium text-gray-900">{{ service.title }}</div>
