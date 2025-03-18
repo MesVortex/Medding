@@ -3,12 +3,18 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { WeddingServiceService } from '../../services/wedding-service.service';
-import { ServiceResponse, WeddingServiceCategory, WeddingServiceCategoryLabels } from '../../models/wedding-service.model';
+import {
+  ServiceBookingRequest,
+  ServiceResponse,
+  WeddingServiceCategory,
+  WeddingServiceCategoryLabels
+} from '../../models/wedding-service.model';
+import {ServiceBookingComponent} from "../service-booking/service-booking.component";
 
 @Component({
   selector: 'app-service-browse',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, ServiceBookingComponent],
   templateUrl: './service-browse.component.html'
 })
 export class ServiceBrowseComponent implements OnInit {
@@ -19,6 +25,10 @@ export class ServiceBrowseComponent implements OnInit {
   searchTerm = '';
   selectedCategory: string = '';
   categories = Object.values(WeddingServiceCategory);
+  showBookingModal = false;
+  selectedService?: ServiceResponse;
+  bookingLoading = false;
+  bookingError: string | null = null;
 
   constructor(private serviceService: WeddingServiceService) {}
 
@@ -65,5 +75,37 @@ export class ServiceBrowseComponent implements OnInit {
     this.searchTerm = '';
     this.selectedCategory = '';
     this.filteredServices = this.services;
+  }
+
+  openBookingModal(service: ServiceResponse): void {
+    this.selectedService = service;
+    this.showBookingModal = true;
+  }
+
+  onBook(bookingRequest: ServiceBookingRequest): void {
+    if (!this.selectedService) return;
+
+    this.bookingLoading = true;
+    this.bookingError = null;
+
+    this.serviceService.bookService(this.selectedService.id, bookingRequest).subscribe({
+      next: () => {
+        this.showBookingModal = false;
+        this.selectedService = undefined;
+        this.bookingLoading = false;
+        // I need to show success message
+      },
+      error: (error) => {
+        this.bookingError = error.error?.message || 'Failed to book service';
+        this.bookingLoading = false;
+        console.error('Error booking service:', error);
+      }
+    });
+  }
+
+  closeBookingModal(): void {
+    this.showBookingModal = false;
+    this.selectedService = undefined;
+    this.bookingLoading = false;
   }
 }

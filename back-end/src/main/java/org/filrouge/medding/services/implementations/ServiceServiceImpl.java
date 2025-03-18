@@ -142,6 +142,12 @@ public class ServiceServiceImpl implements ServiceService {
             throw new IllegalStateException("Service is not available for booking");
         }
 
+        // Check if service is already booked for this wedding
+        if (serviceBookingRepository.existsByServiceIdAndWeddingIdAndStatusNot(
+                serviceId, bookingRequest.getWeddingId(), ServiceBookingStatus.CANCELLED)) {
+            throw new IllegalStateException("This service is already booked for this wedding");
+        }
+
         ServiceBooking booking = new ServiceBooking();
         booking.setService(service);
         booking.setWedding(wedding);

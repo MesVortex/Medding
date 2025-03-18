@@ -35,3 +35,17 @@ export const WeddingServiceCategoryLabels: Record<WeddingServiceCategory, string
   [WeddingServiceCategory.TRANSPORTATION_AND_LOGISTICS]: "Transportation & Logistics",
   [WeddingServiceCategory.WEDDING_FAVORS_AND_GIFTS]: "Wedding Favors & Gifts"
 };
+
+export interface ServiceBookingRequest {
+  weddingId: number;
+}
+
+export interface ServiceBookingResponse {
+  id: number;
+  serviceId: number;
+  weddingId: number;
+  serviceName: string;
+  vendorName: string;
+  bookedAt: Date;
+  status: 'PENDING' | 'CONFIRMED' | 'CANCELLED';
+}
