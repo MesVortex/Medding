@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.filrouge.medding.entities.enums.WeddingServiceCategory;
 
+import java.util.List;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -28,4 +30,7 @@ public class Service {
     @ManyToOne
     @JoinColumn(name = "vendor_id")
     private Vendor vendor;
+
+    @OneToMany(mappedBy = "service", cascade = CascadeType.ALL)
+    private List<ServiceBooking> bookings;
 }

@@ -2,9 +2,12 @@ package org.filrouge.medding.controllers;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.filrouge.medding.dto.requests.ServiceBookingRequestDTO;
 import org.filrouge.medding.dto.requests.ServiceRequestDTO;
+import org.filrouge.medding.dto.responses.ServiceBookingResponseDTO;
 import org.filrouge.medding.dto.responses.ServiceResponseDTO;
 import org.filrouge.medding.services.interfaces.ServiceService;
+import org.filrouge.medding.utils.SecurityUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,6 +21,7 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200")
 public class ServiceController {
     private final ServiceService serviceService;
+    private final SecurityUtils securityUtils;
 
     @PostMapping
     @PreAuthorize("hasAuthority('ROLE_VENDOR')")
@@ -57,5 +61,25 @@ public class ServiceController {
     public ResponseEntity<Void> deleteService(@PathVariable Long id) {
         serviceService.deleteService(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{serviceId}/book")
+    @PreAuthorize("hasAuthority('ROLE_ORGANIZER')")
+    public ResponseEntity<ServiceBookingResponseDTO> bookService(
+            @PathVariable Long serviceId,
+            @Valid @RequestBody ServiceBookingRequestDTO bookingRequest) {
+        return ResponseEntity.ok(serviceService.bookService(serviceId, bookingRequest));
+    }
+
+    @GetMapping("/bookings/wedding/{weddingId}")
+    @PreAuthorize("hasAuthority('ROLE_ORGANIZER')")
+    public ResponseEntity<List<ServiceBookingResponseDTO>> getWeddingBookings(@PathVariable Long weddingId) {
+        return ResponseEntity.ok(serviceService.getWeddingBookings(weddingId));
+    }
+
+    @GetMapping("/bookings/vendor")
+    @PreAuthorize("hasAuthority('ROLE_VENDOR')")
+    public ResponseEntity<List<ServiceBookingResponseDTO>> getVendorBookings() {
+        return ResponseEntity.ok(serviceService.getVendorBookings(securityUtils.getCurrentUserId()));
     }
 }

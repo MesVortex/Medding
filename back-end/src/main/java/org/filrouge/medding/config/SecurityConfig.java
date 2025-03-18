@@ -47,6 +47,11 @@ public class SecurityConfig {
                         // Admin endpoints
                         .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
 
+                        // Service Booking endpoints
+                        .requestMatchers(HttpMethod.POST, "/api/services/*/book").hasAuthority("ROLE_ORGANIZER")
+                        .requestMatchers("/api/services/bookings/wedding/**").hasAuthority("ROLE_ORGANIZER")
+                        .requestMatchers("/api/services/bookings/vendor").hasAuthority("ROLE_VENDOR")
+
                         // Service endpoints
                         .requestMatchers(HttpMethod.POST, "/api/services/**").hasAuthority("ROLE_VENDOR")
                         .requestMatchers(HttpMethod.PUT, "/api/services/**").hasAuthority("ROLE_VENDOR")

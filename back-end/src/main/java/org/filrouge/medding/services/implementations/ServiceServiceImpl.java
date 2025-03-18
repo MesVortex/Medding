@@ -1,18 +1,27 @@
 package org.filrouge.medding.services.implementations;
 
 import lombok.RequiredArgsConstructor;
+import org.filrouge.medding.dto.requests.ServiceBookingRequestDTO;
 import org.filrouge.medding.dto.requests.ServiceRequestDTO;
+import org.filrouge.medding.dto.responses.ServiceBookingResponseDTO;
 import org.filrouge.medding.dto.responses.ServiceResponseDTO;
 import org.filrouge.medding.entities.Service;
+import org.filrouge.medding.entities.ServiceBooking;
 import org.filrouge.medding.entities.Vendor;
+import org.filrouge.medding.entities.Wedding;
+import org.filrouge.medding.entities.enums.ServiceBookingStatus;
 import org.filrouge.medding.exceptions.ResourceNotFoundException;
 import org.filrouge.medding.exceptions.UnauthorizedException;
+import org.filrouge.medding.mappers.BookingMapper;
 import org.filrouge.medding.mappers.ServiceMapper;
+import org.filrouge.medding.repositories.ServiceBookingRepository;
 import org.filrouge.medding.repositories.ServiceRepository;
 import org.filrouge.medding.repositories.VendorRepository;
+import org.filrouge.medding.repositories.WeddingRepository;
 import org.filrouge.medding.services.interfaces.ServiceService;
 import org.filrouge.medding.utils.SecurityUtils;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,8 +30,11 @@ import java.util.stream.Collectors;
 public class ServiceServiceImpl implements ServiceService {
     private final ServiceRepository serviceRepository;
     private final VendorRepository vendorRepository;
+    private final ServiceBookingRepository serviceBookingRepository;
     private final ServiceMapper serviceMapper;
     private final SecurityUtils securityUtils;
+    private final BookingMapper bookingMapper;
+    private final WeddingRepository weddingRepository;
 
     @Override
     public ServiceResponseDTO createService(ServiceRequestDTO serviceRequestDTO) {
@@ -108,5 +120,49 @@ public class ServiceServiceImpl implements ServiceService {
             throw new ResourceNotFoundException("Service not found");
         }
         serviceRepository.deleteById(id);
+    }
+
+    @Override
+    public ServiceBookingResponseDTO bookService(Long serviceId, ServiceBookingRequestDTO bookingRequest) {
+        Long currentUserId = securityUtils.getCurrentUserId();
+
+        Service service = serviceRepository.findById(serviceId)
+                .orElseThrow(() -> new ResourceNotFoundException("Service not found"));
+
+        Wedding wedding = weddingRepository.findById(bookingRequest.getWeddingId())
+                .orElseThrow(() -> new ResourceNotFoundException("Wedding not found"));
+
+        // Check if the wedding belongs to the current organizer
+        if (!wedding.getOrganizer().getId().equals(currentUserId)) {
+            throw new UnauthorizedException("You can only book services for your own weddings");
+        }
+
+        // Check if service is available
+        if (!service.getAvailability()) {
+            throw new IllegalStateException("Service is not available for booking");
+        }
+
+        ServiceBooking booking = new ServiceBooking();
+        booking.setService(service);
+        booking.setWedding(wedding);
+        booking.setBookedAt(LocalDateTime.now());
+        booking.setStatus(ServiceBookingStatus.PENDING);
+
+        ServiceBooking savedBooking = serviceBookingRepository.save(booking);
+        return bookingMapper.bookingToBookingResponseDTO(savedBooking);
+    }
+
+    @Override
+    public List<ServiceBookingResponseDTO> getWeddingBookings(Long weddingId) {
+        return serviceBookingRepository.findByWeddingId(weddingId).stream()
+                .map(bookingMapper::bookingToBookingResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ServiceBookingResponseDTO> getVendorBookings(Long vendorId) {
+        return serviceBookingRepository.findByServiceVendorId(vendorId).stream()
+                .map(bookingMapper::bookingToBookingResponseDTO)
+                .collect(Collectors.toList());
     }
 }
