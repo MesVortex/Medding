@@ -41,6 +41,10 @@ export class WeddingServiceService {
     return this.http.post<ServiceBookingResponse>(`${this.apiUrl}/${serviceId}/book`, booking);
   }
 
+  getServiceById(id: number): Observable<ServiceResponse>{
+    return this.http.get<ServiceResponse>(`${this.apiUrl}/${id}`);
+  }
+
   getWeddingBookings(weddingId: number): Observable<ServiceBookingResponse[]> {
     return this.http.get<ServiceBookingResponse[]>(`${this.apiUrl}/bookings/wedding/${weddingId}`);
   }

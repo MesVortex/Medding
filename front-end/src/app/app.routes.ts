@@ -3,6 +3,8 @@ import { AuthGuard } from './auth/guards/auth.guard';
 import {CreateWeddingComponent} from "./wedding/components/create-wedding/create-wedding.component";
 import {WeddingDetailsComponent} from "./wedding/components/wedding-details/wedding-details.component";
 import {UpdateWeddingComponent} from "./wedding/components/update-wedding/update-wedding.component";
+import {ServiceDetailsComponent} from "./weddingService/components/service-details/service-details.component";
+import {VendorProfileComponent} from "./shared/components/vendor-profile/vendor-profile.component";
 
 export const routes: Routes = [
   {
@@ -23,6 +25,12 @@ export const routes: Routes = [
     path: 'profile',
     loadComponent: () => import('./shared/components/profile/profile.component').then(m => m.ProfileComponent),
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'vendors/:id',
+    component: VendorProfileComponent,
+    canActivate: [AuthGuard],
+    data: { requiredRole: 'ORGANIZER' }
   },
   {
     path: 'profile/edit',
@@ -62,6 +70,12 @@ export const routes: Routes = [
   {
     path: 'services/browse',
     loadComponent: () => import('./weddingService/components/service-browse/service-browse.component').then(m => m.ServiceBrowseComponent),
+    canActivate: [AuthGuard],
+    data: { requiredRole: 'ORGANIZER' }
+  },
+  {
+    path: 'services/:id/details',
+    component: ServiceDetailsComponent,
     canActivate: [AuthGuard],
     data: { requiredRole: 'ORGANIZER' }
   },

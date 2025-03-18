@@ -25,7 +25,7 @@ export class ProfileComponent implements OnInit {
       switchMap(user => {
         if (!user) return new Observable<never>(); // Handle null user case
         if (user.role === 'VENDOR') {
-          return this.profileService.getVendorProfile(user.id);
+          return this.profileService.getVendorProfileForUser(user.id);
         }
         return this.profileService.getUserProfile();
       })

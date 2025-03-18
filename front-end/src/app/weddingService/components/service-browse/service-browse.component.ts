@@ -15,7 +15,8 @@ import {ServiceBookingComponent} from "../service-booking/service-booking.compon
   selector: 'app-service-browse',
   standalone: true,
   imports: [CommonModule, RouterModule, FormsModule, ServiceBookingComponent],
-  templateUrl: './service-browse.component.html'
+  templateUrl: './service-browse.component.html',
+  styleUrls: ['./service-browse.component.scss']
 })
 export class ServiceBrowseComponent implements OnInit {
   services: ServiceResponse[] = [];

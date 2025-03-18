@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {catchError, Observable} from 'rxjs';
-import { Profile } from '../models/profile.model';
+import {Profile, VendorProfile} from '../models/profile.model';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -16,7 +16,11 @@ export class ProfileService {
     return this.http.get<Profile>(`${this.apiUrl}/me`);
   }
 
-  getVendorProfile(id: number): Observable<Profile> {
+  getVendorProfile(id: number): Observable<VendorProfile> {
+    return this.http.get<VendorProfile>(`${this.apiUrl}/vendors/${id}`);
+  }
+
+  getVendorProfileForUser(id: number): Observable<Profile> {
     return this.http.get<Profile>(`${this.apiUrl}/vendors/${id}`);
   }
 

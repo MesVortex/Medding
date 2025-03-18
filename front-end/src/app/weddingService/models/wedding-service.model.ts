@@ -5,6 +5,7 @@ export interface ServiceResponse {
   price: number;
   category: WeddingServiceCategory;
   vendorName: string;
+  vendorId: number;
   availability: boolean;
 }
 

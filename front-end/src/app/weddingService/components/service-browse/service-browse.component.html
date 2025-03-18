@@ -49,9 +49,11 @@
 
   @if (loading) {
     <div class="text-center mt-8">
-      <div class="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
-           role="status">
-            <span class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
+      <div
+        class="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+        role="status">
+            <span
+              class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
               Loading...
             </span>
       </div>
@@ -99,7 +101,8 @@
               </thead>
               <tbody class="divide-y divide-gray-200 bg-white">
                 @for (service of filteredServices; track service.id) {
-                  <tr>
+                  <tr class="cursor-pointer hover:bg-gray-50"
+                      [routerLink]="['/services', service.id, 'details']">
                     <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
                       <div class="font-medium text-gray-900">{{ service.title }}</div>
                       <div class="text-gray-500">{{ service.description }}</div>
@@ -108,14 +111,17 @@
                       {{ getCategoryDisplayName(service.category) }}
                     </td>
                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {{ service.vendorName }}
+                      <a [routerLink]="['/vendors', service.vendorId]"
+                         class="text-indigo-600 hover:text-indigo-900">
+                        {{ service.vendorName }}
+                      </a>
                     </td>
                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                       {{ service.price | currency }}
                     </td>
                     <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-sm font-medium sm:pr-6">
                       @if (service.availability) {
-                        <button (click)="openBookingModal(service)"
+                        <button (click)="openBookingModal(service); $event.stopPropagation()"
                                 class="text-indigo-600 hover:text-indigo-900">
                           Book Now
                         </button>
