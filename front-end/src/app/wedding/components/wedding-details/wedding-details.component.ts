@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 import {ActivatedRoute, Router, RouterModule} from '@angular/router';
 import { WeddingService } from '../../services/wedding.service';
 import { WeddingResponse } from '../../models/wedding.model';
-import {ServiceResponse} from "../../../weddingService/models/wedding-service.model";
+import {ServiceBookingResponse} from "../../../weddingService/models/wedding-service.model";
 import {
   ConfirmationDialogComponent
 } from "../../../shared/components/confirmation-dialog/confirmation-dialog.component";
+import {WeddingServiceService} from "../../../weddingService/services/wedding-service.service";
 
 @Component({
   selector: 'app-wedding-details',
@@ -17,7 +18,7 @@ import {
 })
 export class WeddingDetailsComponent implements OnInit {
   wedding: WeddingResponse | null = null;
-  services: ServiceResponse[] = [];
+  services: ServiceBookingResponse[] = [];
   loading = true;
   error: string | null = null;
   showDeleteConfirmation = false;
@@ -25,7 +26,8 @@ export class WeddingDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private weddingService: WeddingService
+    private weddingService: WeddingService,
+    private serviceService: WeddingServiceService
   ) {}
 
   ngOnInit(): void {
@@ -47,6 +49,53 @@ export class WeddingDetailsComponent implements OnInit {
         console.error('Error loading wedding:', error);
       }
     });
+    this.serviceService.getWeddingBookings(id).subscribe({
+      next: (services) => {
+        this.services = services;
+      },
+      error: (error) => {
+        this.error = 'Failed to load wedding services';
+        console.error('Error loading wedding services:', error);
+      }
+    });
+  }
+
+  getPendingServices(): ServiceBookingResponse[] {
+    return this.services.filter(service => service.status === 'PENDING');
+  }
+
+  getConfirmedServices(): ServiceBookingResponse[] {
+    return this.services.filter(service => service.status === 'CONFIRMED');
+  }
+
+  getCancelledServices(): ServiceBookingResponse[] {
+    return this.services.filter(service => service.status === 'CANCELLED');
+  }
+
+  getStatusColor(status: string): string {
+    switch (status) {
+      case 'PENDING':
+        return 'bg-yellow-50 border-yellow-200';
+      case 'CONFIRMED':
+        return 'bg-green-50 border-green-200';
+      case 'CANCELLED':
+        return 'bg-red-50 border-red-200';
+      default:
+        return 'bg-gray-50 border-gray-200';
+    }
+  }
+
+  getStatusTextColor(status: string): string {
+    switch (status) {
+      case 'PENDING':
+        return 'text-yellow-800';
+      case 'CONFIRMED':
+        return 'text-green-800';
+      case 'CANCELLED':
+        return 'text-red-800';
+      default:
+        return 'text-gray-800';
+    }
   }
 
   deleteWedding(): void {

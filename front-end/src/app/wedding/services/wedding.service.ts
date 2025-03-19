@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { WeddingRequest, WeddingResponse } from '../models/wedding.model';
 import { environment } from '../../../environments/environment';
+import {ServiceBookingResponse} from "../../weddingService/models/wedding-service.model";
 
 @Injectable({
   providedIn: 'root'

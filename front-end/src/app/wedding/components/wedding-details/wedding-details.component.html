@@ -97,50 +97,79 @@
           </div>
         </div>
       } @else {
-        <div class="mt-8 flex flex-col">
-          <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
-            <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-              <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-                <table class="min-w-full divide-y divide-gray-300">
-                  <thead class="bg-gray-50">
-                  <tr>
-                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
-                      Service
-                    </th>
-                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Category</th>
-                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Vendor</th>
-                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Price</th>
-                    <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                      <span class="sr-only">Actions</span>
-                    </th>
-                  </tr>
-                  </thead>
-                  <tbody class="divide-y divide-gray-200 bg-white">
-                    @for (service of services; track service.id) {
-                      <tr>
-                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
-                          <div class="font-medium text-gray-900">{{ service.title }}</div>
-                          <div class="text-gray-500">{{ service.description }}</div>
-                        </td>
-                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          {{ service.category }}
-                        </td>
-                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          {{ service.vendorName }}
-                        </td>
-                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          {{ service.price | currency }}
-                        </td>
-                        <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                          <button type="button" class="text-indigo-600 hover:text-indigo-900">
-                            Edit<span class="sr-only">, {{ service.title }}</span>
-                          </button>
-                        </td>
-                      </tr>
-                    }
-                  </tbody>
-                </table>
-              </div>
+        <div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-3">
+          <!-- Pending Services -->
+          <div class="border border-yellow-200 rounded-lg bg-yellow-50 overflow-hidden">
+            <div class="px-4 py-5 sm:px-6">
+              <h3 class="text-lg font-medium leading-6 text-yellow-800">Pending Services</h3>
+              <p class="mt-1 text-sm text-yellow-600">Services awaiting confirmation</p>
+            </div>
+            <div class="px-4 py-5 sm:p-6">
+              @if (getPendingServices().length === 0) {
+                <p class="text-sm text-yellow-600">No pending services</p>
+              } @else {
+                <div class="space-y-4">
+                  @for (service of getPendingServices(); track service.id) {
+                    <div class="border border-yellow-200 rounded-md p-4 bg-white">
+                      <h4 class="text-base font-medium text-gray-900">{{ service.serviceName }}</h4>
+                      <p class="mt-1 text-sm text-gray-500">{{ service.vendorName }}</p>
+                      <div class="mt-2 flex justify-between items-center">
+                        <span class="text-sm text-green-600">{{ service.bookedAt }}</span>
+                      </div>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+
+          <!-- Confirmed Services -->
+          <div class="border border-green-200 rounded-lg bg-green-50 overflow-hidden">
+            <div class="px-4 py-5 sm:px-6">
+              <h3 class="text-lg font-medium leading-6 text-green-800">Confirmed Services</h3>
+              <p class="mt-1 text-sm text-green-600">Services confirmed for your wedding</p>
+            </div>
+            <div class="px-4 py-5 sm:p-6">
+              @if (getConfirmedServices().length === 0) {
+                <p class="text-sm text-green-600">No confirmed services</p>
+              } @else {
+                <div class="space-y-4">
+                  @for (service of getConfirmedServices(); track service.id) {
+                    <div class="border border-green-200 rounded-md p-4 bg-white">
+                      <h4 class="text-base font-medium text-gray-900">{{ service.serviceName }}</h4>
+                      <p class="mt-1 text-sm text-gray-500">{{ service.vendorName }}</p>
+                      <div class="mt-2 flex justify-between items-center">
+                        <span class="text-sm text-green-600">{{ service.bookedAt }}</span>
+                      </div>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+
+          <!-- Cancelled Services -->
+          <div class="border border-red-200 rounded-lg bg-red-50 overflow-hidden">
+            <div class="px-4 py-5 sm:px-6">
+              <h3 class="text-lg font-medium leading-6 text-red-800">Cancelled Services</h3>
+              <p class="mt-1 text-sm text-red-600">Services that were cancelled</p>
+            </div>
+            <div class="px-4 py-5 sm:p-6">
+              @if (getCancelledServices().length === 0) {
+                <p class="text-sm text-red-600">No cancelled services</p>
+              } @else {
+                <div class="space-y-4">
+                  @for (service of getCancelledServices(); track service.id) {
+                    <div class="border border-red-200 rounded-md p-4 bg-white">
+                      <h4 class="text-base font-medium text-gray-900">{{ service.serviceName }}</h4>
+                      <p class="mt-1 text-sm text-gray-500">{{ service.vendorName }}</p>
+                      <div class="mt-2 flex justify-between items-center">
+                        <span class="text-sm text-green-600">{{ service.bookedAt }}</span>
+                      </div>
+                    </div>
+                  }
+                </div>
+              }
             </div>
           </div>
         </div>
