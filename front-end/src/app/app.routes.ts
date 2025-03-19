@@ -83,6 +83,12 @@ export const routes: Routes = [
     data: { requiredRole: 'ORGANIZER' }
   },
   {
+    path: 'services/bookings',
+    loadComponent: () => import('./weddingService/components/vendor-bookings/vendor-bookings.component').then(m => m.VendorBookingsComponent),
+    canActivate: [AuthGuard],
+    data: { requiredRole: 'VENDOR' }
+  },
+  {
     path: 'weddings/:id/book-services',
     component: ServiceBookingWizardComponent
   },

@@ -20,4 +20,6 @@ public interface ServiceService {
     List<ServiceBookingResponseDTO> getWeddingBookings(Long weddingId);
     List<ServiceBookingResponseDTO> getVendorBookings(Long vendorId);
     List<ServiceResponseDTO> getServicesByCategory(WeddingServiceCategory category);
+    void confirmBooking(Long bookingId);
+    void cancelBooking(Long bookingId);
 }

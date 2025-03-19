@@ -89,4 +89,18 @@ public class ServiceController {
             @PathVariable WeddingServiceCategory category) {
         return ResponseEntity.ok(serviceService.getServicesByCategory(category));
     }
+
+    @PutMapping("/bookings/{bookingId}/confirm")
+    @PreAuthorize("hasAuthority('ROLE_VENDOR')")
+    public ResponseEntity<Void> confirmBooking(@PathVariable Long bookingId) {
+        serviceService.confirmBooking(bookingId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/bookings/{bookingId}/cancel")
+    @PreAuthorize("hasAuthority('ROLE_VENDOR')")
+    public ResponseEntity<Void> cancelBooking(@PathVariable Long bookingId) {
+        serviceService.cancelBooking(bookingId);
+        return ResponseEntity.ok().build();
+    }
 }

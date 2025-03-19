@@ -179,4 +179,64 @@ public class ServiceServiceImpl implements ServiceService {
                 .map(serviceMapper::serviceToServiceResponseDTO)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public void confirmBooking(Long bookingId) {
+        Long currentUserId = securityUtils.getCurrentUserId();
+        ServiceBooking booking = serviceBookingRepository.findById(bookingId)
+                .orElseThrow(() -> new ResourceNotFoundException("Booking not found"));
+
+        // Check if the service belongs to the current vendor
+        if (!booking.getService().getVendor().getId().equals(currentUserId)) {
+            throw new UnauthorizedException("You can only manage your own service bookings");
+        }
+
+        // Check if booking is still pending
+        if (booking.getStatus() != ServiceBookingStatus.PENDING) {
+            throw new IllegalStateException("Only pending bookings can be confirmed");
+        }
+
+        // Check if service is not already booked
+        if (!booking.getService().getAvailability()) {
+            throw new IllegalStateException("Service is no longer available");
+        }
+
+        // Update service availability
+        Service service = booking.getService();
+        service.setAvailability(false);
+        serviceRepository.save(service);
+
+        // Confirm booking
+        booking.setStatus(ServiceBookingStatus.CONFIRMED);
+        serviceBookingRepository.save(booking);
+
+        // Cancel other pending bookings for this service
+        List<ServiceBooking> otherPendingBookings = serviceBookingRepository
+                .findByServiceIdAndStatus(service.getId(), ServiceBookingStatus.PENDING);
+
+        otherPendingBookings.stream()
+                .filter(b -> !b.getId().equals(bookingId))
+                .forEach(b -> {
+                    b.setStatus(ServiceBookingStatus.CANCELLED);
+                    serviceBookingRepository.save(b);
+                });
+    }
+
+    @Override
+    public void cancelBooking(Long bookingId) {
+        Long currentUserId = securityUtils.getCurrentUserId();
+        ServiceBooking booking = serviceBookingRepository.findById(bookingId)
+                .orElseThrow(() -> new ResourceNotFoundException("Booking not found"));
+
+        if (!booking.getService().getVendor().getId().equals(currentUserId)) {
+            throw new UnauthorizedException("You can only manage your own service bookings");
+        }
+
+        if (booking.getStatus() != ServiceBookingStatus.PENDING) {
+            throw new IllegalStateException("Only pending bookings can be cancelled");
+        }
+
+        booking.setStatus(ServiceBookingStatus.CANCELLED);
+        serviceBookingRepository.save(booking);
+    }
 }

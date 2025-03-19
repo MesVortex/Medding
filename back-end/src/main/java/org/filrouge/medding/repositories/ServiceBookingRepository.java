@@ -10,4 +10,5 @@ public interface ServiceBookingRepository extends JpaRepository<ServiceBooking, 
     List<ServiceBooking> findByWeddingId(Long weddingId);
     List<ServiceBooking> findByServiceVendorId(Long vendorId);
     boolean existsByServiceIdAndWeddingIdAndStatusNot(Long serviceId, Long weddingId, ServiceBookingStatus status);
+    List<ServiceBooking> findByServiceIdAndStatus(Long serviceId, ServiceBookingStatus status);
 }

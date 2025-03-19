@@ -56,4 +56,12 @@ export class WeddingServiceService {
   getVendorBookings(): Observable<ServiceBookingResponse[]> {
     return this.http.get<ServiceBookingResponse[]>(`${this.apiUrl}/bookings/vendor`);
   }
+
+  confirmBooking(bookingId: number): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/bookings/${bookingId}/confirm`, {});
+  }
+
+  cancelBooking(bookingId: number): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/bookings/${bookingId}/cancel`, {});
+  }
 }
