@@ -5,6 +5,9 @@ import {WeddingDetailsComponent} from "./wedding/components/wedding-details/wedd
 import {UpdateWeddingComponent} from "./wedding/components/update-wedding/update-wedding.component";
 import {ServiceDetailsComponent} from "./weddingService/components/service-details/service-details.component";
 import {VendorProfileComponent} from "./shared/components/vendor-profile/vendor-profile.component";
+import {
+  ServiceBookingWizardComponent
+} from "./weddingService/components/service-booking-wizard/service-booking-wizard.component";
 
 export const routes: Routes = [
   {
@@ -78,6 +81,10 @@ export const routes: Routes = [
     component: ServiceDetailsComponent,
     canActivate: [AuthGuard],
     data: { requiredRole: 'ORGANIZER' }
+  },
+  {
+    path: 'weddings/:id/book-services',
+    component: ServiceBookingWizardComponent
   },
   // {
   //   path: 'unauthorized',

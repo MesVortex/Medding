@@ -4,6 +4,7 @@ import org.filrouge.medding.dto.requests.ServiceBookingRequestDTO;
 import org.filrouge.medding.dto.requests.ServiceRequestDTO;
 import org.filrouge.medding.dto.responses.ServiceBookingResponseDTO;
 import org.filrouge.medding.dto.responses.ServiceResponseDTO;
+import org.filrouge.medding.entities.enums.WeddingServiceCategory;
 
 import java.util.List;
 
@@ -18,4 +19,5 @@ public interface ServiceService {
     ServiceBookingResponseDTO bookService(Long serviceId, ServiceBookingRequestDTO bookingRequest);
     List<ServiceBookingResponseDTO> getWeddingBookings(Long weddingId);
     List<ServiceBookingResponseDTO> getVendorBookings(Long vendorId);
+    List<ServiceResponseDTO> getServicesByCategory(WeddingServiceCategory category);
 }

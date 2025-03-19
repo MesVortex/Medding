@@ -10,6 +10,7 @@ import org.filrouge.medding.entities.ServiceBooking;
 import org.filrouge.medding.entities.Vendor;
 import org.filrouge.medding.entities.Wedding;
 import org.filrouge.medding.entities.enums.ServiceBookingStatus;
+import org.filrouge.medding.entities.enums.WeddingServiceCategory;
 import org.filrouge.medding.exceptions.ResourceNotFoundException;
 import org.filrouge.medding.exceptions.UnauthorizedException;
 import org.filrouge.medding.mappers.BookingMapper;
@@ -169,6 +170,13 @@ public class ServiceServiceImpl implements ServiceService {
     public List<ServiceBookingResponseDTO> getVendorBookings(Long vendorId) {
         return serviceBookingRepository.findByServiceVendorId(vendorId).stream()
                 .map(bookingMapper::bookingToBookingResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ServiceResponseDTO> getServicesByCategory(WeddingServiceCategory category) {
+        return serviceRepository.findByCategory(category).stream()
+                .map(serviceMapper::serviceToServiceResponseDTO)
                 .collect(Collectors.toList());
     }
 }

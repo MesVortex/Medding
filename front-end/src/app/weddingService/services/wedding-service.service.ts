@@ -5,7 +5,7 @@ import {
   ServiceBookingRequest,
   ServiceBookingResponse,
   ServiceRequest,
-  ServiceResponse
+  ServiceResponse, WeddingServiceCategory
 } from '../models/wedding-service.model';
 import { environment } from '../../../environments/environment';
 
@@ -35,6 +35,10 @@ export class WeddingServiceService {
 
   deleteService(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  getServicesByCategory(category: WeddingServiceCategory): Observable<ServiceResponse[]> {
+    return this.http.get<ServiceResponse[]>(`${this.apiUrl}/category/${category}`);
   }
 
   bookService(serviceId: number, booking: ServiceBookingRequest): Observable<ServiceBookingResponse> {

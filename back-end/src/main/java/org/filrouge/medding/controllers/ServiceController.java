@@ -6,6 +6,7 @@ import org.filrouge.medding.dto.requests.ServiceBookingRequestDTO;
 import org.filrouge.medding.dto.requests.ServiceRequestDTO;
 import org.filrouge.medding.dto.responses.ServiceBookingResponseDTO;
 import org.filrouge.medding.dto.responses.ServiceResponseDTO;
+import org.filrouge.medding.entities.enums.WeddingServiceCategory;
 import org.filrouge.medding.services.interfaces.ServiceService;
 import org.filrouge.medding.utils.SecurityUtils;
 import org.springframework.http.HttpStatus;
@@ -81,5 +82,11 @@ public class ServiceController {
     @PreAuthorize("hasAuthority('ROLE_VENDOR')")
     public ResponseEntity<List<ServiceBookingResponseDTO>> getVendorBookings() {
         return ResponseEntity.ok(serviceService.getVendorBookings(securityUtils.getCurrentUserId()));
+    }
+
+    @GetMapping("/category/{category}")
+    public ResponseEntity<List<ServiceResponseDTO>> getServicesByCategory(
+            @PathVariable WeddingServiceCategory category) {
+        return ResponseEntity.ok(serviceService.getServicesByCategory(category));
     }
 }
