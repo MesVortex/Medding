@@ -72,6 +72,7 @@
               <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900">Name</th>
               <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Email</th>
               <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">RSVP Status</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Sending Date</th>
               <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
                 <span class="sr-only">Actions</span>
               </th>
@@ -91,13 +92,86 @@
                       {{ guest.rsvpStatus }}
                     </span>
                   </td>
+                  @if (guest.invitationSent) {
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      Sent on: {{ guest.invitationSentDate | date:'medium' }}
+                    </td>
+                  }@else{
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      Invitation not sent yet
+                    </td>
+                  }
                   <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                    <button (click)="sendInvitation(guest.id)"
-                            class="text-indigo-600 hover:text-indigo-900 mr-4">Send Invitation</button>
+                    <button
+                      (click)="sendInvitation(guest)"
+                      [disabled]="guest.invitationSent || sendingInvitation[guest.id]"
+                      class="text-indigo-600 hover:text-indigo-900 mr-4 disabled:opacity-50 disabled:cursor-not-allowed">
+                      {{ guest.invitationSent ? 'Invitation Sent' :
+                      sendingInvitation[guest.id] ? 'Sending...' : 'Send Invitation' }}
+                    </button>
+                    <button (click)="startEdit(guest)"
+                            class="text-blue-600 hover:text-blue-900 mr-4">
+                      Edit
+                    </button>
                     <button (click)="confirmDelete(guest.id)"
-                            class="text-red-600 hover:text-red-900">Delete</button>
+                            class="text-red-600 hover:text-red-900">
+                      Delete
+                    </button>
                   </td>
                 </tr>
+                @if (showEditModal) {
+                  <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity">
+                    <div class="fixed inset-0 z-10 overflow-y-auto">
+                      <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                        <div class="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
+                          <div class="absolute right-0 top-0 hidden pr-4 pt-4 sm:block">
+                            <button type="button"
+                                    (click)="showEditModal = false"
+                                    class="rounded-md bg-white text-gray-400 hover:text-gray-500">
+                              <span class="sr-only">Close</span>
+                              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                              </svg>
+                            </button>
+                          </div>
+
+                          <div class="sm:flex sm:items-start">
+                            <div class="mt-3 text-center sm:mt-0 sm:text-left w-full">
+                              <h3 class="text-lg font-semibold leading-6 text-gray-900">Edit Guest</h3>
+
+                              <form [formGroup]="editForm" (ngSubmit)="onUpdateSubmit()" class="mt-4 space-y-4">
+                                <div>
+                                  <label for="edit-name" class="block text-sm font-medium text-gray-700">Name</label>
+                                  <input type="text" id="edit-name" formControlName="name"
+                                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                </div>
+
+                                <div>
+                                  <label for="edit-email" class="block text-sm font-medium text-gray-700">Email</label>
+                                  <input type="email" id="edit-email" formControlName="email"
+                                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                </div>
+
+                                <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                                  <button type="submit"
+                                          [disabled]="!editForm.valid"
+                                          class="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:ml-3 sm:w-auto">
+                                    Update Guest
+                                  </button>
+                                  <button type="button"
+                                          (click)="showEditModal = false"
+                                          class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">
+                                    Cancel
+                                  </button>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                }
               }
             </tbody>
           </table>
@@ -114,3 +188,9 @@
   (confirmed)="onDeleteConfirmed()"
   (cancelled)="showDeleteConfirmation = false">
 </app-confirmation-dialog>
+
+<app-notification
+  [show]="showNotification"
+  [message]="notificationMessage"
+  [type]="notificationType">
+</app-notification>

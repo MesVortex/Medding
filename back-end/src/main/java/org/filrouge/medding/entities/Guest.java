@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.filrouge.medding.entities.enums.StatusRSVP;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -19,6 +21,10 @@ public class Guest {
     private String email;
     @Enumerated(EnumType.STRING)
     private StatusRSVP rsvpStatus;
+
+    @Column(name = "invitationSent", columnDefinition = "boolean default false")
+    private boolean invitationSent;
+    private LocalDateTime invitationSentDate;
 
     private String invitationToken;
 

@@ -16,6 +16,7 @@ import org.filrouge.medding.services.interfaces.GuestService;
 import org.filrouge.medding.utils.SecurityUtils;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -110,9 +111,15 @@ public class GuestServiceImpl implements GuestService {
             throw new UnauthorizedException("You can only send invitations for your own weddings");
         }
 
+        if (guest.isInvitationSent()) {
+            throw new IllegalStateException("Invitation has already been sent to this guest");
+        }
+
         String token = generateInvitationToken();
         guest.setInvitationToken(token);
         guest.setRsvpStatus(StatusRSVP.PENDING);
+        guest.setInvitationSent(true);
+        guest.setInvitationSentDate(LocalDateTime.now());
 
         String invitationLink = createInvitationLink(token);
         emailService.sendInvitationEmail(guest.getEmail(), invitationLink, guest.getWedding());

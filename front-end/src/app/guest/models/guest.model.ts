@@ -17,4 +17,6 @@ export interface GuestResponse {
   email: string;
   rsvpStatus: RsvpStatus;
   weddingId: number;
+  invitationSent: boolean;
+  invitationSentDate?: Date;
 }

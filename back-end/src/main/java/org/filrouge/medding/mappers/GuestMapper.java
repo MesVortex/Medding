@@ -9,6 +9,8 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface GuestMapper {
     @Mapping(target = "weddingId", source = "wedding.id")
+    @Mapping(target = "invitationSent", source = "invitationSent")
+    @Mapping(target = "invitationSentDate", source = "invitationSentDate")
     GuestResponseDTO toDTO(Guest guest);
 
     @Mapping(target = "id", ignore = true)

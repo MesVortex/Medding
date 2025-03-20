@@ -1,0 +1,11 @@
+.invitation-sent {
+  @apply text-green-600;
+}
+
+.invitation-pending {
+  @apply text-indigo-600;
+}
+
+.invitation-sending {
+  @apply text-gray-400;
+}
