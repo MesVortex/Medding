@@ -26,7 +26,7 @@ export class AuthGuard implements CanActivate {
         if (authState.isAuthenticated) {
 
           // Prevent authenticated users from accessing login/register
-          if (route.routeConfig?.path === 'login' || route.routeConfig?.path === 'register') {
+          if (route.routeConfig?.path === 'auth/login' || route.routeConfig?.path === 'register') {
             this.redirectBasedOnRole(authState.user?.role!);
             return false;
           }
@@ -43,7 +43,7 @@ export class AuthGuard implements CanActivate {
         // Handle unauthenticated users
         if (!authState.isAuthenticated) {
           // Allow access to login/register for unauthenticated users
-          if (route.routeConfig?.path === 'login' || route.routeConfig?.path === 'register') {
+          if (route.routeConfig?.path === 'auth/login' || route.routeConfig?.path === 'register') {
             return true;
           }
 
@@ -69,7 +69,7 @@ export class AuthGuard implements CanActivate {
         this.router.navigate(['/admin/dashboard']);
         break;
       default:
-        this.router.navigate(['/login']);
+        this.router.navigate(['auth/login']);
         break;
     }
   }

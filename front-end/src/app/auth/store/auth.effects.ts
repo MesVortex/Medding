@@ -79,7 +79,7 @@ export class AuthEffects {
         ofType(AuthActions.loadUserFailure),
         tap(() => {
           localStorage.removeItem('token');
-          this.router.navigate(['/login']);
+          this.router.navigate(['auth/login']);
         })
       ),
     { dispatch: false }
@@ -91,7 +91,7 @@ export class AuthEffects {
         ofType(AuthActions.logout),
         tap(() => {
           this.authService.logout();
-          this.router.navigate(['/login']);
+          this.router.navigate(['auth/login']);
         })
       ),
     { dispatch: false }

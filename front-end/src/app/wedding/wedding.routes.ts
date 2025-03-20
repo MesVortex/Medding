@@ -4,7 +4,7 @@ export const WEDDING_ROUTES: Routes = [
   {
     path: '',
     loadComponent: () => import('./components/wedding-list/wedding-list.component')
-      .then(m => m.WeddingListComponent)
+      .then(m => m.WeddingListComponent),
   },
   {
     path: 'create',
