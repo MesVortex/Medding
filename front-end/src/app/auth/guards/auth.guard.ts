@@ -33,7 +33,7 @@ export class AuthGuard implements CanActivate {
 
           // Check if the user has the required role for the route
           if (requiredRole && authState.user?.role !== requiredRole) {
-            this.router.navigate(['/login']);
+            this.router.navigate(['auth/login']);
             return false;
           }
 
@@ -48,7 +48,7 @@ export class AuthGuard implements CanActivate {
           }
 
           // Redirect unauthenticated users to login
-          this.router.navigate(['/login']);
+          this.router.navigate(['auth/login']);
           return false;
         }
 

@@ -1,104 +1,50 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from './auth/guards/auth.guard';
-import {CreateWeddingComponent} from "./wedding/components/create-wedding/create-wedding.component";
-import {WeddingDetailsComponent} from "./wedding/components/wedding-details/wedding-details.component";
-import {UpdateWeddingComponent} from "./wedding/components/update-wedding/update-wedding.component";
-import {ServiceDetailsComponent} from "./weddingService/components/service-details/service-details.component";
-import {VendorProfileComponent} from "./shared/components/vendor-profile/vendor-profile.component";
-import {
-  ServiceBookingWizardComponent
-} from "./weddingService/components/service-booking-wizard/service-booking-wizard.component";
+import {AUTH_ROUTES} from "./auth/auth.router";
+import {WEDDING_ROUTES} from "./wedding/wedding.routes";
+import {SERVICE_ROUTES} from "./weddingService/service.routes";
+import {DASHBOARD_ROUTES} from "./dashboard/dashboard.routes";
 
 export const routes: Routes = [
   {
-    path: 'login',
-    loadComponent: () => import('./auth/components/login/login.component').then(m => m.LoginComponent)
+    path: '',
+    redirectTo: 'auth/login',
+    pathMatch: 'full'
   },
+
+  // Auth Module Routes
   {
-    path: 'register',
-    loadComponent: () => import('./auth/components/register/register.component').then(m => m.RegisterComponent)
+    path: 'auth',
+    children: AUTH_ROUTES
   },
+
+  // Wedding Module Routes
+  {
+    path: 'weddings',
+    children: WEDDING_ROUTES,
+    canActivate: [AuthGuard],
+    data: { requiredRole: 'ORGANIZER' }
+  },
+
+  // Service Module Routes
+  {
+    path: 'services',
+    children: SERVICE_ROUTES,
+    canActivate: [AuthGuard]
+  },
+
+  // Dashboard Routes
   {
     path: 'dashboard',
-    loadComponent: () => import('./dashboard/dashboard/dashboard.component').then(m => m.DashboardComponent),
+    children: DASHBOARD_ROUTES,
     canActivate: [AuthGuard],
     data: { requiredRole: 'ADMIN' }
   },
-  {
-    path: 'profile',
-    loadComponent: () => import('./shared/components/profile/profile.component').then(m => m.ProfileComponent),
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'vendors/:id',
-    component: VendorProfileComponent,
-    canActivate: [AuthGuard],
-    data: { requiredRole: 'ORGANIZER' }
-  },
-  {
-    path: 'profile/edit',
-    loadComponent: () => import('./shared/components/edit-profile/edit-profile.component').then(m => m.EditProfileComponent),
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'weddings/create',
-    loadComponent: () => import('./wedding/components/create-wedding/create-wedding.component').then(m => m.CreateWeddingComponent),
-    canActivate: [AuthGuard],
-    data: { requiredRole: 'ORGANIZER' }
-  },
-  {
-    path: 'weddings',
-    loadComponent: () => import('./wedding/components/wedding-list/wedding-list.component').then(m => m.WeddingListComponent),
-    canActivate: [AuthGuard],
-    data: { requiredRole: 'ORGANIZER' }
-  },
-  {
-    path: 'weddings/:id',
-    component: WeddingDetailsComponent,
-    canActivate: [AuthGuard],
-    data: { requiredRole: 'ORGANIZER' }
-  },
-  {
-    path: 'weddings/:id/edit',
-    component: UpdateWeddingComponent,
-    canActivate: [AuthGuard],
-    data: { requiredRole: 'ORGANIZER' }
-  },
-  {
-    path: 'services',
-    loadComponent: () => import('./weddingService/components/wedding-service/wedding-service.component').then(m => m.WeddingServiceComponent),
-    canActivate: [AuthGuard],
-    data: { requiredRole: 'VENDOR' }
-  },
-  {
-    path: 'services/browse',
-    loadComponent: () => import('./weddingService/components/service-browse/service-browse.component').then(m => m.ServiceBrowseComponent),
-    canActivate: [AuthGuard],
-    data: { requiredRole: 'ORGANIZER' }
-  },
-  {
-    path: 'services/:id/details',
-    component: ServiceDetailsComponent,
-    canActivate: [AuthGuard],
-    data: { requiredRole: 'ORGANIZER' }
-  },
-  {
-    path: 'services/bookings',
-    loadComponent: () => import('./weddingService/components/vendor-bookings/vendor-bookings.component').then(m => m.VendorBookingsComponent),
-    canActivate: [AuthGuard],
-    data: { requiredRole: 'VENDOR' }
-  },
-  {
-    path: 'weddings/:id/book-services',
-    component: ServiceBookingWizardComponent
-  },
+
+  // Not Found Route
   // {
-  //   path: 'unauthorized',
-  //   loadComponent: () => import('./shared/components/unauthorized/unauthorized.component').then(m => m.UnauthorizedComponent)
-  // },
-  {
-    path: '',
-    redirectTo: '/login',
-    pathMatch: 'full'
-  }
+  //   path: '**',
+  //   loadComponent: () => import('./shared/components/not-found/not-found.component')
+  //     .then(m => m.NotFoundComponent)
+  // }
 ];

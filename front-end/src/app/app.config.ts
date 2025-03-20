@@ -1,5 +1,5 @@
 import { ApplicationConfig } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import {provideRouter, withHashLocation} from '@angular/router';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import {MetaReducer, provideStore} from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
@@ -20,7 +20,7 @@ export function localStorageSyncReducer(reducer: any): any {
 const metaReducers: MetaReducer[] = [localStorageSyncReducer];
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideRouter(routes),
+    provideRouter(routes, withHashLocation()),
     provideHttpClient(withInterceptors([authInterceptor])),
     provideStore({ auth: authReducer }, { metaReducers }),
     provideEffects(AuthEffects),
