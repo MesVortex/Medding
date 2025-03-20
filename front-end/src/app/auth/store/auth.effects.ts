@@ -67,23 +67,12 @@ export class AuthEffects {
     () =>
       this.actions$.pipe(
         ofType(AuthActions.loginSuccess, AuthActions.registerSuccess, AuthActions.loadUserSuccess),
-        tap(() => this.router.navigate(['/dashboard']))
+        tap()
       ),
     { dispatch: false }
   );
 
-  // Add unauthorized error handling
-  unauthorizedError$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(AuthActions.loadUserFailure),
-        tap(() => {
-          localStorage.removeItem('token');
-          this.router.navigate(['auth/login']);
-        })
-      ),
-    { dispatch: false }
-  );
+
 
   logout$ = createEffect(
     () =>

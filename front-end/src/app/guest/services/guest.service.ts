@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { GuestRequest, GuestResponse } from '../models/guest.model';
+import {GuestRequest, GuestResponse, RsvpStatus} from '../models/guest.model';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -30,5 +30,9 @@ export class GuestService {
 
   sendInvitation(id: number): Observable<GuestResponse> {
     return this.http.post<GuestResponse>(`${this.apiUrl}/${id}/send-invitation`, {});
+  }
+
+  handleRsvp(token: string, response: RsvpStatus): Observable<GuestResponse> {
+    return this.http.get<GuestResponse>(`${this.apiUrl}/rsvp/${token}?response=${response}`);
   }
 }

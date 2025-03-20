@@ -17,6 +17,7 @@ export class LoginComponent {
   loginForm: FormGroup;
   loading$ = this.store.select(selectAuthLoading);
   error$ = this.store.select(selectAuthError);
+  showPassword = false;
 
   constructor(private fb: FormBuilder, private store: Store) {
     this.loginForm = this.fb.group({

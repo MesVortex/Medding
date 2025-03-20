@@ -143,6 +143,6 @@ public class GuestServiceImpl implements GuestService {
     }
 
     private String createInvitationLink(String token) {
-        return String.format("http://localhost:4200/api/guests/rsvp/%s", token);
+        return String.format("http://localhost:4200/#/guests/rsvp/%s", token);
     }
 }

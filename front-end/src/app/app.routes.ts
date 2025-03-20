@@ -4,6 +4,7 @@ import { AUTH_ROUTES } from "./auth/auth.router"
 import { WEDDING_ROUTES } from "./wedding/wedding.routes"
 import { SERVICE_ROUTES } from "./weddingService/service.routes"
 import { DASHBOARD_ROUTES } from "./dashboard/dashboard.routes"
+import {GUEST_ROUTES} from "./guest/guest.routes";
 
 export const routes: Routes = [
   {
@@ -24,6 +25,10 @@ export const routes: Routes = [
     children: WEDDING_ROUTES,
     canActivate: [AuthGuard],
     data: { requiredRole: "ORGANIZER" },
+  },
+  {
+    path: "guests",
+    children: GUEST_ROUTES,
   },
 
   // Service Module Routes
