@@ -5,6 +5,8 @@ import { WEDDING_ROUTES } from "./wedding/wedding.routes"
 import { SERVICE_ROUTES } from "./weddingService/service.routes"
 import { DASHBOARD_ROUTES } from "./dashboard/dashboard.routes"
 import {GUEST_ROUTES} from "./guest/guest.routes";
+import {PROFILE_ROUTES} from "./shared/profile.routes";
+import {VENDOR_ROUTES} from "./shared/vendor.routes";
 
 export const routes: Routes = [
   {
@@ -35,6 +37,18 @@ export const routes: Routes = [
   {
     path: "services",
     children: SERVICE_ROUTES,
+    canActivate: [AuthGuard],
+  },
+
+  {
+    path: "profile",
+    children: PROFILE_ROUTES,
+    canActivate: [AuthGuard],
+  },
+
+  {
+    path: "vendor",
+    children: VENDOR_ROUTES,
     canActivate: [AuthGuard],
   },
 

@@ -24,23 +24,6 @@ export class AuthService {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, request);
   }
 
-  // Handle errors at the HTTP interceptor level
-  createAuthErrorInterceptor(): HttpInterceptor {
-    return {
-      intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        return next.handle(req).pipe(
-          catchError((error: HttpErrorResponse) => {
-            if (error.status === 401) {
-              // Clear token if it exists
-              localStorage.removeItem('token');
-            }
-            return throwError(() => error);
-          })
-        );
-      }
-    };
-  }
-
   register(request: RegisterRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/register`, request);
   }
@@ -51,6 +34,11 @@ export class AuthService {
 
   getToken(): string | null {
     return localStorage.getItem('token');
+  }
+
+  getUserRole(): string | null {
+    let auth = localStorage.getItem('auth');
+    return auth ? JSON.parse(auth).user.role : null;
   }
 
   getCurrentUser(): Observable<User> {

@@ -67,7 +67,7 @@ export class UpdateWeddingComponent implements OnInit {
 
       this.weddingService.updateWedding(this.weddingId, this.weddingForm.value).subscribe({
         next: () => {
-          this.router.navigate(['/weddings', this.weddingId]);
+          this.router.navigate(['/weddings']);
         },
         error: (error) => {
           this.loading = false;

@@ -63,10 +63,10 @@ export class AuthGuard implements CanActivate {
         this.router.navigate(['/dashboard']);
         break;
       case 'VENDOR':
-        this.router.navigate(['/vendor/dashboard']);
+        this.router.navigate(['/services']);
         break;
       case 'ORGANIZER':
-        this.router.navigate(['/admin/dashboard']);
+        this.router.navigate(['/organizer']);
         break;
       default:
         this.router.navigate(['auth/login']);

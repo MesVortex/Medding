@@ -21,7 +21,6 @@ export class WeddingDetailsComponent implements OnInit {
   services: ServiceBookingResponse[] = [];
   loading = true;
   error: string | null = null;
-  showDeleteConfirmation = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -72,55 +71,35 @@ export class WeddingDetailsComponent implements OnInit {
     return this.services.filter(service => service.status === 'CANCELLED');
   }
 
-  getStatusColor(status: string): string {
-    switch (status) {
-      case 'PENDING':
-        return 'bg-yellow-50 border-yellow-200';
-      case 'CONFIRMED':
-        return 'bg-green-50 border-green-200';
-      case 'CANCELLED':
-        return 'bg-red-50 border-red-200';
-      default:
-        return 'bg-gray-50 border-gray-200';
-    }
+  getDaysUntilWedding(): number {
+    if (!this.wedding || !this.wedding.date) return 0;
+    const weddingDate = new Date(this.wedding.date);
+    const now = new Date();
+    const diff = weddingDate.getTime() - now.getTime();
+    return diff <= 0 ? 0 : Math.floor(diff / (1000 * 60 * 60 * 24));
   }
 
-  getStatusTextColor(status: string): string {
-    switch (status) {
-      case 'PENDING':
-        return 'text-yellow-800';
-      case 'CONFIRMED':
-        return 'text-green-800';
-      case 'CANCELLED':
-        return 'text-red-800';
-      default:
-        return 'text-gray-800';
-    }
+  getHoursUntilWedding(): number {
+    if (!this.wedding || !this.wedding.date) return 0;
+    const weddingDate = new Date(this.wedding.date);
+    const now = new Date();
+    const diff = weddingDate.getTime() - now.getTime();
+    return diff <= 0 ? 0 : Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
   }
 
-  deleteWedding(): void {
-    if (this.wedding) {
-      this.showDeleteConfirmation = true;
-    }
+  getMinutesUntilWedding(): number {
+    if (!this.wedding || !this.wedding.date) return 0;
+    const weddingDate = new Date(this.wedding.date);
+    const now = new Date();
+    const diff = weddingDate.getTime() - now.getTime();
+    return diff <= 0 ? 0 : Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
   }
 
-  confirmDelete(): void {
-    if (this.wedding) {
-      this.loading = true;
-      this.weddingService.deleteWedding(this.wedding.id).subscribe({
-        next: () => {
-          this.router.navigate(['/weddings']);
-        },
-        error: (error) => {
-          this.error = 'Failed to delete wedding';
-          this.loading = false;
-          console.error('Error deleting wedding:', error);
-        }
-      });
-    }
-  }
-
-  cancelDelete(): void {
-    this.showDeleteConfirmation = false;
+  getSecondsUntilWedding(): number {
+    if (!this.wedding || !this.wedding.date) return 0;
+    const weddingDate = new Date(this.wedding.date);
+    const now = new Date();
+    const diff = weddingDate.getTime() - now.getTime();
+    return diff <= 0 ? 0 : Math.floor((diff % (1000 * 60)) / 1000);
   }
 }

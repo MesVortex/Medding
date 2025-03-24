@@ -1,96 +1,168 @@
-<div class="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
-  <div class="relative py-3 sm:max-w-xl sm:mx-auto">
-    <div class="relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20">
-      <div class="max-w-md mx-auto">
-        <div class="divide-y divide-gray-200">
-          <div class="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-            <h2 class="text-2xl font-bold text-gray-900 mb-8">Create New Wedding</h2>
+<div class="min-h-screen bg-[#FFF9F5] py-8">
+  <!-- Header Section with Decorative Background -->
+  <div class="relative bg-gradient-to-r from-lavender/20 to-cream/30 py-12 mb-8 animate-fadeIn">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="text-center">
+        <h1 class="text-3xl md:text-4xl font-greatvibes text-purple mb-2 animate-float">Create New Wedding</h1>
+        <p class="text-sm md:text-base text-gray-700 max-w-2xl mx-auto">
+          Begin your journey to a beautiful celebration
+        </p>
+      </div>
+    </div>
+    <!-- Decorative elements -->
+    <div class="absolute top-0 left-0 w-full h-full overflow-hidden opacity-10 pointer-events-none">
+      <div class="absolute top-10 left-10 w-20 h-20 rounded-full bg-purple"></div>
+      <div class="absolute bottom-10 right-10 w-32 h-32 rounded-full bg-lavender"></div>
+    </div>
+  </div>
 
-            <form [formGroup]="weddingForm" (ngSubmit)="onSubmit()" class="space-y-6">
-              <!-- Bride -->
-              <div>
-                <label for="bride" class="block text-sm font-medium text-gray-700">Bride's Name</label>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="bg-white rounded-lg shadow-lg border border-beige overflow-hidden animate-slideUp">
+      <div class="px-6 py-5 border-b border-beige bg-gradient-to-r from-lavender/30 to-white">
+        <h2 class="text-xl font-pacifico text-gray-800">Wedding Information</h2>
+        <p class="mt-1 text-sm text-gray-500">Please fill in the details for the new wedding</p>
+      </div>
+
+      <div class="p-6">
+        <form [formGroup]="weddingForm" (ngSubmit)="onSubmit()" class="space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Bride -->
+            <div class="space-y-2">
+              <label for="bride" class="block text-sm font-medium text-gray-700">Bride's Name</label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-lavender" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                </div>
                 <input type="text" id="bride" formControlName="bride"
-                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                @if (weddingForm.get('bride')?.touched && weddingForm.get('bride')?.errors) {
-                  <p class="mt-2 text-sm text-red-600">Bride's name is required and must be at least 2 characters</p>
-                }
+                       class="pl-10 p-2 block w-full rounded-md shadow-sm focus:border-purple focus:ring-purple focus:outline-purple focus:outline-1 sm:text-sm bg-[#FFF9F5]">
               </div>
-
-              <!-- Groom -->
-              <div>
-                <label for="groom" class="block text-sm font-medium text-gray-700">Groom's Name</label>
-                <input type="text" id="groom" formControlName="groom"
-                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                @if (weddingForm.get('groom')?.touched && weddingForm.get('groom')?.errors) {
-                  <p class="mt-2 text-sm text-red-600">Groom's name is required and must be at least 2 characters</p>
-                }
-              </div>
-
-              <!-- Budget -->
-              <div>
-                <label for="budget" class="block text-sm font-medium text-gray-700">Budget</label>
-                <input type="number" id="budget" formControlName="budget"
-                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                @if (weddingForm.get('budget')?.touched && weddingForm.get('budget')?.errors) {
-                  <p class="mt-2 text-sm text-red-600">Budget is required and must be positive</p>
-                }
-              </div>
-
-              <!-- Date -->
-              <div>
-                <label for="date" class="block text-sm font-medium text-gray-700">Wedding Date</label>
-                <input type="date" id="date" formControlName="date"
-                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                @if (weddingForm.get('date')?.touched && weddingForm.get('date')?.errors) {
-                  <p class="mt-2 text-sm text-red-600">Wedding date is required</p>
-                }
-              </div>
-
-              <!-- Location -->
-              <div>
-                <label for="location" class="block text-sm font-medium text-gray-700">Location</label>
-                <input type="text" id="location" formControlName="location"
-                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                @if (weddingForm.get('location')?.touched && weddingForm.get('location')?.errors) {
-                  <p class="mt-2 text-sm text-red-600">Location is required and must be at least 2 characters</p>
-                }
-              </div>
-
-              <!-- Error Message -->
-              @if (errorMessage) {
-                <div class="rounded-md bg-red-50 p-4">
-                  <div class="text-sm text-red-700">{{ errorMessage }}</div>
-                </div>
+              @if (weddingForm.get('bride')?.touched && weddingForm.get('bride')?.errors) {
+                <p class="text-sm text-red-500">Bride's name is required and must be at least 2 characters</p>
               }
+            </div>
 
-              <!-- Submit Button -->
-              <div class="pt-5">
-                <div class="flex justify-end">
-                  <button type="button" routerLink="/weddings"
-                          class="mr-3 px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
-                    Cancel
-                  </button>
-                  <button type="submit"
-                          [disabled]="!weddingForm.valid || loading"
-                          class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50">
-                    @if (loading) {
-                      <span class="inline-flex items-center">
-                        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        Creating...
-                      </span>
-                    } @else {
-                      Create Wedding
-                    }
-                  </button>
+            <!-- Groom -->
+            <div class="space-y-2">
+              <label for="groom" class="block text-sm font-medium text-gray-700">Groom's Name</label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-lavender" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                </div>
+                <input type="text" id="groom" formControlName="groom"
+                       class="pl-10 p-2 block w-full rounded-md shadow-sm focus:border-purple focus:ring-purple focus:outline-purple focus:outline-1 sm:text-sm bg-[#FFF9F5]">
+              </div>
+              @if (weddingForm.get('groom')?.touched && weddingForm.get('groom')?.errors) {
+                <p class="text-sm text-red-500">Groom's name is required and must be at least 2 characters</p>
+              }
+            </div>
+
+            <!-- Date -->
+            <div class="space-y-2">
+              <label for="date" class="block text-sm font-medium text-gray-700">Wedding Date</label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-lavender" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <input type="date" id="date" formControlName="date"
+                       class="pl-10 p-2 block w-full rounded-md shadow-sm focus:border-purple focus:ring-purple focus:outline-purple focus:outline-1 sm:text-sm bg-[#FFF9F5]">
+              </div>
+              @if (weddingForm.get('date')?.touched && weddingForm.get('date')?.errors) {
+                <p class="text-sm text-red-500">Wedding date is required</p>
+              }
+            </div>
+
+            <!-- Budget -->
+            <div class="space-y-2">
+              <label for="budget" class="block text-sm font-medium text-gray-700">Budget</label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-lavender" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <input type="number" id="budget" formControlName="budget"
+                       class="pl-10 p-2 block w-full rounded-md shadow-sm focus:border-purple focus:ring-purple focus:outline-purple focus:outline-1 sm:text-sm bg-[#FFF9F5]">
+              </div>
+              @if (weddingForm.get('budget')?.touched && weddingForm.get('budget')?.errors) {
+                <p class="text-sm text-red-500">Budget is required and must be positive</p>
+              }
+            </div>
+          </div>
+
+          <!-- Location -->
+          <div class="space-y-2">
+            <label for="location" class="block text-sm font-medium text-gray-700">Location</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-lavender" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </div>
+              <input type="text" id="location" formControlName="location"
+                     class="pl-10 p-2 block w-full rounded-md shadow-sm focus:border-purple focus:ring-purple focus:outline-purple focus:outline-1 sm:text-sm bg-[#FFF9F5]">
+            </div>
+            @if (weddingForm.get('location')?.touched && weddingForm.get('location')?.errors) {
+              <p class="text-sm text-red-500">Location is required and must be at least 2 characters</p>
+            }
+          </div>
+
+          <!-- Error Message -->
+          @if (errorMessage) {
+            <div class="rounded-md bg-red-50 p-4 border border-red-200 animate-fadeIn">
+              <div class="flex">
+                <div class="flex-shrink-0">
+                  <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <div class="ml-3">
+                  <h3 class="text-sm font-medium text-red-800">{{ errorMessage }}</h3>
                 </div>
               </div>
-            </form>
+            </div>
+          }
+
+          <!-- Form Actions -->
+          <div class="pt-5 border-t border-beige">
+            <div class="flex justify-end space-x-3">
+              <button type="button" routerLink="/weddings"
+                      class="px-4 py-2 border border-beige rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lavender transition-colors duration-300">
+                Cancel
+              </button>
+              <button type="submit"
+                      [disabled]="!weddingForm.valid || loading"
+                      class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple hover:bg-lavender focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple transition-colors duration-300 disabled:opacity-50">
+                @if (loading) {
+                  <span class="inline-flex items-center">
+                    <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Creating...
+                  </span>
+                } @else {
+                  Create Wedding
+                }
+              </button>
+            </div>
           </div>
-        </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Decorative illustration -->
+    <div class="mt-12 flex justify-center animate-fadeIn" style="animation-delay: 0.5s;">
+      <div class="text-lavender/30">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+        </svg>
       </div>
     </div>
   </div>

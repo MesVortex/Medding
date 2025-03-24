@@ -67,12 +67,28 @@ export class AuthEffects {
     () =>
       this.actions$.pipe(
         ofType(AuthActions.loginSuccess, AuthActions.registerSuccess, AuthActions.loadUserSuccess),
-        tap()
+        tap((action) => {
+          let role;
+          if ('response' in action) {
+            role = action.response.user.role;
+          }else{
+            role = this.authService.getUserRole();
+          }
+          console.log('Redirecting user based on role:', role);
+          // Redirect based on user role
+          if (role === 'ADMIN') {
+            this.router.navigate(['/dashboard']);
+          } else if (role === 'ORGANIZER') {
+            this.router.navigate(['/weddings']);
+          } else if (role === 'VENDOR') {
+            this.router.navigate(['/services']);
+          } else {
+            this.router.navigate(['/']); // Default fallback
+          }
+        })
       ),
     { dispatch: false }
   );
-
-
 
   logout$ = createEffect(
     () =>

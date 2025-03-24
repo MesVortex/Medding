@@ -12,6 +12,11 @@ export const WEDDING_ROUTES: Routes = [
       .then(m => m.CreateWeddingComponent)
   },
   {
+    path: ':id/edit',
+    loadComponent: () => import('./components/update-wedding/update-wedding.component')
+      .then(m => m.UpdateWeddingComponent)
+  },
+  {
     path: ':id',
     loadComponent: () => import('./components/wedding-details/wedding-details.component')
       .then(m => m.WeddingDetailsComponent)
