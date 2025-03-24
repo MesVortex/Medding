@@ -1,120 +1,192 @@
-<div class="px-4 sm:px-6 lg:px-8">
-  <div class="sm:flex sm:items-center">
-    <div class="sm:flex-auto">
-      <h1 class="text-xl font-semibold text-gray-900">My Services</h1>
-      <p class="mt-2 text-sm text-gray-700">A list of all your wedding services</p>
+<div class="min-h-screen bg-[#FFF9F5] py-8">
+  <!-- Header Section with Decorative Background -->
+  <div class="relative bg-gradient-to-r from-lavender/20 to-cream/30 py-12 mb-8 animate-fadeIn">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="text-center">
+        <h1 class="text-3xl md:text-4xl font-greatvibes text-purple mb-2 animate-float">My Services</h1>
+        <p class="text-sm md:text-base text-gray-700 max-w-2xl mx-auto">
+          Manage all your wedding services in one place
+        </p>
+      </div>
     </div>
-    <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-      <button (click)="openCreateModal()"
-              class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto">
-        Add Service
-      </button>
+    <!-- Decorative elements -->
+    <div class="absolute top-0 left-0 w-full h-full overflow-hidden opacity-10 pointer-events-none">
+      <div class="absolute top-10 left-10 w-20 h-20 rounded-full bg-purple"></div>
+      <div class="absolute bottom-10 right-10 w-32 h-32 rounded-full bg-lavender"></div>
     </div>
   </div>
 
-  @if (loading) {
-    <div class="text-center mt-8">
-      <div class="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
-           role="status">
-        <span class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
-          Loading...
-        </span>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="sm:flex sm:items-center mb-8 animate-slideUp">
+      <div class="sm:flex-auto">
+        <h2 class="text-2xl font-pacifico text-gray-800">Service Collection</h2>
+        <p class="mt-2 text-sm text-gray-700">A list of all services you offer for weddings</p>
+      </div>
+      <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+        <button (click)="openCreateModal()"
+                class="inline-flex items-center justify-center rounded-md border border-transparent bg-purple px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-lavender transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-purple focus:ring-offset-2 sm:w-auto">
+          <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+          Add Service
+        </button>
       </div>
     </div>
-  } @else if (error) {
-    <div class="rounded-md bg-red-50 p-4 mt-8">
-      <div class="flex">
-        <div class="flex-shrink-0">
-          <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                  clip-rule="evenodd"/>
+
+    @if (loading) {
+      <div class="mt-8 flex justify-center py-12 animate-fadeIn">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-purple"></div>
+      </div>
+    } @else if (error) {
+      <div class="mt-8 rounded-md bg-red-50 p-4 border border-red-200 animate-fadeIn">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <div class="ml-3">
+            <h3 class="text-sm font-medium text-red-800">{{ error }}</h3>
+          </div>
+        </div>
+      </div>
+    } @else if (services.length === 0) {
+      <div class="mt-8 text-center bg-white p-12 rounded-lg shadow-lg border border-beige animate-fadeIn">
+        <div class="mx-auto h-24 w-24 text-lavender opacity-50">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </div>
-        <div class="ml-3">
-          <h3 class="text-sm font-medium text-red-800">{{ error }}</h3>
+        <h3 class="mt-2 text-lg font-pacifico text-gray-800">No services yet</h3>
+        <p class="mt-1 text-sm text-gray-500">Get started by creating a new service for weddings.</p>
+        <div class="mt-6">
+          <button (click)="openCreateModal()"
+                  class="inline-flex items-center rounded-md bg-purple px-4 py-3 text-sm font-medium text-white shadow-sm hover:bg-lavender transition-colors duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple">
+            <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            Create New Service
+          </button>
         </div>
       </div>
-    </div>
-  } @else if (services.length === 0) {
-    <div class="text-center mt-8">
-      <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
-      </svg>
-      <h3 class="mt-2 text-sm font-medium text-gray-900">No services</h3>
-      <p class="mt-1 text-sm text-gray-500">Get started by creating a new service.</p>
-      <div class="mt-6">
-        <a routerLink="new"
-           class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-          New Service
-        </a>
-      </div>
-    </div>
-  } @else {
-    <div class="mt-8 flex flex-col">
-      <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
-        <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-          <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-            <table class="min-w-full divide-y divide-gray-300">
-              <thead class="bg-gray-50">
-              <tr>
-                <th scope="col"
-                    class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Title
-                </th>
-                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Category</th>
-                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Price</th>
-                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
-                <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                  <span class="sr-only">Actions</span>
-                </th>
-              </tr>
-              </thead>
-              <tbody class="divide-y divide-gray-200 bg-white">
-                @for (service of services; track service.id) {
-                  <tr>
-                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
-                      <div class="font-medium text-gray-900">{{ service.title }}</div>
-                      <div class="text-gray-500">{{ service.description }}</div>
-                    </td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {{ getCategoryDisplayName(service.category) }}
-                    </td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ service.price | currency }}</td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm">
-                      @if (service.availability) {
-                        <span
-                          class="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">
+    } @else {
+      <!-- Card-based layout for services -->
+      <div class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        @for (service of services; track service.id; let i = $index) {
+          <div class="bg-white overflow-hidden shadow-lg rounded-lg border border-beige hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 animate-slideUp" style="animation-delay: {{ i * 0.1 }}s">
+            <!-- Card header -->
+            <div class="px-6 py-5 border-b border-beige bg-gradient-to-r from-lavender/30 to-white">
+              <div class="flex justify-between items-center">
+                <h3 class="text-lg font-pacifico text-gray-800 truncate">{{ service.title }}</h3>
+                <span class="text-sm font-medium text-purple">{{ service.price | currency }}</span>
+              </div>
+            </div>
+
+            <!-- Card content -->
+            <div class="px-6 py-4">
+              <div class="mb-4">
+                <div class="flex items-center mb-2">
+                  <div class="flex-shrink-0 h-8 w-8 rounded-full bg-lavender/20 flex items-center justify-center">
+                    <svg class="h-4 w-4 text-purple" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                    </svg>
+                  </div>
+                  <div class="ml-3">
+                    <p class="text-xs text-gray-500">Category</p>
+                    <p class="text-sm font-medium text-gray-800">{{ getCategoryDisplayName(service.category) }}</p>
+                  </div>
+                </div>
+
+                <div class="flex items-center">
+                  <div class="flex-shrink-0 h-8 w-8 rounded-full bg-lavender/20 flex items-center justify-center">
+                    <svg class="h-4 w-4 text-purple" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <div class="ml-3">
+                    <p class="text-xs text-gray-500">Status</p>
+                    @if (service.availability) {
+                      <span class="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">
                         Available
                       </span>
-                      } @else {
-                        <span class="inline-flex rounded-full bg-red-100 px-2 text-xs font-semibold leading-5 text-red-800">
+                    } @else {
+                      <span class="inline-flex rounded-full bg-red-100 px-2 text-xs font-semibold leading-5 text-red-800">
                         Unavailable
                       </span>
-                      }
-                    </td>
-                    <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                      <button (click)="openEditModal(service)"
-                              class="text-indigo-600 hover:text-indigo-900 mr-4">Edit</button>
-                      <button (click)="deleteService(service.id)"
-                              class="text-red-600 hover:text-red-900">Delete</button>
-                    </td>
-                  </tr>
-                }
-              </tbody>
-            </table>
+                    }
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-4">
+                <p class="text-sm text-gray-500 line-clamp-3">{{ service.description }}</p>
+              </div>
+            </div>
+
+            <!-- Card footer -->
+            <div class="px-6 py-4 bg-gradient-to-r from-lavender/10 to-cream/20 border-t border-beige flex justify-end items-center space-x-2">
+              <button (click)="openEditModal(service)"
+                      class="inline-flex items-center px-3 py-1.5 border border-lavender rounded-md text-sm font-medium text-purple bg-white hover:bg-lavender/10 transition-colors duration-300">
+                <svg class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+                Edit
+              </button>
+              <button (click)="deleteService(service.id)"
+                      class="inline-flex items-center px-3 py-1.5 border border-red-200 rounded-md text-sm font-medium text-red-500 bg-white hover:bg-red-50 transition-colors duration-300">
+                <svg class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+                Delete
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Floating action button for mobile -->
+  <div class="fixed bottom-6 right-6 md:hidden">
+    <button (click)="openCreateModal()"
+            class="flex items-center justify-center h-14 w-14 rounded-full bg-purple text-white shadow-lg hover:bg-lavender transition-colors duration-300 animate-pulse">
+      <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+      </svg>
+    </button>
+  </div>
+
+  @if (showModal) {
+    <!-- Modal backdrop -->
+    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity z-40 animate-fadeIn"></div>
+
+    <!-- Modal container - FIXED: removed the nested modal structure -->
+    <div class="fixed inset-0 z-50 overflow-y-auto">
+      <div class="flex min-h-full items-center justify-center p-4">
+        <!-- Modal content - FIXED: increased width and simplified structure -->
+        <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all w-full max-w-3xl animate-slideUp">
+          <!-- Modal header with decorative background -->
+          <div class="px-6 py-5 border-b border-beige bg-gradient-to-r from-lavender/30 to-white">
+            <h3 class="text-xl font-pacifico text-gray-800">
+              {{ selectedService ? 'Edit Service' : 'Create New Service' }}
+            </h3>
+            <p class="mt-1 text-sm text-gray-500">
+              {{ selectedService ? 'Update the details of your service' : 'Add a new service to your collection' }}
+            </p>
+          </div>
+
+          <!-- Modal body with more padding -->
+          <div class="bg-white px-6 py-6">
+            <!-- FIXED: Directly include the app-service-form without its own modal structure -->
+            <app-service-form
+              [service]="selectedService"
+              [loading]="formLoading"
+              (save)="onSave($event)"
+              (cancel)="closeModal()"
+            ></app-service-form>
           </div>
         </div>
       </div>
     </div>
-  }
-
-  @if (showModal) {
-    <app-service-form
-      [service]="selectedService"
-      [loading]="formLoading"
-      (save)="onSave($event)"
-      (cancel)="closeModal()"
-    ></app-service-form>
   }
 </div>

@@ -1,42 +1,216 @@
-<div class="bg-white">
-  @if (loading) {
-    <div class="text-center py-12">
-      <div class="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em]"></div>
+<div class="min-h-screen bg-[#FFF9F5] py-8">
+  <!-- Header Section with Decorative Background -->
+  <div class="relative bg-gradient-to-r from-lavender/20 to-cream/30 py-12 mb-8 animate-fadeIn">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="text-center">
+        <h1 class="text-3xl md:text-4xl font-greatvibes text-purple mb-2 animate-float">Service Details</h1>
+        <p class="text-sm md:text-base text-gray-700 max-w-2xl mx-auto">
+          Explore the perfect service for your special day
+        </p>
+      </div>
     </div>
-  } @else if (error) {
-    <div class="text-center py-12">
-      <p class="text-red-600">{{ error }}</p>
+    <!-- Decorative elements -->
+    <div class="absolute top-0 left-0 w-full h-full overflow-hidden opacity-10 pointer-events-none">
+      <div class="absolute top-10 left-10 w-20 h-20 rounded-full bg-purple"></div>
+      <div class="absolute bottom-10 right-10 w-32 h-32 rounded-full bg-lavender"></div>
     </div>
-  } @else if (service) {
-    <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8">
-      <!-- Service Details -->
-      <div class="lg:max-w-lg lg:self-end">
-        <div class="mt-4">
-          <h1 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ service.title }}</h1>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    @if (loading) {
+      <div class="mt-8 flex justify-center py-12 animate-fadeIn">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-purple"></div>
+      </div>
+    } @else if (error) {
+      <div class="mt-8 rounded-md bg-red-50 p-4 border border-red-200 animate-fadeIn">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                    clip-rule="evenodd"/>
+            </svg>
+          </div>
+          <div class="ml-3">
+            <h3 class="text-sm font-medium text-red-800">{{ error }}</h3>
+          </div>
         </div>
-
-        <section aria-labelledby="information-heading" class="mt-4">
-          <h2 id="information-heading" class="sr-only">Service information</h2>
-
-          <div class="flex items-center">
-            <p class="text-lg text-gray-900 sm:text-xl">{{ service.price | currency }}</p>
-          </div>
-
-          <div class="mt-4 space-y-6">
-            <p class="text-base text-gray-500">{{ service.description }}</p>
-          </div>
-
-          <div class="mt-6 flex items-center">
-            <div class="flex items-center">
-              <p class="ml-2 text-sm text-gray-500">Category: {{ getCategoryDisplayName(service.category) }}</p>
+      </div>
+    } @else if (service) {
+      <div class="lg:grid lg:grid-cols-2 lg:gap-x-12 animate-slideUp">
+        <!-- Left Column: Service Image/Placeholder -->
+        <div class="mb-8 lg:mb-0">
+          <div class="relative h-80 overflow-hidden rounded-lg border border-beige shadow-lg bg-white">
+            <div
+              class="absolute inset-0 bg-gradient-to-br from-lavender/30 to-purple/10 flex items-center justify-center">
+              <div class="text-center p-6">
+                <div class="mx-auto h-24 w-24 text-lavender mb-4">
+                  <!-- Dynamic category icon based on service category -->
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24" fill="none" viewBox="0 0 24 24"
+                       stroke="currentColor">
+                    <g [innerHTML]="getSanitizedIcon(service.category)"></g>
+                  </svg>
+                </div>
+                <span class="inline-flex rounded-full bg-lavender/20 px-3 py-1 text-sm font-medium text-purple">
+                  {{ getCategoryDisplayName(service.category) }}
+                </span>
+              </div>
             </div>
           </div>
 
-          <div class="mt-2 flex items-center">
-            <p class="text-sm text-gray-500">Vendor: {{ service.vendorName }}</p>
+          <!-- Vendor Information Card -->
+          <div class="mt-6 bg-white rounded-lg border border-beige shadow-md p-6 animate-fadeIn"
+               style="animation-delay: 0.3s;">
+            <h3 class="text-lg font-pacifico text-gray-800 mb-4">Vendor Information</h3>
+            <div class="flex items-center">
+              <div class="flex-shrink-0 h-12 w-12 rounded-full bg-lavender/20 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple" fill="none" viewBox="0 0 24 24"
+                     stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                </svg>
+              </div>
+              <div class="ml-4">
+                <h4 class="text-sm font-medium text-gray-800">{{ service.vendorName }}</h4>
+                <p class="text-xs text-gray-500">Professional Wedding Service Provider</p>
+              </div>
+            </div>
+
+            <div class="mt-4 pt-4 border-t border-beige">
+              <div class="flex items-center">
+                <!-- Rating Stars -->
+                <div class="flex items-center">
+                  @for (star of [1, 2, 3, 4, 5]; track star) {
+                    <svg [class]="star <= getAverageRating() ? 'text-yellow-400' : 'text-gray-300'"
+                         class="h-5 w-5"
+                         viewBox="0 0 20 20"
+                         fill="currentColor">
+                      <path
+                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.95-.69l1.07-3.292z"/>
+                    </svg>
+                  }
+                  <span class="ml-2 text-sm text-gray-500">
+        {{ getAverageRating() }} ({{ reviews.length }} {{ reviews.length === 1 ? 'review' : 'reviews' }})
+      </span>
+                </div>
+              </div>
+            </div>
           </div>
-        </section>
+        </div>
+
+        <!-- Right Column: Service Details -->
+        <div class="bg-white rounded-lg border border-beige shadow-lg overflow-hidden">
+          <!-- Service Header -->
+          <div class="px-6 py-5 border-b border-beige bg-gradient-to-r from-lavender/30 to-white">
+            <h2 class="text-2xl font-pacifico text-gray-800">{{ service.title }}</h2>
+            <div class="flex items-center justify-between mt-2">
+              <span class="text-xl font-medium text-purple">{{ service.price | currency }}</span>
+              <!-- Dynamic availability indicator -->
+              @if (service.availability) {
+                <span class="inline-flex rounded-full bg-green-100 px-2 py-1 text-xs font-semibold text-green-800">
+                  Available
+                </span>
+              } @else {
+                <span class="inline-flex rounded-full bg-red-100 px-2 py-1 text-xs font-semibold text-red-800">
+                  Unavailable
+                </span>
+              }
+            </div>
+          </div>
+
+          <!-- Service Description -->
+          <div class="p-6">
+            <div class="prose prose-sm max-w-none text-gray-500">
+              <p>{{ service.description }}</p>
+            </div>
+
+            <!-- Dynamic Service Features based on category -->
+            <div class="mt-8">
+              <h3 class="text-lg font-medium text-gray-900 mb-4">Service Features</h3>
+              <ul class="space-y-3">
+                @for (feature of getServiceFeatures(service.category); track feature) {
+                  <li class="flex items-start">
+                    <div class="flex-shrink-0">
+                      <svg class="h-5 w-5 text-purple" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                           fill="currentColor">
+                        <path fill-rule="evenodd"
+                              d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                              clip-rule="evenodd"/>
+                      </svg>
+                    </div>
+                    <p class="ml-3 text-sm text-gray-700">{{ feature }}</p>
+                  </li>
+                }
+              </ul>
+            </div>
+
+            <!-- Book Now Button - Only show if service is available -->
+            <div class="mt-8 border-t border-beige pt-8">
+              @if (service.availability) {
+                <button type="button"
+                        class="w-full bg-purple text-white rounded-md py-3 px-4 font-medium hover:bg-lavender transition-colors duration-300 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
+                       stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                  </svg>
+                  Book This Service
+                </button>
+                <p class="text-xs text-center text-gray-500 mt-2">No payment required until service is confirmed</p>
+              } @else {
+                <div
+                  class="w-full bg-gray-100 text-gray-500 rounded-md py-3 px-4 font-medium flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
+                       stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                  Currently Unavailable
+                </div>
+                <p class="text-xs text-center text-gray-500 mt-2">This service is not available for booking at this
+                  time</p>
+              }
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  }
+
+      <!-- Related Services Section - Only show if there are related services -->
+      @if (relatedServices.length > 0) {
+        <div class="mt-16 animate-fadeIn" style="animation-delay: 0.5s;">
+          <h2 class="text-2xl font-pacifico text-gray-800 mb-6">You May Also Like</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            @for (relatedService of relatedServices; track relatedService.id) {
+              <div
+                class="bg-white rounded-lg border border-beige shadow-md overflow-hidden hover:shadow-lg transition-all duration-300">
+                <div class="h-40 bg-lavender/20 flex items-center justify-center">
+                  <span class="text-purple opacity-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="none" viewBox="0 0 24 24"
+                         stroke="currentColor">
+                      <g [innerHTML]="getSanitizedIcon(relatedService.category)"></g>
+                    </svg>
+                  </span>
+                </div>
+                <div class="p-4">
+                  <h3 class="font-medium text-gray-900">{{ relatedService.title }}</h3>
+                  <p class="mt-1 text-sm text-gray-500 line-clamp-2">{{ relatedService.description }}</p>
+                  <p class="mt-2 text-sm font-medium text-purple">{{ relatedService.price | currency }}</p>
+                </div>
+                <div class="px-4 py-3 bg-gradient-to-r from-lavender/10 to-cream/20 border-t border-beige">
+                  <a [routerLink]="['/services', relatedService.id]"
+                     class="text-sm font-medium text-purple hover:text-lavender transition-colors duration-300 flex items-center">
+                    View Details
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24"
+                         stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    }
+  </div>
 </div>

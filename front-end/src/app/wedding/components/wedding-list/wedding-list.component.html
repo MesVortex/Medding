@@ -80,7 +80,7 @@
         @for (wedding of weddings; track wedding.id; let i = $index) {
           <div class="bg-white overflow-hidden shadow-lg rounded-lg border border-beige hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 animate-slideUp" style="animation-delay: {{ i * 0.1 }}s">
             <!-- Card header with decorative element -->
-            <div class="relative h-40 bg-cover bg-center" style="background-image: url('/placeholder.svg?height=400&width=600')">
+            <div class="relative h-40 bg-cover bg-center" style="">
               <div class="absolute inset-0 bg-gradient-to-b from-purple/60 to-lavender/60 flex items-center justify-center">
                 <h3 class="text-2xl font-greatvibes text-white text-center px-4">{{ wedding.bride }} & {{ wedding.groom }}</h3>
               </div>
