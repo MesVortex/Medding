@@ -1,150 +1,187 @@
-<div class="px-4 sm:px-6 lg:px-8">
-  <div class="sm:flex sm:items-center">
-    <div class="sm:flex-auto">
-      <h1 class="text-xl font-semibold text-gray-900">Browse Services</h1>
-      <p class="mt-2 text-sm text-gray-700">Browse all available wedding services from our vendors.</p>
+<div class="min-h-screen bg-[#FFF9F5] py-8">
+  <!-- Header Section with Decorative Background -->
+  <div class="relative bg-gradient-to-r from-lavender/20 to-cream/30 py-12 mb-8 animate-fadeIn">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="text-center">
+        <h1 class="text-3xl md:text-4xl font-greatvibes text-purple mb-2 animate-float">Browse Services</h1>
+        <p class="text-sm md:text-base text-gray-700 max-w-2xl mx-auto">
+          Explore all available wedding services from our vendors
+        </p>
+      </div>
+    </div>
+    <!-- Decorative elements -->
+    <div class="absolute top-0 left-0 w-full h-full overflow-hidden opacity-10 pointer-events-none">
+      <div class="absolute top-10 left-10 w-20 h-20 rounded-full bg-purple"></div>
+      <div class="absolute bottom-10 right-10 w-32 h-32 rounded-full bg-lavender"></div>
     </div>
   </div>
 
-  <!-- Add Filter Controls -->
-  <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
-    <!-- Search Input -->
-    <div>
-      <label for="search" class="block text-sm font-medium text-gray-700">Search by title</label>
-      <div class="mt-1">
-        <input type="text"
-               id="search"
-               [(ngModel)]="searchTerm"
-               (ngModelChange)="onSearchChange()"
-               class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-               placeholder="Search services...">
-      </div>
-    </div>
-
-    <!-- Category Filter -->
-    <div>
-      <label for="category" class="block text-sm font-medium text-gray-700">Filter by category</label>
-      <select id="category"
-              [(ngModel)]="selectedCategory"
-              (ngModelChange)="onCategoryChange()"
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-        <option value="">All Categories</option>
-        @for (category of categories; track category) {
-          <option [value]="category">{{ getCategoryDisplayName(category) }}</option>
-        }
-      </select>
-    </div>
-  </div>
-
-  <!-- Clear Filters Button -->
-  @if (searchTerm || selectedCategory) {
-    <div class="mt-4">
-      <button type="button"
-              (click)="clearFilters()"
-              class="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-sm font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-        Clear Filters
-      </button>
-    </div>
-  }
-
-  @if (loading) {
-    <div class="text-center mt-8">
-      <div
-        class="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
-        role="status">
-            <span
-              class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
-              Loading...
-            </span>
-      </div>
-    </div>
-  } @else if (error) {
-    <div class="rounded-md bg-red-50 p-4 mt-8">
-      <div class="flex">
-        <div class="flex-shrink-0">
-          <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                  clip-rule="evenodd"/>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <!-- Search and Filter Bar -->
+    <div class="flex flex-col md:flex-row gap-4 mb-8 animate-slideUp">
+      <!-- Search Input -->
+      <div class="relative flex-grow">
+        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
         </div>
-        <div class="ml-3">
-          <h3 class="text-sm font-medium text-red-800">{{ error }}</h3>
+        <input
+          type="text"
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="onSearchChange()"
+          class="block w-full pl-10 pr-3 py-3 border border-beige rounded-lg bg-white focus:ring-purple focus:border-purple text-sm"
+          placeholder="Search services..."
+        >
+      </div>
+
+      <!-- Simple Category Dropdown -->
+      <div class="relative">
+        <select
+          [(ngModel)]="selectedCategory"
+          (ngModelChange)="onCategoryChange()"
+          class="block w-full pl-3 pr-10 py-3 border border-beige rounded-lg bg-white focus:ring-purple focus:border-purple text-sm appearance-none"
+        >
+          <option [ngValue]="null">All Categories</option>
+          @for (category of categories; track category) {
+            <option [ngValue]="category">{{ getCategoryDisplayName(category) }}</option>
+          }
+        </select>
+        <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+          <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+          </svg>
         </div>
       </div>
     </div>
-  } @else if (filteredServices.length === 0) {
-    <div class="text-center mt-8">
-      <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
-      </svg>
-      <h3 class="mt-2 text-sm font-medium text-gray-900">No services found</h3>
-      <p class="mt-1 text-sm text-gray-500">Try adjusting your search or filter criteria.</p>
+
+    <!-- Active Filters Display -->
+    <div class="flex flex-wrap gap-2 mb-6 animate-fadeIn">
+      @if (searchTerm) {
+        <div class="inline-flex items-center px-3 py-1 rounded-full bg-lavender/20 text-sm text-purple">
+          <span>Search: "{{ searchTerm }}"</span>
+          <button (click)="searchTerm = ''; onSearchChange()" class="ml-2 focus:outline-none">
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      }
+
+      @if (selectedCategory) {
+        <div class="inline-flex items-center px-3 py-1 rounded-full bg-lavender/20 text-sm text-purple">
+          <span>Category: {{ getCategoryDisplayName(selectedCategory) }}</span>
+          <button (click)="selectedCategory = null; onCategoryChange()" class="ml-2 focus:outline-none">
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      }
     </div>
-  } @else {
-    <div class="mt-8 flex flex-col">
-      <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
-        <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-          <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-            <table class="min-w-full divide-y divide-gray-300">
-              <thead class="bg-gray-50">
-              <tr>
-                <th scope="col"
-                    class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Service
-                </th>
-                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Category</th>
-                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Vendor</th>
-                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Price</th>
-                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
-              </tr>
-              </thead>
-              <tbody class="divide-y divide-gray-200 bg-white">
-                @for (service of filteredServices; track service.id) {
-                  <tr class="cursor-pointer hover:bg-gray-50"
-                      [routerLink]="['/services', service.id, 'details']">
-                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
-                      <div class="font-medium text-gray-900">{{ service.title }}</div>
-                      <div class="text-gray-500">{{ service.description }}</div>
-                    </td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {{ getCategoryDisplayName(service.category) }}
-                    </td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      <a [routerLink]="['/vendors', service.vendorId]"
-                         class="text-indigo-600 hover:text-indigo-900">
-                        {{ service.vendorName }}
-                      </a>
-                    </td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {{ service.price | currency }}
-                    </td>
-                    <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-sm font-medium sm:pr-6">
-                      @if (service.availability) {
-                        <button (click)="openBookingModal(service); $event.stopPropagation()"
-                                class="text-indigo-600 hover:text-indigo-900">
-                          Book Now
-                        </button>
-                      } @else {
-                        <span class="text-gray-400">Not Available</span>
-                      }
-                    </td>
-                  </tr>
-                }
-              </tbody>
-            </table>
+
+    <!-- Content Display -->
+    @if (loading) {
+      <div class="mt-8 flex justify-center py-12 animate-fadeIn">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-purple"></div>
+      </div>
+    } @else if (error) {
+      <div class="mt-8 rounded-md bg-red-50 p-4 border border-red-200 animate-fadeIn">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <svg class="h-5 w-5 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          </div>
+          <div class="ml-3">
+            <h3 class="text-sm font-medium text-red-800">{{ error }}</h3>
           </div>
         </div>
       </div>
-    </div>
-  }
+    } @else if (filteredServices.length === 0) {
+      <div class="text-center mt-8 bg-white p-12 rounded-lg shadow-lg border border-beige animate-fadeIn">
+        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <h3 class="mt-2 text-lg font-medium text-gray-900">No services found</h3>
+        <p class="mt-1 text-sm text-gray-500">Try adjusting your search or filter criteria.</p>
+        <div class="mt-6">
+          <button (click)="clearFilters()" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-purple bg-lavender/20 hover:bg-lavender/30">
+            Clear all filters
+          </button>
+        </div>
+      </div>
+    } @else {
+      <div class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        @for (service of filteredServices; track service.id; let i = $index) {
+          <div class="bg-white overflow-hidden shadow-lg rounded-lg border border-beige hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 animate-slideUp"
+               style="animation-delay: {{ i * 0.1 }}s">
+            <!-- Service Card Content -->
+            <div class="px-6 py-5 border-b border-beige bg-gradient-to-r from-lavender/30 to-white">
+              <div class="flex justify-between items-center">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-lavender/20 text-purple">
+                  {{ getCategoryDisplayName(service.category) }}
+                </span>
+                <div class="text-lg font-medium text-purple">{{ service.price | currency }}</div>
+              </div>
+              <h3 class="mt-2 text-xl font-semibold text-gray-900">{{ service.title }}</h3>
+            </div>
+
+            <div class="px-6 py-4">
+              <p class="text-sm text-gray-600 line-clamp-3">{{ service.description }}</p>
+
+              <div class="mt-4 flex items-center">
+                <div class="flex-shrink-0">
+                  <div class="h-10 w-10 rounded-full bg-lavender/30 flex items-center justify-center text-purple font-medium">
+                    {{ service.vendorName?.charAt(0) || 'V' }}
+                  </div>
+                </div>
+                <div class="ml-3">
+                  <p class="text-sm font-medium text-gray-900">{{ service.vendorName || 'Vendor' }}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="px-6 py-4 bg-gradient-to-r from-lavender/10 to-cream/20 border-t border-beige flex justify-end items-center">
+              @if (service.availability) {
+                <button (click)="openBookingModal(service); $event.stopPropagation()"
+                        class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple hover:bg-lavender transition-colors duration-300">
+                  <svg class="mr-2 -ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  Book Now
+                </button>
+              } @else {
+                <span class="inline-flex items-center px-4 py-2 border border-gray-200 rounded-md text-sm font-medium text-gray-400 bg-gray-50">
+                  <svg class="mr-2 -ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Not Available
+                </span>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Booking Modal -->
   @if (showBookingModal && selectedService) {
-    <app-service-booking
-      [service]="selectedService"
-      [bookingLoading]="bookingLoading"
-      [bookingError]="bookingError"
-      (book)="onBook($event)"
-      (cancel)="closeBookingModal()"
-    ></app-service-booking>
+    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity z-40 animate-fadeIn"></div>
+    <div class="fixed inset-0 z-50 overflow-y-auto">
+      <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+        <div class="relative inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6 animate-slideUp">
+          <app-service-booking
+            [service]="selectedService"
+            [bookingLoading]="bookingLoading"
+            [bookingError]="bookingError"
+            (book)="onBook($event)"
+            (cancel)="closeBookingModal()"
+          ></app-service-booking>
+        </div>
+      </div>
+    </div>
   }
 </div>
