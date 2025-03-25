@@ -1,19 +1,43 @@
-<div class="min-h-screen bg-gray-100 py-12">
+<div class="min-h-screen bg-[#FFF9F5] py-8">
+  <!-- Header Section with Decorative Background -->
+  <div class="relative bg-gradient-to-r from-lavender/20 to-cream/30 py-12 mb-8 animate-fadeIn">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="text-center">
+        <h1 class="text-3xl md:text-4xl font-greatvibes text-purple mb-2 animate-float">Wedding Service Wizard</h1>
+        <p class="text-sm md:text-base text-gray-700 max-w-2xl mx-auto">
+          Select services for each category to complete your wedding planning
+        </p>
+      </div>
+    </div>
+    <!-- Decorative elements -->
+    <div class="absolute top-0 left-0 w-full h-full overflow-hidden opacity-10 pointer-events-none">
+      <div class="absolute top-10 left-10 w-20 h-20 rounded-full bg-purple"></div>
+      <div class="absolute bottom-10 right-10 w-32 h-32 rounded-full bg-lavender"></div>
+    </div>
+  </div>
+
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <!-- Progress bar -->
-    <div class="mb-8">
+    <div class="mb-8 animate-slideUp">
       <div class="relative">
-        <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-gray-200">
-          <div class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-indigo-600"
-               [style.width]="getProgressWidth(currentStep)">
+        <div class="overflow-hidden h-2 mb-4 text-xs flex rounded-full bg-lavender/20">
+          <div
+            class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-gradient-to-r from-purple to-lavender rounded-full transition-all duration-500"
+            [style.width]="getProgressWidth(currentStep)">
           </div>
         </div>
         <div class="flex justify-between">
           @for (category of categories; track category; let i = $index) {
             <div class="text-center">
-              <div [class]="i <= currentStep ? 'bg-indigo-600' : 'bg-gray-200'"
-                   class="h-4 w-4 rounded-full mx-auto"></div>
-              <div class="text-xs mt-1">{{ getCategoryDisplayName(category) }}</div>
+              <div [class]="i <= currentStep ? 'bg-gradient-to-r from-purple to-lavender' : 'bg-lavender/20'"
+                   class="h-5 w-5 rounded-full mx-auto transition-all duration-300 flex items-center justify-center">
+                @if (i < currentStep) {
+                  <svg class="h-3 w-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                  </svg>
+                }
+              </div>
+              <div class="text-xs mt-1 text-gray-600">{{ getCategoryDisplayName(category) }}</div>
             </div>
           }
         </div>
@@ -21,72 +45,156 @@
     </div>
 
     <!-- Content -->
-    <div class="bg-white shadow rounded-lg p-6">
-      <h2 class="text-2xl font-semibold mb-6">
-        {{ getCategoryDisplayName(categories[currentStep]) }}
-      </h2>
-
-      @if (loading) {
-        <div class="flex justify-center py-12">
-          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
-        </div>
-      } @else if (error) {
-        <div class="rounded-md bg-red-50 p-4 mb-6">
-          <div class="flex">
-            <div class="flex-shrink-0">
-              <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
-              </svg>
-            </div>
-            <div class="ml-3">
-              <p class="text-sm font-medium text-red-800">{{ error }}</p>
-            </div>
-          </div>
-        </div>
-      } @else if (success) {
-        <div class="rounded-md bg-green-50 p-4 mb-6">
-          <div class="flex">
-            <div class="flex-shrink-0">
-              <svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-              </svg>
-            </div>
-            <div class="ml-3">
-              <p class="text-sm font-medium text-green-800">{{ success }}</p>
-            </div>
-          </div>
-        </div>
-      }
-
-      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        @for (service of services; track service.id) {
-          <div class="border rounded-lg p-4 hover:shadow-lg transition-shadow">
-            <h3 class="font-medium text-gray-900">{{ service.title }}</h3>
-            <p class="mt-1 text-sm text-gray-500">{{ service.description }}</p>
-            <p class="mt-2 text-lg font-medium text-gray-900">{{ service.price | currency }}</p>
-            @if (!success) {
-              <button (click)="bookService(service.id)"
-                      [disabled]="loading"
-                      class="mt-4 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm disabled:opacity-50">
-                Book this service
-              </button>
-            }
-          </div>
-        }
+    <div class="bg-white shadow-lg rounded-lg border border-beige overflow-hidden animate-fadeIn">
+      <!-- Category Header -->
+      <div class="px-6 py-5 border-b border-beige bg-gradient-to-r from-lavender/30 to-white">
+        <h2 class="text-2xl font-pacifico text-purple">
+          {{ getCurrentCategoryDisplayName() }}
+        </h2>
+        <p class="text-sm text-gray-600 mt-1">
+          Select a service from this category or skip to the next one
+        </p>
       </div>
 
-      <!-- Navigation buttons -->
-      <div class="mt-8 flex justify-between">
-        <button (click)="skipStep()"
-                class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-          Skip this category
-        </button>
-        @if (showNextButton || currentStep === categories.length - 1) {
-          <button (click)="nextStep()"
-                  class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-            {{ currentStep === categories.length - 1 ? 'Finish' : 'Next Category' }}
-          </button>
+      <div class="p-6">
+        @if (loading) {
+          <div class="flex justify-center py-12">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-purple"></div>
+          </div>
+        } @else if (error) {
+          <div class="rounded-md bg-red-50 p-4 mb-6 border border-red-200">
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                        clip-rule="evenodd"/>
+                </svg>
+              </div>
+              <div class="ml-3">
+                <p class="text-sm font-medium text-red-800">{{ error }}</p>
+              </div>
+            </div>
+          </div>
+        } @else if (success) {
+          <div class="rounded-md bg-green-50 p-4 mb-6 border border-green-200">
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                        clip-rule="evenodd"/>
+                </svg>
+              </div>
+              <div class="ml-3">
+                <p class="text-sm font-medium text-green-800">{{ success }}</p>
+              </div>
+            </div>
+          </div>
         }
+
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          @for (service of services; track service.id; let i = $index) {
+            <div
+              class="bg-white overflow-hidden shadow-lg rounded-lg border border-beige hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 animate-slideUp"
+              style="animation-delay: {{ i * 0.1 }}s">
+              <!-- Service Card Content -->
+              <div class="px-6 py-5 border-b border-beige bg-gradient-to-r from-lavender/30 to-white">
+                <div class="flex justify-between items-center">
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-lavender/20 text-purple">
+                    {{ getCategoryDisplayName(service.category) }}
+                  </span>
+                  <div class="text-lg font-medium text-purple">{{ service.price | currency }}</div>
+                </div>
+                <h3 class="mt-2 text-xl font-semibold text-gray-900">{{ service.title }}</h3>
+              </div>
+
+              <div class="px-6 py-4">
+                <p class="text-sm text-gray-600 line-clamp-3">{{ service.description }}</p>
+
+                <div class="mt-4 flex items-center">
+                  <div class="flex-shrink-0">
+                    <div
+                      class="h-10 w-10 rounded-full bg-lavender/30 flex items-center justify-center text-purple font-medium">
+                      {{ service.vendorName?.charAt(0) || 'V' }}
+                    </div>
+                  </div>
+                  <div class="ml-3">
+                    <p class="text-sm font-medium text-gray-900">{{ service.vendorName || 'Vendor' }}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="px-6 py-4 bg-gradient-to-r from-lavender/10 to-cream/20 border-t border-beige flex justify-end items-center">
+                @if (service.isBookedForWedding) {
+                  <span class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-500">
+                    <svg class="mr-2 -ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    Already Booked
+                  </span>
+                } @else if (service.availability) {
+                  @if (success && service.id === bookedServiceId) {
+                    <span class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-500">
+                      <svg class="mr-2 -ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                      </svg>
+                      Selected
+                    </span>
+                  } @else {
+                    <button (click)="bookService(service.id)"
+                            [disabled]="loading"
+                            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple hover:bg-lavender transition-colors duration-300 disabled:opacity-50">
+                      <svg class="mr-2 -ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                      </svg>
+                      Book this service
+                    </button>
+                  }
+                } @else {
+                  <span class="inline-flex items-center px-4 py-2 border border-gray-200 rounded-md text-sm font-medium text-gray-400 bg-gray-50">
+                    <svg class="mr-2 -ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Not Available
+                  </span>
+                }
+              </div>
+            </div>
+          }
+        </div>
+
+        @if (services.length === 0 && !loading) {
+          <div class="text-center py-12">
+            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <h3 class="mt-2 text-lg font-medium text-gray-900">No services available</h3>
+            <p class="mt-1 text-sm text-gray-500">There are no services available in this category.</p>
+          </div>
+        }
+
+        <!-- Navigation buttons -->
+        <div class="mt-8 flex justify-between">
+          <button (click)="skipStep()"
+                  class="inline-flex items-center px-4 py-2 border border-beige rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors duration-300">
+            <svg class="mr-2 -ml-1 h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/>
+            </svg>
+            Skip this category
+          </button>
+          @if (showNextButton || currentStep === categories.length - 1) {
+            <button (click)="nextStep()"
+                    class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple hover:bg-lavender transition-colors duration-300">
+              {{ currentStep === categories.length - 1 ? 'Finish' : 'Next Category' }}
+              <svg class="ml-2 -mr-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+              </svg>
+            </button>
+          }
+        </div>
       </div>
     </div>
   </div>

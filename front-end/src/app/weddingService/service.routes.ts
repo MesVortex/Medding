@@ -24,5 +24,11 @@ export const SERVICE_ROUTES: Routes = [
     loadComponent: () => import('./components/vendor-bookings/vendor-bookings.component')
       .then(m => m.VendorBookingsComponent),
     data: { requiredRole: 'VENDOR' }
+  },
+  {
+    path: ':id/wizard',
+    loadComponent: () => import('./components/service-booking-wizard/service-booking-wizard.component')
+      .then(m => m.ServiceBookingWizardComponent),
+    data: { requiredRole: 'ORGANIZER' }
   }
 ];
