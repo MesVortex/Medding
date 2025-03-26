@@ -5,14 +5,43 @@ import { ActivatedRoute } from '@angular/router';
 import { GuestService } from '../../services/guest.service';
 import { GuestResponse, GuestRequest, RsvpStatus } from '../../models/guest.model';
 import { ConfirmationDialogComponent } from '../../../shared/components/confirmation-dialog/confirmation-dialog.component';
-import {NotificationComponent} from "../../../shared/components/notification/notification.component";
+import { NotificationComponent } from "../../../shared/components/notification/notification.component";
 
 @Component({
   selector: 'app-guest-list',
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule, ConfirmationDialogComponent, NotificationComponent],
   templateUrl: './guest-list.component.html',
-    styleUrls: ['./guest-list.component.scss']
+  styleUrls: ['./guest-list.component.scss'],
+  styles: [`
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-float {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .animate-fadeIn {
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+
+    .animate-slideUp {
+      animation: slideUp 0.5s ease-out forwards;
+    }
+  `]
 })
 export class GuestListComponent implements OnInit {
   guests: GuestResponse[] = [];
@@ -81,6 +110,7 @@ export class GuestListComponent implements OnInit {
           this.loadGuests();
           this.guestForm.reset();
           this.showAddForm = false;
+          this.showNotif('Guest added successfully', 'success');
         },
         error: (error) => {
           this.error = error.error?.message || 'Failed to add guest';

@@ -3,7 +3,8 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { AuthService } from '../services/auth.service';
 import { AuthActions } from './auth.actions';
 import { catchError, map, mergeMap, of, tap } from 'rxjs';
-import { Router } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Location} from "@angular/common";
 
 @Injectable()
 export class AuthEffects {
@@ -76,10 +77,12 @@ export class AuthEffects {
           }
           console.log('Redirecting user based on role:', role);
           // Redirect based on user role
-          if (role === 'ADMIN') {
-            this.router.navigate(['/dashboard']);
+          if (this.location.path().startsWith('/guests/rsvp')) {
+            console.log(this.location.path());
           } else if (role === 'ORGANIZER') {
             this.router.navigate(['/weddings']);
+          } else if (role === 'ADMIN') {
+            this.router.navigate(['/admin/dashboard']);
           } else if (role === 'VENDOR') {
             this.router.navigate(['/services']);
           } else {
@@ -105,6 +108,7 @@ export class AuthEffects {
   constructor(
     private actions$: Actions,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private location: Location
   ) {}
 }

@@ -1,18 +1,39 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { StatisticsService } from '../services/statistics.service';
+import { DashboardStats } from "../models/statistics.model";
 
 @Component({
   selector: 'app-dashboard',
-  standalone: true,
-  imports: [CommonModule, RouterModule],
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  standalone: true,
+  styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-  constructor() {}
+  stats: DashboardStats | null = null;
+  loading = true;
+  error: string | null = null;
+
+  constructor(private statisticsService: StatisticsService) {}
 
   ngOnInit(): void {
-    // Initialize dashboard data
+    this.loadStats();
+  }
+
+  private loadStats(): void {
+    this.statisticsService.getDashboardStats().subscribe({
+      next: (data) => {
+        this.stats = data;
+        this.loading = false;
+      },
+      error: (error) => {
+        this.error = 'Failed to load dashboard statistics';
+        this.loading = false;
+        console.error('Error loading stats:', error);
+      }
+    });
+  }
+
+  getLocationEntries(): [string, number][] {
+    return Object.entries(this.stats?.vendorsByLocation || {});
   }
 }

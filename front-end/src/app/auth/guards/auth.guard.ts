@@ -26,14 +26,15 @@ export class AuthGuard implements CanActivate {
         if (authState.isAuthenticated) {
 
           // Prevent authenticated users from accessing login/register
-          if (route.routeConfig?.path === 'auth/login' || route.routeConfig?.path === 'register') {
+          if (route.routeConfig?.path === 'auth/login' || route.routeConfig?.path === 'auth/register') {
             this.redirectBasedOnRole(authState.user?.role!);
+            console.log('Redirecting to dashboard');
             return false;
           }
 
           // Check if the user has the required role for the route
           if (requiredRole && authState.user?.role !== requiredRole) {
-            this.router.navigate(['auth/login']);
+            this.router.navigate(['/unauthorized']);
             return false;
           }
 
@@ -43,7 +44,7 @@ export class AuthGuard implements CanActivate {
         // Handle unauthenticated users
         if (!authState.isAuthenticated) {
           // Allow access to login/register for unauthenticated users
-          if (route.routeConfig?.path === 'auth/login' || route.routeConfig?.path === 'register') {
+          if (route.routeConfig?.path === 'auth/login' || route.routeConfig?.path === 'auth/register') {
             return true;
           }
 
@@ -60,13 +61,13 @@ export class AuthGuard implements CanActivate {
   private redirectBasedOnRole(role: string): void {
     switch (role) {
       case 'ADMIN':
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/admin/dashboard']);
         break;
       case 'VENDOR':
         this.router.navigate(['/services']);
         break;
       case 'ORGANIZER':
-        this.router.navigate(['/organizer']);
+        this.router.navigate(['/weddings']);
         break;
       default:
         this.router.navigate(['auth/login']);

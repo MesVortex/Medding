@@ -14,6 +14,9 @@ export const AUTH_ROUTES: Routes = [
     path: "register",
     loadComponent: () => import("./components/register/register.component").then((m) => m.RegisterComponent),
   },
-  // Add other auth routes as needed
+  {
+    path: 'logout',
+    loadComponent: () => import("./components/logout/logout.component").then((m) => m.LogoutComponent),
+  },
 ]
 

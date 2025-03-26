@@ -1,185 +1,256 @@
-<div class="px-4 sm:px-6 lg:px-8">
-  <div class="sm:flex sm:items-center">
-    <div class="sm:flex-auto">
-      <h1 class="text-xl font-semibold text-gray-900">Guest List</h1>
-      <p class="mt-2 text-sm text-gray-700">Manage your wedding guests and invitations</p>
+<div class="min-h-screen bg-[#FFF9F5] py-8">
+  <!-- Header Section with Decorative Background -->
+  <div class="relative bg-gradient-to-r from-lavender/20 to-cream/30 py-12 mb-8 animate-fadeIn">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="text-center">
+        <h1 class="text-3xl md:text-4xl font-greatvibes text-purple mb-2 animate-float">Wedding Guest List</h1>
+        <p class="text-sm md:text-base text-gray-700 max-w-2xl mx-auto">
+          Manage your wedding guests and invitations
+        </p>
+      </div>
     </div>
-    <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-      <button type="button"
-              (click)="showAddForm = true"
-              class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto">
-        Add Guest
-      </button>
+    <!-- Decorative elements -->
+    <div class="absolute top-0 left-0 w-full h-full overflow-hidden opacity-10 pointer-events-none">
+      <div class="absolute top-10 left-10 w-20 h-20 rounded-full bg-purple"></div>
+      <div class="absolute bottom-10 right-10 w-32 h-32 rounded-full bg-lavender"></div>
     </div>
   </div>
 
-  @if (error) {
-    <div class="rounded-md bg-red-50 p-4 mt-4">
-      <div class="flex">
-        <div class="ml-3">
-          <p class="text-sm font-medium text-red-800">{{ error }}</p>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="bg-white shadow-lg rounded-lg border border-beige overflow-hidden animate-fadeIn">
+      <div class="px-6 py-5 border-b border-beige bg-gradient-to-r from-lavender/30 to-white">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h2 class="text-xl font-pacifico text-purple">Guest List</h2>
+            <p class="mt-1 text-sm text-gray-600">Keep track of who's coming to your special day</p>
+          </div>
+          <div class="mt-4 sm:mt-0">
+            <button type="button"
+                    (click)="showAddForm = true"
+                    class="inline-flex items-center justify-center rounded-md border border-transparent bg-purple hover:bg-lavender px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors duration-300">
+              <svg class="mr-2 -ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+              </svg>
+              Add Guest
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-  }
 
-  @if (showAddForm) {
-    <div class="mt-8 max-w-xl">
-      <form [formGroup]="guestForm" (ngSubmit)="onSubmit()" class="space-y-4">
-        <div>
-          <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-          <input type="text" id="name" formControlName="name"
-                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-        </div>
+      <div class="p-6">
+        @if (error) {
+          <div class="rounded-md bg-red-50 p-4 mb-6 border border-red-200">
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                </svg>
+              </div>
+              <div class="ml-3">
+                <p class="text-sm font-medium text-red-800">{{ error }}</p>
+              </div>
+            </div>
+          </div>
+        }
 
-        <div>
-          <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-          <input type="email" id="email" formControlName="email"
-                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-        </div>
+        @if (showAddForm) {
+          <div class="mt-4 mb-8 bg-lavender/10 rounded-lg p-6 border border-lavender/30 animate-slideUp">
+            <h3 class="text-lg font-medium text-purple mb-4">Add New Guest</h3>
+            <form [formGroup]="guestForm" (ngSubmit)="onSubmit()" class="space-y-4">
+              <div>
+                <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+                <input type="text" id="name" formControlName="name"
+                       class="mt-1 p-2 block w-full rounded-md border-beige shadow-sm focus:outline-purple focus:outline-1 sm:text-sm">
+              </div>
 
-        <div class="flex justify-end space-x-3">
-          <button type="button"
-                  (click)="showAddForm = false"
-                  class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50">
-            Cancel
-          </button>
-          <button type="submit"
-                  [disabled]="!guestForm.valid"
-                  class="rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 disabled:opacity-50">
-            Add Guest
-          </button>
-        </div>
-      </form>
-    </div>
-  }
+              <div>
+                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                <input type="email" id="email" formControlName="email"
+                       class="mt-1 p-2 block w-full rounded-md border-beige shadow-sm focus:outline-1 focus:outline-purple sm:text-sm">
+              </div>
 
-  @if (loading) {
-    <div class="text-center mt-8">
-      <div class="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent"></div>
-    </div>
-  } @else if (guests.length === 0) {
-    <div class="text-center mt-8">
-      <p class="text-sm text-gray-500">No guests added yet</p>
-    </div>
-  } @else {
-    <div class="mt-8 flex flex-col">
-      <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-        <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-          <table class="min-w-full divide-y divide-gray-300">
-            <thead>
-            <tr>
-              <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900">Name</th>
-              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Email</th>
-              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">RSVP Status</th>
-              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Sending Date</th>
-              <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                <span class="sr-only">Actions</span>
-              </th>
-            </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-200">
-              @for (guest of guests; track guest.id) {
-                <tr>
-                  <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900">{{ guest.name }}</td>
-                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ guest.email }}</td>
-                  <td class="whitespace-nowrap px-3 py-4 text-sm">
-                    <span [ngClass]="{
-    'bg-green-100 text-green-800': guest.rsvpStatus === 'ACCEPTED',
-    'bg-red-100 text-red-800': guest.rsvpStatus === 'DECLINED',
-    'bg-yellow-100 text-yellow-800': guest.rsvpStatus === 'PENDING'
-  }" class="inline-flex rounded-full px-2 text-xs font-semibold leading-5">
-    {{ guest.rsvpStatus }}
-  </span>
-                  </td>
-                  @if (guest.invitationSent) {
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      Sent on: {{ guest.invitationSentDate | date:'medium' }}
+              <div class="flex justify-end space-x-3">
+                <button type="button"
+                        (click)="showAddForm = false"
+                        class="rounded-md border border-beige bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 transition-colors duration-300">
+                  Cancel
+                </button>
+                <button type="submit"
+                        [disabled]="!guestForm.valid"
+                        class="rounded-md border border-transparent bg-purple px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-lavender transition-colors duration-300 disabled:opacity-50">
+                  Add Guest
+                </button>
+              </div>
+            </form>
+          </div>
+        }
+
+        @if (loading) {
+          <div class="flex justify-center py-12">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-purple"></div>
+          </div>
+        } @else if (guests.length === 0) {
+          <div class="text-center py-12 bg-white rounded-lg border border-beige">
+            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+            <h3 class="mt-2 text-lg font-medium text-gray-900">No guests added yet</h3>
+            <p class="mt-1 text-sm text-gray-500">Start by adding your first guest to the list.</p>
+            <div class="mt-6">
+              <button (click)="showAddForm = true" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-purple bg-lavender/20 hover:bg-lavender/30 transition-colors duration-300">
+                <svg class="mr-2 -ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                Add Your First Guest
+              </button>
+            </div>
+          </div>
+        } @else {
+          <div class="mt-4 overflow-hidden border border-beige rounded-lg shadow-sm">
+            <table class="min-w-full divide-y divide-beige">
+              <thead class="bg-lavender/10">
+              <tr>
+                <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900">Name</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Email</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">RSVP Status</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Invitation</th>
+                <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
+                  <span class="sr-only">Actions</span>
+                </th>
+              </tr>
+              </thead>
+              <tbody class="divide-y divide-beige bg-white">
+                @for (guest of guests; track guest.id) {
+                  <tr class="hover:bg-lavender/5 transition-colors duration-150">
+                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900">{{ guest.name }}</td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ guest.email }}</td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm">
+                      <span [ngClass]="{
+                        'bg-green-100 text-green-800 border border-green-200': guest.rsvpStatus === 'ACCEPTED',
+                        'bg-red-100 text-red-800 border border-red-200': guest.rsvpStatus === 'DECLINED',
+                        'bg-lavender/20 text-purple border border-lavender/30': guest.rsvpStatus === 'PENDING'
+                      }" class="inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold">
+                        {{ guest.rsvpStatus }}
+                      </span>
                     </td>
-                  }@else{
                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      Invitation not sent yet
+                      @if (guest.invitationSent) {
+                        <span class="inline-flex items-center text-green-600">
+                          <svg class="mr-1.5 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                          </svg>
+                          Sent on: {{ guest.invitationSentDate | date:'medium' }}
+                        </span>
+                      } @else {
+                        <span class="text-gray-500">Not sent yet</span>
+                      }
                     </td>
-                  }
-                  <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                    <button
-                      (click)="sendInvitation(guest)"
-                      [disabled]="guest.invitationSent || sendingInvitation[guest.id]"
-                      class="text-indigo-600 hover:text-indigo-900 mr-4 disabled:opacity-50 disabled:cursor-not-allowed">
-                      {{ guest.invitationSent ? 'Invitation Sent' :
-                      sendingInvitation[guest.id] ? 'Sending...' : 'Send Invitation' }}
-                    </button>
-                    <button (click)="startEdit(guest)"
-                            class="text-blue-600 hover:text-blue-900 mr-4">
-                      Edit
-                    </button>
-                    <button (click)="confirmDelete(guest.id)"
-                            class="text-red-600 hover:text-red-900">
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-                @if (showEditModal) {
-                  <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity">
-                    <div class="fixed inset-0 z-10 overflow-y-auto">
-                      <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                        <div class="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
-                          <div class="absolute right-0 top-0 hidden pr-4 pt-4 sm:block">
-                            <button type="button"
-                                    (click)="showEditModal = false"
-                                    class="rounded-md bg-white text-gray-400 hover:text-gray-500">
-                              <span class="sr-only">Close</span>
-                              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                              </svg>
-                            </button>
-                          </div>
-
-                          <div class="sm:flex sm:items-start">
-                            <div class="mt-3 text-center sm:mt-0 sm:text-left w-full">
-                              <h3 class="text-lg font-semibold leading-6 text-gray-900">Edit Guest</h3>
-
-                              <form [formGroup]="editForm" (ngSubmit)="onUpdateSubmit()" class="mt-4 space-y-4">
-                                <div>
-                                  <label for="edit-name" class="block text-sm font-medium text-gray-700">Name</label>
-                                  <input type="text" id="edit-name" formControlName="name"
-                                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                                </div>
-
-                                <div>
-                                  <label for="edit-email" class="block text-sm font-medium text-gray-700">Email</label>
-                                  <input type="email" id="edit-email" formControlName="email"
-                                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                                </div>
-
-                                <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
-                                  <button type="submit"
-                                          [disabled]="!editForm.valid"
-                                          class="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:ml-3 sm:w-auto">
-                                    Update Guest
-                                  </button>
-                                  <button type="button"
-                                          (click)="showEditModal = false"
-                                          class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">
-                                    Cancel
-                                  </button>
-                                </div>
-                              </form>
-                            </div>
-                          </div>
-                        </div>
+                    <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                      <div class="flex justify-end space-x-2">
+                        <button
+                          (click)="sendInvitation(guest)"
+                          [disabled]="guest.invitationSent || sendingInvitation[guest.id]"
+                          class="inline-flex items-center px-2 py-1 text-xs rounded-md border border-lavender/30 bg-lavender/10 text-purple hover:bg-lavender/20 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-150">
+                          @if (guest.invitationSent) {
+                            <svg class="mr-1 h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            Sent
+                          } @else if (sendingInvitation[guest.id]) {
+                            <svg class="animate-spin -ml-1 mr-1 h-3 w-3" fill="none" viewBox="0 0 24 24">
+                              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Sending
+                          } @else {
+                            <svg class="mr-1 h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                            Send
+                          }
+                        </button>
+                        <button (click)="startEdit(guest)"
+                                class="inline-flex items-center px-2 py-1 text-xs rounded-md border border-blue-200 bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors duration-150">
+                          <svg class="mr-1 h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                          </svg>
+                          Edit
+                        </button>
+                        <button (click)="confirmDelete(guest.id)"
+                                class="inline-flex items-center px-2 py-1 text-xs rounded-md border border-red-200 bg-red-50 text-red-600 hover:bg-red-100 transition-colors duration-150">
+                          <svg class="mr-1 h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                          </svg>
+                          Delete
+                        </button>
                       </div>
-                    </div>
-                  </div>
+                    </td>
+                  </tr>
                 }
-              }
-            </tbody>
-          </table>
+              </tbody>
+            </table>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Modal -->
+@if (showEditModal) {
+  <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity z-40 animate-fadeIn"></div>
+  <div class="fixed inset-0 z-50 overflow-y-auto">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+      <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+      <div class="relative inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6 animate-slideUp">
+        <div class="absolute right-0 top-0 pr-4 pt-4">
+          <button type="button"
+                  (click)="showEditModal = false"
+                  class="rounded-md bg-white text-gray-400 hover:text-gray-500 transition-colors duration-150">
+            <span class="sr-only">Close</span>
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <div>
+          <div class="text-center sm:text-left">
+            <h3 class="text-lg font-pacifico text-purple">Edit Guest</h3>
+            <p class="text-sm text-gray-500 mt-1">Update guest information</p>
+
+            <form [formGroup]="editForm" (ngSubmit)="onUpdateSubmit()" class="mt-4 space-y-4">
+              <div>
+                <label for="edit-name" class="block text-sm font-medium text-gray-700">Name</label>
+                <input type="text" id="edit-name" formControlName="name"
+                       class="mt-1 p-2 block w-full rounded-md border-beige border shadow-sm focus:outline-purple focus:outline-1 sm:text-sm">
+              </div>
+
+              <div>
+                <label for="edit-email" class="block text-sm font-medium text-gray-700">Email</label>
+                <input type="email" id="edit-email" formControlName="email"
+                       class="mt-1 p-2 block w-full rounded-md border-beige border shadow-sm focus:outline-1 focus:outline-purple sm:text-sm">
+              </div>
+
+              <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                <button type="submit"
+                        [disabled]="!editForm.valid"
+                        class="inline-flex w-full justify-center rounded-md bg-purple px-3 py-2 text-sm font-medium text-white shadow-sm hover:bg-lavender transition-colors duration-300 sm:ml-3 sm:w-auto disabled:opacity-50">
+                  Update Guest
+                </button>
+                <button type="button"
+                        (click)="showEditModal = false"
+                        class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset ring-beige hover:bg-gray-50 transition-colors duration-150 sm:mt-0 sm:w-auto">
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
-  }
-</div>
+  </div>
+}
 
 <app-confirmation-dialog
   [isOpen]="showDeleteConfirmation"

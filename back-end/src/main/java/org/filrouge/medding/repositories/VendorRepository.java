@@ -16,6 +16,6 @@ public interface VendorRepository extends JpaRepository<Vendor, Long> {
     long countByVerifiedTrue();
     long countByVerifiedFalse();
 
-    @Query("SELECT v.location as location, COUNT(v) as count FROM Vendor v GROUP BY v.location")
-    Map<String, Long> countByLocationGrouped();
+    @Query("SELECT v.location, COUNT(v) FROM Vendor v WHERE v.location IS NOT NULL GROUP BY v.location")
+    List<Object[]> countByLocationGrouped();
 }

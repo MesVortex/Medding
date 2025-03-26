@@ -22,35 +22,41 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     @Override
+    public DashboardStatsDTO getDashboardStats() {
+        DashboardStatsDTO stats = new DashboardStatsDTO();
+
+        // Get total counts
+        stats.setTotalUsers(userRepository.count());
+        stats.setTotalVendors(userRepository.countByRole(UserRole.VENDOR));
+        stats.setTotalOrganizers(userRepository.countByRole(UserRole.ORGANIZER));
+        stats.setPendingVendors(vendorRepository.countByVerifiedFalse());
+        stats.setVerifiedVendors(vendorRepository.countByVerifiedTrue());
+
+        // Convert the grouped results to a Map for users by role
+        Map<String, Long> usersByRole = userRepository.countByRoleGrouped()
+                .stream()
+                .collect(Collectors.toMap(
+                        row -> ((UserRole) row[0]).name(),
+                        row -> ((Number) row[1]).longValue()
+                ));
+        stats.setUsersByRole(usersByRole);
+
+        // Convert the grouped results to a Map for vendors by location
+        Map<String, Long> vendorsByLocation = vendorRepository.countByLocationGrouped()
+                .stream()
+                .collect(Collectors.toMap(
+                        row -> (String) row[0],
+                        row -> ((Number) row[1]).longValue()
+                ));
+        stats.setVendorsByLocation(vendorsByLocation);
+
+        return stats;
+    }
+
+    @Override
     public List<UserResponseDTO> getAllUsers() {
         return userRepository.findAll().stream()
                 .map(userMapper::userToUserResponseDTO)
                 .collect(Collectors.toList());
-    }
-
-    @Override
-    public DashboardStatsDTO getDashboardStats() {
-        DashboardStatsDTO stats = new DashboardStatsDTO();
-
-        // Count total users by role
-        stats.setTotalUsers(userRepository.count());
-        stats.setTotalVendors(vendorRepository.count());
-        stats.setPendingVendors(vendorRepository.countByVerifiedFalse());
-        stats.setVerifiedVendors(vendorRepository.countByVerifiedTrue());
-        stats.setTotalOrganizers(userRepository.countByRole(UserRole.ORGANIZER));
-
-        // Convert List<Object[]> to Map<String, Long>
-        Map<String, Long> usersByRole = userRepository.countByRoleGrouped().stream()
-                .collect(Collectors.toMap(
-                        arr -> ((UserRole) arr[0]).name(),
-                        arr -> (Long) arr[1]
-                ));
-        stats.setUsersByRole(usersByRole);
-
-        // Get vendors distribution by location
-        Map<String, Long> vendorsByLocation = vendorRepository.countByLocationGrouped();
-        stats.setVendorsByLocation(vendorsByLocation);
-
-        return stats;
     }
 }

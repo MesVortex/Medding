@@ -1,16 +1,12 @@
 import { Injectable } from '@angular/core';
 import {
-  HttpClient,
-  HttpErrorResponse,
-  HttpEvent,
-  HttpHandler,
-  HttpInterceptor,
-  HttpRequest
+  HttpClient
 } from '@angular/common/http';
 import {catchError, Observable, throwError} from 'rxjs';
 import { LoginRequest, RegisterRequest, AuthResponse } from '../models/auth.model';
 import {environment} from "../../../environments/environment";
 import {User} from "../models/user.model";
+import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +14,7 @@ import {User} from "../models/user.model";
 export class AuthService {
   private apiUrl = `${environment.apiUrl}/api/auth`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   login(request: LoginRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, request);
@@ -28,14 +24,6 @@ export class AuthService {
     return this.http.post<AuthResponse>(`${this.apiUrl}/register`, request);
   }
 
-  logout(): void {
-    localStorage.removeItem('token');
-  }
-
-  getToken(): string | null {
-    return localStorage.getItem('token');
-  }
-
   getUserRole(): string | null {
     let auth = localStorage.getItem('auth');
     return auth ? JSON.parse(auth).user.role : null;
@@ -43,5 +31,11 @@ export class AuthService {
 
   getCurrentUser(): Observable<User> {
     return this.http.get<User>(`${environment.apiUrl}/api/profiles/me`);
+  }
+
+  logout(): void {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    this.router.navigate(["/auth/login"])
   }
 }

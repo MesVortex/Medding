@@ -12,7 +12,7 @@ import {AuthActions} from "./auth/store/auth.actions";
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'front-end';
+  title = 'medding';
   constructor(private store: Store) {}
 
   ngOnInit() {

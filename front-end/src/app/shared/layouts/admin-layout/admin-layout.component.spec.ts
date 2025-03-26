@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MoroccanPatternComponent } from './moroccan-pattern.component';
+import { AdminLayoutComponent } from './admin-layout.component';
 
-describe('MoroccanPatternComponent', () => {
-  let component: MoroccanPatternComponent;
-  let fixture: ComponentFixture<MoroccanPatternComponent>;
+describe('AdminLayoutComponent', () => {
+  let component: AdminLayoutComponent;
+  let fixture: ComponentFixture<AdminLayoutComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MoroccanPatternComponent]
+      imports: [AdminLayoutComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(MoroccanPatternComponent);
+    fixture = TestBed.createComponent(AdminLayoutComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
