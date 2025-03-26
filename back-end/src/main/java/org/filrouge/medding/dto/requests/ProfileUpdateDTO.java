@@ -11,9 +11,6 @@ public class ProfileUpdateDTO {
     @Email(message = "Email should be valid")
     private String email;
 
-    @Size(min = 6, message = "Password must be at least 6 characters long")
-    private String password;
-
     @Size(min = 2, max = 200, message = "Location must be between 2 and 200 characters")
     private String location;
 

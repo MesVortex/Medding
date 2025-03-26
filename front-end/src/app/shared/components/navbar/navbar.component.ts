@@ -1,70 +1,92 @@
-import { Component, Input, type OnInit } from "@angular/core"
-import { CommonModule } from "@angular/common"
-import { RouterModule, type Router } from "@angular/router"
+import {Component, OnInit} from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import {AuthService} from "../../../auth/services/auth.service";
-
-interface NavLink {
-  label: string
-  route: string
-  children?: NavLink[]
-}
+import {User} from "../../../auth/models/user.model";
+import {AuthActions} from "../../../auth/store/auth.actions";
+import {Store} from "@ngrx/store";
 
 @Component({
-  selector: "app-navbar",
+  selector: 'app-navbar',
   standalone: true,
   imports: [CommonModule, RouterModule],
-  templateUrl: "./navbar.component.html",
-  styleUrls: ["./navbar.component.scss"],
+  templateUrl: './navbar.component.html',
+  styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
-  @Input() userName = ""
-  @Input() userAvatar = ""
-  @Input() isLoggedIn = false
+  showMobileMenu = false;
+  showProfileDropdown = false;
+  showWeddingsDropdown = false;
+  showMobileWeddingsDropdown = false;
 
-  mobileMenuOpen = false
-  profileMenuOpen = false
-
-  navLinks: NavLink[] = [
-    { label: "Home", route: "/" },
-    { label: "Services", route: "/services" },
-    {
-      label: "Weddings",
-      route: "/weddings",
-      children: [
-        { label: "My Weddings", route: "/weddings" },
-        { label: "Create Wedding", route: "/weddings/create" },
-      ],
-    },
-    { label: "Vendors", route: "/vendors" },
-    { label: "About", route: "/about" },
-    { label: "Contact", route: "/contact" },
-  ]
+  user: User | null = null;
+  userRole: string = '';
+  userName: string = '';
+  userEmail: string = '';
+  userInitial: string = '';
 
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
+    private store: Store
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.authService.getCurrentUser().subscribe(user => {
+      this.user = user;
+      if (user) {
+        this.userRole = user.role;
+        this.userName = user.username;
+        this.userEmail = user.email;
+        this.userInitial = user.username.charAt(0).toUpperCase();
+      }
+    });
+  }
 
   toggleMobileMenu(): void {
-    this.mobileMenuOpen = !this.mobileMenuOpen
-    if (this.mobileMenuOpen) {
-      this.profileMenuOpen = false
+    this.showMobileMenu = !this.showMobileMenu;
+    // Close other dropdowns when toggling mobile menu
+    if (this.showMobileMenu) {
+      this.showProfileDropdown = false;
+      this.showWeddingsDropdown = false;
     }
   }
 
-  toggleProfileMenu(): void {
-    this.profileMenuOpen = !this.profileMenuOpen
+  toggleProfileDropdown(event?: Event): void {
+    if (event) {
+      event.stopPropagation();
+    }
+    // Simply toggle the dropdown state
+    this.showProfileDropdown = !this.showProfileDropdown;
+
+    // Close other dropdowns when toggling profile dropdown
+    if (this.showProfileDropdown) {
+      this.showWeddingsDropdown = false;
+    }
   }
 
-  closeAllMenus(): void {
-    this.mobileMenuOpen = false
-    this.profileMenuOpen = false
+  toggleWeddingsDropdown(event?: Event): void {
+    if (event) {
+      event.stopPropagation();
+    }
+    // Simply toggle the dropdown state
+    this.showWeddingsDropdown = !this.showWeddingsDropdown;
+
+    // Close other dropdowns when toggling weddings dropdown
+    if (this.showWeddingsDropdown) {
+      this.showProfileDropdown = false;
+    }
+  }
+
+  toggleMobileWeddingsDropdown(): void {
+    this.showMobileWeddingsDropdown = !this.showMobileWeddingsDropdown;
   }
 
   logout(): void {
-    this.closeAllMenus()
-    this.authService.logout()
+    this.store.dispatch(AuthActions.logout());
+    // Close all dropdowns and menus
+    this.showMobileMenu = false;
+    this.showProfileDropdown = false;
+    this.showWeddingsDropdown = false;
+    this.showMobileWeddingsDropdown = false;
   }
 }
-

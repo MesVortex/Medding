@@ -21,6 +21,7 @@ export class VendorProfileComponent implements OnInit {
   error: string | null = null;
   reviewForm: FormGroup;
   submittingReview = false;
+  averageRating: number = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -30,7 +31,7 @@ export class VendorProfileComponent implements OnInit {
   ) {
     this.reviewForm = this.fb.group({
       rating: ['', [Validators.required, Validators.min(1), Validators.max(5)]],
-      comment: ['', [Validators.required, Validators.minLength(10)]]
+      comment: ['', [Validators.minLength(10)]]
     });
   }
 
@@ -56,10 +57,21 @@ export class VendorProfileComponent implements OnInit {
     });
   }
 
+  private calculateAverageRating(): void {
+    if (!this.reviews.length) {
+      this.averageRating = 0;
+      return;
+    }
+
+    const totalRating = this.reviews.reduce((sum, review) => sum + review.rating, 0);
+    this.averageRating = totalRating / this.reviews.length;
+  }
+
   private loadVendorReviews(vendorId: number): void {
     this.reviewService.getVendorReviews(vendorId).subscribe({
       next: (reviews) => {
         this.reviews = reviews;
+        this.calculateAverageRating(); // Calculate average after loading reviews
       },
       error: (error) => {
         console.error('Error loading reviews:', error);
@@ -79,6 +91,7 @@ export class VendorProfileComponent implements OnInit {
       this.reviewService.createReview(reviewData).subscribe({
         next: (newReview) => {
           this.reviews = [newReview, ...this.reviews];
+          this.calculateAverageRating(); // Recalculate after adding new review
           this.reviewForm.reset();
           this.submittingReview = false;
         },

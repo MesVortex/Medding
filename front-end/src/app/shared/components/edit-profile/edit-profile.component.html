@@ -1,18 +1,40 @@
-<div class="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
-  <div class="relative py-3 sm:max-w-xl sm:mx-auto">
-    <div class="relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20">
-      <div class="max-w-md mx-auto">
-        <div class="divide-y divide-gray-200">
-          <div class="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-            <h2 class="text-2xl font-bold text-gray-900 mb-4">Edit Profile</h2>
+<div class="min-h-screen bg-[#FFF9F5] py-8">
+  <!-- Header Section with Decorative Background -->
+  <div class="relative bg-gradient-to-r from-lavender/20 to-cream/30 py-12 mb-8 animate-fadeIn">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="text-center">
+        <h1 class="text-3xl md:text-4xl font-greatvibes text-purple mb-2 animate-float">Edit Profile</h1>
+        <p class="text-sm md:text-base text-gray-700 max-w-2xl mx-auto">
+          Update your personal information
+        </p>
+      </div>
+    </div>
+    <!-- Decorative elements -->
+    <div class="absolute top-0 left-0 w-full h-full overflow-hidden opacity-10 pointer-events-none">
+      <div class="absolute top-10 left-10 w-20 h-20 rounded-full bg-purple"></div>
+      <div class="absolute bottom-10 right-10 w-32 h-32 rounded-full bg-lavender"></div>
+    </div>
+  </div>
 
-            <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="space-y-4">
-              <!-- Common Fields -->
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="bg-white shadow-lg rounded-lg border border-beige overflow-hidden animate-fadeIn">
+      <div class="px-6 py-5 border-b border-beige bg-gradient-to-r from-lavender/30 to-white">
+        <h2 class="text-2xl font-pacifico text-purple">Update Your Information</h2>
+        <p class="text-sm text-gray-600 mt-1">Fill in the form below to update your profile details</p>
+      </div>
+
+      <div class="p-6">
+        <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="space-y-6">
+          <!-- Basic Information Section -->
+          <div class="bg-lavender/10 rounded-lg p-5">
+            <h3 class="text-lg font-medium text-purple mb-4">Basic Information</h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
                 <input type="text" id="username" formControlName="username"
-                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                <div *ngIf="profileForm.get('username')?.touched && profileForm.get('username')?.errors" class="text-red-600 text-sm mt-1">
+                       class="mt-1 p-2 block w-full rounded-md shadow-sm focus:outline-purple focus:outline-1 text-sm">
+                <div *ngIf="profileForm.get('username')?.touched && profileForm.get('username')?.errors" class="text-red-600 text-xs mt-1">
                   <span *ngIf="profileForm.get('username')?.errors?.['required']">Username is required</span>
                   <span *ngIf="profileForm.get('username')?.errors?.['minlength']">Username must be at least 3 characters</span>
                 </div>
@@ -21,8 +43,8 @@
               <div>
                 <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
                 <input type="email" id="email" formControlName="email"
-                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                <div *ngIf="profileForm.get('email')?.touched && profileForm.get('email')?.errors" class="text-red-600 text-sm mt-1">
+                       class="mt-1 p-2 block w-full rounded-md shadow-sm focus:outline-purple focus:outline-1 text-sm">
+                <div *ngIf="profileForm.get('email')?.touched && profileForm.get('email')?.errors" class="text-red-600 text-xs mt-1">
                   <span *ngIf="profileForm.get('email')?.errors?.['required']">Email is required</span>
                   <span *ngIf="profileForm.get('email')?.errors?.['email']">Please enter a valid email address</span>
                 </div>
@@ -31,8 +53,8 @@
               <div>
                 <label for="number" class="block text-sm font-medium text-gray-700">Phone Number</label>
                 <input type="tel" id="number" formControlName="number"
-                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                <div *ngIf="profileForm.get('number')?.touched && profileForm.get('number')?.errors" class="text-red-600 text-sm mt-1">
+                       class="mt-1 p-2 block w-full rounded-md shadow-sm focus:outline-purple focus:outline-1 text-sm">
+                <div *ngIf="profileForm.get('number')?.touched && profileForm.get('number')?.errors" class="text-red-600 text-xs mt-1">
                   <span *ngIf="profileForm.get('number')?.errors?.['pattern']">Please enter a valid phone number</span>
                 </div>
               </div>
@@ -42,69 +64,81 @@
                 <div>
                   <label for="location" class="block text-sm font-medium text-gray-700">Location</label>
                   <input type="text" id="location" formControlName="location"
-                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                  <div *ngIf="profileForm.get('location')?.touched && profileForm.get('location')?.errors" class="text-red-600 text-sm mt-1">
+                         class="mt-1 p-2 block w-full rounded-md shadow-sm focus:outline-purple focus:outline-1 text-sm">
+                  <div *ngIf="profileForm.get('location')?.touched && profileForm.get('location')?.errors" class="text-red-600 text-xs mt-1">
                     <span *ngIf="profileForm.get('location')?.errors?.['required']">Location is required</span>
                   </div>
                 </div>
               </ng-container>
-
-              <!-- Password Section -->
-              <div class="border-t pt-4">
-                <button type="button" (click)="togglePasswordFields()"
-                        class="text-indigo-600 hover:text-indigo-800">
-                  {{ showPasswordFields ? 'Cancel Password Change' : 'Change Password' }}
-                </button>
-
-                <div *ngIf="showPasswordFields" class="mt-4 space-y-4">
-                  <div>
-                    <label for="currentPassword" class="block text-sm font-medium text-gray-700">Current Password</label>
-                    <input type="password" id="currentPassword" formControlName="currentPassword"
-                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                  </div>
-
-                  <div>
-                    <label for="newPassword" class="block text-sm font-medium text-gray-700">New Password</label>
-                    <input type="password" id="newPassword" formControlName="newPassword"
-                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                    <div *ngIf="profileForm.get('newPassword')?.touched && profileForm.get('newPassword')?.errors" class="text-red-600 text-sm mt-1">
-                      <span *ngIf="profileForm.get('newPassword')?.errors?.['minlength']">Password must be at least 6 characters</span>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirm New Password</label>
-                    <input type="password" id="confirmPassword" formControlName="confirmPassword"
-                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                    <div *ngIf="!passwordsMatch() && profileForm.get('confirmPassword')?.touched"
-                         class="text-red-600 text-sm mt-1">
-                      Passwords do not match
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- API Error Message -->
-              <div *ngIf="errorMessage" class="text-red-600 text-sm mt-4">
-                {{ errorMessage }}
-              </div>
-              <!-- Form Actions -->
-              <div class="pt-5">
-                <div class="flex justify-end">
-                  <button type="button" (click)="router.navigate(['/profile'])"
-                          class="mr-3 px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
-                    Cancel
-                  </button>
-                  <button type="submit"
-                          [disabled]="!profileForm.valid || (showPasswordFields && !passwordsMatch())"
-                          class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50">
-                    Save Changes
-                  </button>
-                </div>
-              </div>
-            </form>
+            </div>
           </div>
-        </div>
+
+          <!-- Password Section -->
+          <div class="bg-cream/20 rounded-lg p-5">
+            <div class="flex justify-between items-center mb-4">
+              <h3 class="text-lg font-medium text-purple">Password Settings</h3>
+              <button type="button" (click)="togglePasswordFields()"
+                      class="text-sm text-purple hover:text-lavender transition-colors duration-300 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path *ngIf="!showPasswordFields" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                  <path *ngIf="showPasswordFields" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+                {{ showPasswordFields ? 'Cancel Password Change' : 'Change Password' }}
+              </button>
+            </div>
+
+            <div *ngIf="showPasswordFields" class="space-y-4">
+              <div>
+                <label for="currentPassword" class="block text-sm font-medium text-gray-700">Current Password</label>
+                <input type="password" id="currentPassword" formControlName="currentPassword"
+                       class="mt-1 p-2 block w-full rounded-md shadow-sm focus:outline-purple focus:outline-1 text-sm">
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label for="newPassword" class="block text-sm font-medium text-gray-700">New Password</label>
+                  <input type="password" id="newPassword" formControlName="newPassword"
+                         class="mt-1 p-2 block w-full rounded-md shadow-sm focus:outline-purple focus:outline-1 text-sm">
+                  <div *ngIf="profileForm.get('newPassword')?.touched && profileForm.get('newPassword')?.errors" class="text-red-600 text-xs mt-1">
+                    <span *ngIf="profileForm.get('newPassword')?.errors?.['minlength']">Password must be at least 6 characters</span>
+                  </div>
+                </div>
+
+                <div>
+                  <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirm New Password</label>
+                  <input type="password" id="confirmPassword" formControlName="confirmPassword"
+                         class="mt-1 p-2 block w-full rounded-md shadow-sm focus:outline-purple focus:outline-1 text-sm">
+                  <div *ngIf="!passwordsMatch() && profileForm.get('confirmPassword')?.touched"
+                       class="text-red-600 text-xs mt-1">
+                    Passwords do not match
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="!showPasswordFields" class="text-sm text-gray-500 italic">
+              Click "Change Password" to update your password
+            </div>
+          </div>
+
+          <!-- API Error Message -->
+          <div *ngIf="errorMessage" class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm">
+            {{ errorMessage }}
+          </div>
+
+          <!-- Form Actions -->
+          <div class="flex justify-end space-x-4 pt-4 border-t border-beige">
+            <button type="button" (click)="router.navigate(['/profile'])"
+                    class="px-4 py-2 border border-beige rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors duration-300">
+              Cancel
+            </button>
+            <button type="submit"
+                    [disabled]="!profileForm.valid || (showPasswordFields && !passwordsMatch())"
+                    class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple hover:bg-lavender transition-colors duration-300 disabled:opacity-50">
+              Save Changes
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </div>

@@ -20,7 +20,6 @@ public class VendorServiceImpl implements VendorService {
 
     private final VendorRepository vendorRepository;
     private final UserMapper userMapper;
-    private final SecurityUtils securityUtils;
 
     @Override
     public List<VendorProfileDTO> getAllVendors() {

@@ -21,14 +21,21 @@ export class EditProfileComponent implements OnInit {
   showPasswordFields: boolean = false;
   errorMessage: string = '';
 
+  constructor(
+    private fb: FormBuilder,
+    private profileService: ProfileService,
+    protected router: Router,
+    private store: Store
+  ) {}
+
   private initializeForm() {
     const baseFields = {
       username: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
-      number: ['', [Validators.pattern(/^\+?[0-9]{8,15}$/)]],
-      currentPassword: [''],
-      newPassword: [''],
-      confirmPassword: ['']
+      number: ['', [Validators.pattern(/^\+?[0-9]{8,10}$/)]],
+      currentPassword: ['', []],
+      newPassword: ['', []],
+      confirmPassword: ['', []]
     };
 
     // Add location field only for vendors
@@ -42,12 +49,34 @@ export class EditProfileComponent implements OnInit {
     }
   }
 
-  constructor(
-    private fb: FormBuilder,
-    private profileService: ProfileService,
-    protected router: Router,
-    private store: Store
-  ) {}
+  togglePasswordFields() {
+    this.showPasswordFields = !this.showPasswordFields;
+
+    if (this.showPasswordFields) {
+      this.profileForm.get('currentPassword')?.setValidators([Validators.required]);
+      this.profileForm.get('newPassword')?.setValidators([
+        Validators.required,
+        Validators.minLength(6)
+      ]);
+      this.profileForm.get('confirmPassword')?.setValidators([Validators.required]);
+    } else {
+      this.profileForm.get('currentPassword')?.clearValidators();
+      this.profileForm.get('newPassword')?.clearValidators();
+      this.profileForm.get('confirmPassword')?.clearValidators();
+
+      this.profileForm.patchValue({
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: ''
+      });
+    }
+
+    // Update validation status
+    this.profileForm.get('currentPassword')?.updateValueAndValidity();
+    this.profileForm.get('newPassword')?.updateValueAndValidity();
+    this.profileForm.get('confirmPassword')?.updateValueAndValidity();
+  }
+
 
   ngOnInit() {
     this.store.select(selectUser).subscribe(user => {
@@ -57,10 +86,8 @@ export class EditProfileComponent implements OnInit {
         this.initializeForm(); // Reinitialize form with correct fields
 
         this.profileService.getUserProfile().subscribe((profile: Profile) => {
-          // Remove password fields from the patch value
           const { currentPassword, newPassword, confirmPassword, ...profileData } = profile;
 
-          // Only patch fields that exist in the form
           const formControls = Object.keys(this.profileForm.controls);
           const filteredData = Object.keys(profileData)
             .filter(key => formControls.includes(key))
@@ -75,41 +102,51 @@ export class EditProfileComponent implements OnInit {
     });
   }
 
-  togglePasswordFields() {
-    this.showPasswordFields = !this.showPasswordFields;
-    if (!this.showPasswordFields) {
-      this.profileForm.patchValue({
-        currentPassword: '',
-        newPassword: '',
-        confirmPassword: ''
-      });
-    }
-  }
-
   onSubmit() {
     if (this.profileForm.valid && this.currentUser) {
       const formData = { ...this.profileForm.value };
 
-      // Only include password fields if they're filled
-      if (!this.showPasswordFields) {
-        delete formData.currentPassword;
-        delete formData.newPassword;
-        delete formData.confirmPassword;
-      } else if (!formData.currentPassword) {
-        delete formData.currentPassword;
-        delete formData.newPassword;
-        delete formData.confirmPassword;
+      if (this.showPasswordFields) {
+        if (formData.currentPassword?.trim() &&
+          formData.newPassword?.trim() &&
+          formData.confirmPassword?.trim()) {
+
+          // Verify passwords match
+          if (this.passwordsMatch()) {
+            const passwordData = {
+              currentPassword: formData.currentPassword,
+              newPassword: formData.newPassword
+            };
+
+            this.profileService.updateProfile(this.currentUser.id, passwordData)
+              .subscribe({
+                next: () => {
+                  this.router.navigate(['/profile']);
+                },
+                error: (error) => {
+                  this.errorMessage = error.message || 'Error updating password';
+                  console.error('Error updating password:', error);
+                }
+              });
+            return;
+          }
+        }
       }
 
-      this.profileService.updateProfile(this.currentUser.id, formData)
-        .subscribe({
-          next: () => {
-            this.router.navigate(['/profile']);
-          },
-          error: (error) => {
-            console.error('Error updating profile:', error);
-          }
-        });
+      const { currentPassword, newPassword, confirmPassword, ...profileUpdateData } = formData;
+
+      this.profileService.updateProfile(this.currentUser.id, {
+        ...profileUpdateData,
+        role: this.currentUser.role
+      }).subscribe({
+        next: () => {
+          this.router.navigate(['/profile']);
+        },
+        error: (error) => {
+          this.errorMessage = error.message || 'Error updating profile';
+          console.error('Error updating profile:', error);
+        }
+      });
     }
   }
 

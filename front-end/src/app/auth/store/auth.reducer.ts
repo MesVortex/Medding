@@ -50,6 +50,7 @@ export const authReducer = createReducer(
     ...state,
     user: null,
     token: null,
+    isAuthenticated: false,
     loading: false,
     error: null
   }))

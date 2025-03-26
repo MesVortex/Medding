@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {catchError, Observable} from 'rxjs';
+import {Observable, throwError} from 'rxjs';
 import {Profile, VendorProfile} from '../models/profile.model';
 import { environment } from '../../../environments/environment';
 
@@ -20,35 +20,26 @@ export class ProfileService {
     return this.http.get<VendorProfile>(`${this.apiUrl}/vendors/${id}`);
   }
 
-  getVendorProfileForUser(id: number): Observable<Profile> {
-    return this.http.get<Profile>(`${this.apiUrl}/vendors/${id}`);
-  }
-
   updateProfile(id: number, profileData: any): Observable<Profile> {
-    const endpoint = profileData.role === 'VENDOR' ?
-      `${this.apiUrl}/vendors/${id}` :
-      `${this.apiUrl}/users/${id}`;
-
-    // If password fields are present, send to password update endpoint
     if (profileData.currentPassword) {
+      if (!profileData.currentPassword.trim() || !profileData.newPassword.trim()) {
+        return throwError(() => new Error('All password fields are required'));
+      }
+
       const passwordData = {
         currentPassword: profileData.currentPassword,
         newPassword: profileData.newPassword
       };
-      return this.http.put<Profile>(`${this.apiUrl}/${id}/password`, passwordData)
-        .pipe(
-          catchError((error) => {
-            // Ensure we properly handle and propagate the error message
-            if (error.error?.message) {
-              throw error.error;
-            }
-            throw error;
-          })
-        );
+
+      return this.http.put<Profile>(`${this.apiUrl}/${id}/password`, passwordData);
     }
 
-    // Remove password fields if present
-    const { currentPassword, newPassword, confirmPassword, ...data } = profileData;
-    return this.http.put<Profile>(endpoint, data);
+    const { currentPassword, newPassword, confirmPassword, ...profileUpdateData } = profileData;
+
+    const endpoint = profileData.role === 'VENDOR' ?
+      `${this.apiUrl}/vendors/${id}` :
+      `${this.apiUrl}/users/${id}`;
+
+    return this.http.put<Profile>(endpoint, profileUpdateData);
   }
 }

@@ -11,10 +11,8 @@ import {AuthService} from "../../../auth/services/auth.service";
   template: `
     <div class="min-h-screen bg-[#FFF9F5]">
       <app-navbar
-        [userName]="username"
-        [isLoggedIn]="true"
       ></app-navbar>
-      <div class="container mx-auto px-4 py-6">
+      <div class="container w-full mx-auto px-4 pb-6">
         <router-outlet></router-outlet>
       </div>
     </div>

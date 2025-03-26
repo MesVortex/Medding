@@ -23,10 +23,7 @@ export class ProfileComponent implements OnInit {
   ) {
     this.profile$ = this.store.select(selectUser).pipe(
       switchMap(user => {
-        if (!user) return new Observable<never>(); // Handle null user case
-        if (user.role === 'VENDOR') {
-          return this.profileService.getVendorProfileForUser(user.id);
-        }
+        if (!user) return new Observable<never>();
         return this.profileService.getUserProfile();
       })
     );

@@ -1,8 +1,71 @@
-@keyframes slideDown {
+/* dropdown alignment */
+.dropdown-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+/* Ensure dropdown button has the same height as other nav items */
+.dropdown-toggle {
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+/* Animation for dropdowns */
+@keyframes fadeIn {
   from { opacity: 0; transform: translateY(-10px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-.animate-slideDown {
-  animation: slideDown 0.2s ease-out forwards;
+.dropdown-menu {
+  animation: fadeIn 0.2s ease-out forwards;
+  z-index: 50;
+}
+
+/* profile dropdown positioning */
+.ml-3.relative.dropdown-container {
+  position: relative;
+}
+
+.ml-3.relative.dropdown-container .dropdown-menu {
+  right: 0;
+  top: 100%;
+  margin-top: 0.5rem;
+}
+
+.relative.dropdown-container .dropdown-menu {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 1px);
+  margin-top: 0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Ensure proper z-index stacking */
+.dropdown-container {
+  z-index: 30;
+}
+
+.dropdown-menu {
+  z-index: 40;
+}
+
+/* Fix for border alignment with dropdown */
+.border-b-2 {
+  border-bottom-width: 2px;
+}
+
+/* Ensure the dropdown doesn't overlap with the button */
+.relative.dropdown-container {
+  position: relative;
+}
+
+/* Specific fix for weddings dropdown */
+.weddings-dropdown {
+  top: 3.5rem !important; /* Force it to be positioned below the navbar */
+  border-radius: 0.375rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
