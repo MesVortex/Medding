@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {ActivatedRoute, Router, RouterModule} from '@angular/router';
+import {ActivatedRoute, RouterModule} from '@angular/router';
 import { WeddingService } from '../../services/wedding.service';
 import { WeddingResponse } from '../../models/wedding.model';
-import {ServiceBookingResponse} from "../../../weddingService/models/wedding-service.model";
+import {ServiceBookingResponse, ServiceResponse} from "../../../weddingService/models/wedding-service.model";
 import {
   ConfirmationDialogComponent
 } from "../../../shared/components/confirmation-dialog/confirmation-dialog.component";
@@ -19,12 +19,12 @@ import {WeddingServiceService} from "../../../weddingService/services/wedding-se
 export class WeddingDetailsComponent implements OnInit {
   wedding: WeddingResponse | null = null;
   services: ServiceBookingResponse[] = [];
+  serviceDetails: ServiceResponse[] = [];
   loading = true;
   error: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
     private weddingService: WeddingService,
     private serviceService: WeddingServiceService
   ) {}
@@ -63,9 +63,15 @@ export class WeddingDetailsComponent implements OnInit {
     return this.services.filter(service => service.status === 'PENDING');
   }
 
-  getConfirmedServices(): ServiceBookingResponse[] {
-    return this.services.filter(service => service.status === 'CONFIRMED');
-  }
+getConfirmedServices(): ServiceResponse[] {
+  this.serviceDetails = [];
+  this.services.filter(service => service.status === 'CONFIRMED').forEach(service => {
+    this.serviceService.getServiceById(service.serviceId).subscribe(response => {
+      this.serviceDetails.push(response);
+    });
+  });
+  return this.serviceDetails;
+}
 
   getCancelledServices(): ServiceBookingResponse[] {
     return this.services.filter(service => service.status === 'CANCELLED');
@@ -101,5 +107,22 @@ export class WeddingDetailsComponent implements OnInit {
     const now = new Date();
     const diff = weddingDate.getTime() - now.getTime();
     return diff <= 0 ? 0 : Math.floor((diff % (1000 * 60)) / 1000);
+  }
+
+  getTotalSpentAmount(): number {
+    return this.getConfirmedServices()
+      .reduce((total, service) => total + service.price, 0);
+  }
+
+  getBudgetPercentage(): number {
+    if (!this.wedding?.budget) return 0;
+    const spent = this.getTotalSpentAmount();
+    return Math.min((spent / this.wedding.budget) * 100, 100);
+  }
+
+  getRemainingBudget(): number {
+    if (!this.wedding?.budget) return 0;
+    const spent = this.getTotalSpentAmount();
+    return Math.max(this.wedding.budget - spent, 0);
   }
 }

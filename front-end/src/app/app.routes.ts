@@ -63,7 +63,6 @@ export const routes: Routes = [
       {
         path: "services",
         children: SERVICE_ROUTES,
-        canActivate: [AuthGuard],
       },
 
       {
@@ -79,11 +78,15 @@ export const routes: Routes = [
       },
     ]
   },
+  {
+    path: "unauthorized",
+    loadComponent: () => import("./shared/components/unauthorized/unauthorized.component").then((m) => m.UnauthorizedComponent),
+  },
 
   // Not Found Route
   {
     path: "**",
     loadComponent: () => import("./shared/components/not-found/not-found.component").then((m) => m.NotFoundComponent),
-  },
+  }
 ]
 
