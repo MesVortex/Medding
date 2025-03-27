@@ -9,11 +9,12 @@ import {PROFILE_ROUTES} from "./shared/profile.routes";
 import {VENDOR_ROUTES} from "./shared/vendor.routes";
 import {AdminLayoutComponent} from "./shared/layouts/admin-layout/admin-layout.component";
 import {DefaultLayoutComponent} from "./shared/layouts/default-layout/default-layout.component";
+import {GuestGuard} from "./auth/guards/guest.guard";
 
 export const routes: Routes = [
   {
     path: "",
-    redirectTo: "auth",
+    redirectTo: "home",
     pathMatch: "full",
   },
 
@@ -21,6 +22,12 @@ export const routes: Routes = [
   {
     path: "auth",
     children: AUTH_ROUTES,
+    canActivate: [GuestGuard],
+  },
+  {
+    path: "home",
+    loadComponent: () => import("./shared/components/landing-page/landing-page.component").then((m) => m.LandingPageComponent),
+    canActivate: [GuestGuard],
   },
   {
     path: 'admin',
