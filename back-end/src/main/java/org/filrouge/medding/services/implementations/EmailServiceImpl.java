@@ -330,7 +330,6 @@ public class EmailServiceImpl implements EmailService {
                 formattedDate,
                 formattedYear,
                 invitationLink,
-                invitationLink,
                 groomInitial,
                 brideInitial,
                 DateTimeFormatter.ofPattern("dd/MM/yyyy").format(

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, RouterLink} from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ReviewService } from '../../../review/services/review.service';
 import { ReviewRequest, ReviewResponse } from '../../../review/models/review.model';
@@ -10,7 +10,7 @@ import {VendorProfile} from "../../models/profile.model";
 @Component({
   selector: 'app-vendor-profile',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: 'vendor-profile.component.html',
   styleUrl: 'vendor-profile.component.scss'
 })

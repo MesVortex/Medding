@@ -123,7 +123,7 @@
                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-lavender/20 text-purple">
                   {{ getCategoryDisplayName(service.category) }}
                 </span>
-                <div class="text-lg font-medium text-purple">{{ service.price | currency }}</div>
+                <div class="text-lg font-medium text-purple">{{ service.price | currency: 'MAD ' }}</div>
               </div>
               <h3 class="mt-2 text-xl font-semibold text-gray-900">{{ service.title }}</h3>
             </div>

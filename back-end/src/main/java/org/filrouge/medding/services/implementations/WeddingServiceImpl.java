@@ -56,13 +56,6 @@ public class WeddingServiceImpl implements WeddingService {
                 .collect(Collectors.toList());
     }
 
-//    @Override
-//    public WeddingResponseDTO getWeddingById(Long id) {
-//        Wedding wedding = weddingRepository.findById(id)
-//                .orElseThrow(() -> new ResourceNotFoundException("Wedding not found with id: " + id));
-//        return weddingMapper.toDTO(wedding);
-//    }
-
     @Override
     public List<WeddingResponseDTO> getWeddingsByOrganizerId(Long organizerId) {
         return weddingRepository.findByOrganizerId(organizerId).stream()

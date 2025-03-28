@@ -164,7 +164,7 @@
                         class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-lavender/20 text-purple">
                         {{ service.category }}
                       </span>
-                      <div class="text-lg font-medium text-purple">{{ service.price | currency }}</div>
+                      <div class="text-lg font-medium text-purple">{{ service.price | currency: 'MAD ' }}</div>
                     </div>
                     <h3 class="mt-1 text-lg font-semibold text-gray-900">{{ service.title }}</h3>
                   </div>
@@ -175,7 +175,7 @@
 
                   <div
                     class="px-4 py-3 bg-gradient-to-r from-lavender/10 to-cream/20 border-t border-beige flex justify-end">
-                    <a href="/services/{{ service.id }}"
+                    <a routerLink="/services/{{ service.id }}/details"
                        class="inline-flex items-center px-3 py-1.5 border border-transparent rounded-md text-sm font-medium text-white bg-purple hover:bg-lavender transition-colors duration-300">
                       View Details
                     </a>

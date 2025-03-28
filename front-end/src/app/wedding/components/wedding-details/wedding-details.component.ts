@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {ActivatedRoute, RouterModule} from '@angular/router';
-import { WeddingService } from '../../services/wedding.service';
-import { WeddingResponse } from '../../models/wedding.model';
+import {WeddingService} from '../../services/wedding.service';
+import {WeddingResponse} from '../../models/wedding.model';
 import {ServiceBookingResponse, ServiceResponse} from "../../../weddingService/models/wedding-service.model";
 import {
   ConfirmationDialogComponent
 } from "../../../shared/components/confirmation-dialog/confirmation-dialog.component";
 import {WeddingServiceService} from "../../../weddingService/services/wedding-service.service";
+import {forkJoin, Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-wedding-details',
@@ -16,28 +17,67 @@ import {WeddingServiceService} from "../../../weddingService/services/wedding-se
   templateUrl: './wedding-details.component.html',
   styleUrls: ['./wedding-details.component.scss']
 })
-export class WeddingDetailsComponent implements OnInit {
+export class WeddingDetailsComponent implements OnInit, OnDestroy {
   wedding: WeddingResponse | null = null;
   services: ServiceBookingResponse[] = [];
-  serviceDetails: ServiceResponse[] = [];
+  confirmedServices: ServiceResponse[] = [];
   loading = true;
   error: string | null = null;
+  private countdownTimer: any;
+  private destroy$ = new Subject<void>();
+  countdown = {
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0
+  };
 
   constructor(
     private route: ActivatedRoute,
     private weddingService: WeddingService,
     private serviceService: WeddingServiceService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     const weddingId = this.route.snapshot.paramMap.get('id');
     if (weddingId) {
       this.loadWeddingDetails(+weddingId);
+      this.startCountdown();
     }
   }
 
+  private startCountdown(): void {
+    // Update every second
+    this.countdownTimer = setInterval(() => {
+      if (this.wedding?.date) {
+        const weddingDate = new Date(this.wedding.date);
+        const now = new Date();
+        const diff = weddingDate.getTime() - now.getTime();
+
+        this.countdown = {
+          days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+          minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
+          seconds: Math.floor((diff % (1000 * 60)) / 1000)
+        };
+      }
+    }, 1000);
+  }
+
+  ngOnDestroy(): void {
+    if (this.countdownTimer) {
+      clearInterval(this.countdownTimer);
+    }
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   private loadWeddingDetails(id: number): void {
-    this.weddingService.getWeddingWithServices(id).subscribe({
+    // Load wedding details
+    this.weddingService.getWeddingWithServices(id).pipe(
+      takeUntil(this.destroy$)
+    ).subscribe({
       next: (wedding) => {
         this.wedding = wedding;
         this.loading = false;
@@ -48,9 +88,15 @@ export class WeddingDetailsComponent implements OnInit {
         console.error('Error loading wedding:', error);
       }
     });
-    this.serviceService.getWeddingBookings(id).subscribe({
+
+    // Load services with their details
+    this.serviceService.getWeddingBookings(id).pipe(
+      takeUntil(this.destroy$)
+    ).subscribe({
       next: (services) => {
         this.services = services;
+        // Load confirmed services details
+        this.loadConfirmedServicesDetails();
       },
       error: (error) => {
         this.error = 'Failed to load wedding services';
@@ -59,19 +105,38 @@ export class WeddingDetailsComponent implements OnInit {
     });
   }
 
+  private loadConfirmedServicesDetails(): void {
+    const confirmedBookings = this.services.filter(service => service.status === 'CONFIRMED');
+
+    if (confirmedBookings.length === 0) {
+      this.confirmedServices = [];
+      return;
+    }
+
+    // Use forkJoin to make parallel requests
+    forkJoin(
+      confirmedBookings.map(booking =>
+        this.serviceService.getServiceById(booking.serviceId)
+      )
+    ).pipe(
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: (services) => {
+        this.confirmedServices = services;
+      },
+      error: (error) => {
+        console.error('Error loading confirmed services:', error);
+      }
+    });
+  }
+
   getPendingServices(): ServiceBookingResponse[] {
     return this.services.filter(service => service.status === 'PENDING');
   }
 
-getConfirmedServices(): ServiceResponse[] {
-  this.serviceDetails = [];
-  this.services.filter(service => service.status === 'CONFIRMED').forEach(service => {
-    this.serviceService.getServiceById(service.serviceId).subscribe(response => {
-      this.serviceDetails.push(response);
-    });
-  });
-  return this.serviceDetails;
-}
+  getConfirmedServices(): ServiceResponse[] {
+    return this.confirmedServices;
+  }
 
   getCancelledServices(): ServiceBookingResponse[] {
     return this.services.filter(service => service.status === 'CANCELLED');

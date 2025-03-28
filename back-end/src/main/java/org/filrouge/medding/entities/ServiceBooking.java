@@ -13,10 +13,10 @@ public class ServiceBooking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Service service;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Wedding wedding;
 
     private LocalDateTime bookedAt;
